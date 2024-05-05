@@ -12,10 +12,11 @@ class ErrorScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               LottieBuilder.asset("assets/lotties/error.json", reverse: true),
-              Text(error, style: GoogleFonts.itim(fontSize: 16, fontWeight: FontWeight.w500)),
+              Center(child: Text(error, style: GoogleFonts.itim(fontSize: 16, fontWeight: FontWeight.w500), textAlign: TextAlign.center)),
             ],
           ),
         ),

@@ -3,12 +3,15 @@ import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import 'views/holder/holder.dart';
 import 'views/onboarding/onboarding_holder.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Animate.restartOnHotReload = true;
   runApp(const Main());
 }
 
@@ -18,11 +21,11 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: FutureBuilder<void>(
+      home: FutureBuilder<bool>(
         future: init(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            return settingsBox.get("first_time") ? const Onboarding() : const Holder();
+            return settingsBox!.get("first_time") ? const Onboarding() : const Holder();
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Wait();
           } else {

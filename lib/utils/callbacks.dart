@@ -3,11 +3,11 @@ import 'package:path_provider/path_provider.dart';
 
 import 'shared.dart';
 
-Future<void> init() async {
+Future<bool> init() async {
   Hive.init((await getApplicationDocumentsDirectory()).path);
   settingsBox = await Hive.openBox('settings');
-  if (settingsBox.isEmpty) {
-    await settingsBox.putAll(
+  if (settingsBox!.isEmpty) {
+    await settingsBox!.putAll(
       <String, dynamic>{
         "first_time": true,
         "theme": "light",
@@ -15,4 +15,5 @@ Future<void> init() async {
       },
     );
   }
+  return true;
 }
