@@ -10,5 +10,6 @@ const Color transparent = Colors.transparent;
 const Color white = Colors.white;
 const Color pink = Colors.pinkAccent;
 const Color blue = Colors.blueAccent;
+const Color gold = Color.fromARGB(255, 253, 243, 152);
 
 const String appTitle = "DabKa";

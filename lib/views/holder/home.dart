@@ -1,9 +1,21 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dabka/utils/shared.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter/services.dart';
+
+import '../../utils/helpers/categories_list.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/exclusive_offers.dart';
+import '../../utils/helpers/home_ads_carousel.dart';
+import '../../utils/helpers/home_dresses.dart';
+import '../../utils/helpers/home_filter.dart';
+import '../../utils/helpers/home_makeup_artists.dart';
+import '../../utils/helpers/home_photographers.dart';
+import '../../utils/helpers/home_recommended.dart';
+import '../../utils/helpers/home_sellers.dart';
+import '../../utils/helpers/installment_offers.dart';
+import '../../utils/helpers/wait.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,185 +25,74 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<String> _images = <String>[];
-
-  final GlobalKey<State<StatefulWidget>> _imagesKey = GlobalKey<State<StatefulWidget>>();
-
-  final TextEditingController _searchController = TextEditingController();
+  List<String> _images = <String>[];
+  List<Map<String, dynamic>> _categories = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _exclusiveOffers = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _installmentOffers = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _dresses = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _makeupArtists = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _photographers = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _sellers = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _recommended = <Map<String, dynamic>>[];
 
   final PageController _imagesController = PageController();
 
+  List<Widget> _components = <Widget>[];
+
+  Future<bool> _load() async {
+    try {
+      _images = jsonDecode(await rootBundle.loadString("assets/jsons/ads.json")).cast<String>();
+      _categories = jsonDecode(await rootBundle.loadString("assets/jsons/categories.json")).cast<Map<String, dynamic>>();
+      _exclusiveOffers = jsonDecode(await rootBundle.loadString("assets/jsons/exclusive_offers.json")).cast<Map<String, dynamic>>();
+      _installmentOffers = jsonDecode(await rootBundle.loadString("assets/jsons/installment_offers.json")).cast<Map<String, dynamic>>();
+      _dresses = jsonDecode(await rootBundle.loadString("assets/jsons/dresses.json")).cast<Map<String, dynamic>>();
+      _makeupArtists = jsonDecode(await rootBundle.loadString("assets/jsons/makeup_artists.json")).cast<Map<String, dynamic>>();
+      _photographers = jsonDecode(await rootBundle.loadString("assets/jsons/photographers.json")).cast<Map<String, dynamic>>();
+      _sellers = jsonDecode(await rootBundle.loadString("assets/jsons/sellers.json")).cast<Map<String, dynamic>>();
+      _recommended = jsonDecode(await rootBundle.loadString("assets/jsons/recommended.json")).cast<String>();
+      _components = <Widget>[
+        const HomeFilter(),
+        HomeAdsCarousel(images: _images),
+        CategoriesList(categories: _categories),
+        ExclusiveOffers(exclusiveOffers: _exclusiveOffers),
+        InstallmentOffers(installmentOffers: _installmentOffers),
+        HomeDresses(dresses: _dresses),
+        HomeMakeUpArtists(makeupArtists: _makeupArtists),
+        HomePhotographers(photographers: _photographers),
+        HomeSellers(sellers: _sellers),
+        HomeRecommended(recommended: _recommended),
+      ];
+      return true;
+    } catch (_) {
+      debugPrint(_.toString());
+      return false;
+    }
+  }
+
   @override
   void dispose() {
-    _searchController.dispose();
     _imagesController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: <Widget>[
-          const SizedBox(height: 10),
-          const Divider(color: grey, thickness: .5, height: .5),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            color: grey,
-            child: Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                    ),
-                  ),
-                  InkWell(
-                    highlightColor: transparent,
-                    splashColor: transparent,
-                    hoverColor: transparent,
-                    onTap: () {},
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: const Icon(FontAwesome.searchengin_brand, color: white, size: 25),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          StatefulBuilder(
-            key: _imagesKey,
-            builder: (BuildContext context, void Function(void Function()) _) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  PageView.builder(
-                    scrollDirection: Axis.horizontal,
-                    controller: _imagesController,
-                    itemCount: _images.length,
-                    itemBuilder: (BuildContext context, int index) => Image.asset("assets/images/${_images[index]}", width: MediaQuery.sizeOf(context).width - 2 * 16),
-                  ),
-                  const SizedBox(height: 10),
-                  SmoothPageIndicator(controller: _imagesController, count: _images.length),
-                ],
-              );
-            },
-          ),
-          const SizedBox(height: 10),
-          Text("Our Categories", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Wrap(
-            children: <Widget>[],
-          ),
-          const SizedBox(height: 20),
-          Text("Exclusive Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _execlusiveOffers.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Installment Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _installmentOffers.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Dresses", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _dresses.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Wedding Venues", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _weddingVenues.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Beauty Centers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _beautyCenters.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Makeup Artists", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _makeupArtists.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Photographers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _photographers.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Wedding Cars", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _makeupArtists.length,
-          ),
-          const SizedBox(height: 20),
-          Text("Seller", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          Container(),
-          const SizedBox(height: 10),
-          ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Container(),
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-            itemCount: _sellers.length,
-          ),
-          const SizedBox(height: 20),
-          CarouselSlider.builder(
-            itemCount: _images.length,
-            itemBuilder: (BuildContext context, int index, int realIndex) => Image.asset("assets/images/${_images[index]}"),
-            options: CarouselOptions(),
-          ),
-          const SizedBox(height: 10),
-          SmoothPageIndicator(
-            controller: controller,
-            count: count,
-          ),
-        ],
-      ),
+    return FutureBuilder<bool>(
+      future: _load(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData && snapshot.data!) {
+          return ListView.separated(
+            itemBuilder: (BuildContext context, int index) => _components[index],
+            itemCount: _components.length,
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
+            padding: EdgeInsets.zero,
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Wait();
+        } else {
+          return ErrorScreen(error: snapshot.error.toString());
+        }
+      },
     );
   }
 }

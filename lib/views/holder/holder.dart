@@ -1,3 +1,4 @@
+import 'package:dabka/views/holder/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +23,7 @@ class _HolderState extends State<Holder> {
     <String, dynamic>{
       "title": "Home",
       "image": FontAwesome.house_solid,
-      "page": SizedBox(),
+      "page": Home(),
     },
     <String, dynamic>{
       "title": "True View",
@@ -56,17 +57,20 @@ class _HolderState extends State<Holder> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text(appTitle, style: GoogleFonts.abel(fontSize: 25, fontWeight: FontWeight.w500, color: blue)),
+        title: Text(appTitle, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: blue)),
         leading: IconButton(
           onPressed: () => _drawerKey.currentState!.openDrawer(),
-          icon: const Icon(FontAwesome.bars_solid, size: 25, color: blue),
+          icon: const Icon(FontAwesome.bars_solid, size: 20, color: blue),
         ),
       ),
-      body: PageView.builder(
-        controller: _pageController,
-        onPageChanged: (int page) => _menuKey.currentState!.setState(() => _currentPage = _pages[page]["title"]),
-        itemBuilder: (BuildContext context, int index) => _pages[index]["page"],
-        itemCount: _pages.length,
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: PageView.builder(
+          controller: _pageController,
+          onPageChanged: (int page) => _menuKey.currentState!.setState(() => _currentPage = _pages[page]["title"]),
+          itemBuilder: (BuildContext context, int index) => _pages[index]["page"],
+          itemCount: _pages.length,
+        ),
       ),
       bottomNavigationBar: StatefulBuilder(
         key: _menuKey,
