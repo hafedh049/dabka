@@ -1,32 +1,7 @@
 [
     {
         "name": "Dresses",
-        "icon": "assets/icons/",
+        "icon": "assets/images/nh.jpg",
         "color": "pink"
-    },
-    {
-        "name": "Halls",
-        "icon": "assets/icons/",
-        "color": "blue"
-    },
-    {
-        "name": "Makeup Artists",
-        "icon": "assets/icons/",
-        "color": "pink"
-    },
-    {
-        "name": "Trips",
-        "icon": "assets/icons/",
-        "color": "pink"
-    },
-    {
-        "name": "Photographers",
-        "icon": "assets/icons/",
-        "color": "purple"
-    },
-    {
-        "name": "Decorations",
-        "icon": "assets/icons/",
-        "color": "blue"
     }
 ]

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
 
 import '../shared.dart';
@@ -21,49 +22,61 @@ class ExclusiveOffers extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Image.asset("assets/images/exclusive_offers.png", fit: BoxFit.cover),
+          child: Image.asset("assets/images/exclusive_offer.png", fit: BoxFit.cover),
         ),
         const SizedBox(height: 10),
-        ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (BuildContext context, int index) => Stack(
-            children: <Widget>[
-              Container(
-                width: 200,
-                height: 250,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(image: AssetImage(exclusiveOffers[index]["image"]), fit: BoxFit.cover),
-                ),
-                child: Image.asset("assets/images/exclusive_offers.png", fit: BoxFit.cover, height: 40),
-              ),
-              ShadowOverlay(
-                shadowHeight: 250,
-                shadowWidth: 200,
-                shadowColor: pink.withOpacity(.1),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(exclusiveOffers[index]["owner_name"], style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    Container(
-                      color: pink,
-                      padding: const EdgeInsets.all(2),
-                      child: Text(exclusiveOffers[index]["discount"], style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        exclusiveOffers.isEmpty
+            ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
+            : SizedBox(
+                height: 160,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) => ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          width: 150,
+                          height: 160,
+                          alignment: Alignment.bottomCenter,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(image: AssetImage(exclusiveOffers[index]["image"]), fit: BoxFit.cover),
+                          ),
+                          child: Image.asset("assets/images/exclusive_offer.png", width: 150, height: 75, scale: 1.5),
+                        ),
+                        ShadowOverlay(
+                          shadowHeight: 160,
+                          shadowWidth: 150,
+                          shadowColor: pink.withOpacity(.3),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Spacer(),
+                                Text(exclusiveOffers[index]["owner_name"], style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 10),
+                                Container(
+                                  color: pink,
+                                  padding: const EdgeInsets.all(2),
+                                  child: Text(exclusiveOffers[index]["discount"], style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 10),
+                                ShaderMask(
+                                  shaderCallback: (Rect bounds) => const LinearGradient(colors: <Color>[blue, pink]).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                                  child: Text("CHECK OFFERS", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    ShaderMask(
-                      shaderCallback: (Rect bounds) => const LinearGradient(colors: <Color>[blue, pink]).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                      child: Text("CHECK OFFERS", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
-                    ),
-                  ],
+                  ),
+                  separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
+                  itemCount: exclusiveOffers.length,
                 ),
               ),
-            ],
-          ),
-          separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-          itemCount: exclusiveOffers.length,
-        ),
       ],
     );
   }

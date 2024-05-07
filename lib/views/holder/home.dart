@@ -35,8 +35,6 @@ class _HomeState extends State<Home> {
   List<Map<String, dynamic>> _sellers = <Map<String, dynamic>>[];
   List<Map<String, dynamic>> _recommended = <Map<String, dynamic>>[];
 
-  final PageController _imagesController = PageController();
-
   List<Widget> _components = <Widget>[];
 
   Future<bool> _load() async {
@@ -49,7 +47,7 @@ class _HomeState extends State<Home> {
       _makeupArtists = jsonDecode(await rootBundle.loadString("assets/jsons/makeup_artists.json")).cast<Map<String, dynamic>>();
       _photographers = jsonDecode(await rootBundle.loadString("assets/jsons/photographers.json")).cast<Map<String, dynamic>>();
       _sellers = jsonDecode(await rootBundle.loadString("assets/jsons/sellers.json")).cast<Map<String, dynamic>>();
-      _recommended = jsonDecode(await rootBundle.loadString("assets/jsons/recommended.json")).cast<String>();
+      _recommended = jsonDecode(await rootBundle.loadString("assets/jsons/recommended.json")).cast<Map<String, dynamic>>();
       _components = <Widget>[
         const HomeFilter(),
         HomeAdsCarousel(images: _images),
@@ -67,12 +65,6 @@ class _HomeState extends State<Home> {
       debugPrint(_.toString());
       return false;
     }
-  }
-
-  @override
-  void dispose() {
-    _imagesController.dispose();
-    super.dispose();
   }
 
   @override

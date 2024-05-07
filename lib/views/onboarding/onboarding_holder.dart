@@ -30,9 +30,13 @@ class _OnboardingState extends State<Onboarding> {
   int _currentIndex = 0;
 
   final List<Image> _images = <Image>[
-    Image.asset("assets/images/welcome.png"),
+    /*Image.asset("assets/images/welcome.png"),
     Image.asset("assets/images/select_language.png"),
-    Image.asset("assets/images/what_is_your_gender.png"),
+    Image.asset("assets/images/what_is_your_gender.png"),*/
+
+    Image.asset("assets/images/nh.jpg"),
+    Image.asset("assets/images/nh.jpg"),
+    Image.asset("assets/images/nh.jpg"),
   ];
 
   @override

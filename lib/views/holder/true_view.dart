@@ -72,11 +72,7 @@ class _TrueViewState extends State<TrueView> {
                   shadowHeight: 250,
                   shadowWidth: 250,
                   shadowColor: pink,
-                  child: Container(
-                    width: 250,
-                    height: 350,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                  ),
+                  child: Container(width: 250, height: 350, decoration: BoxDecoration(borderRadius: BorderRadius.circular(15))),
                 ),
                 Container(
                   padding: const EdgeInsets.all(8),
@@ -87,10 +83,7 @@ class _TrueViewState extends State<TrueView> {
                         children: <Widget>[
                           const Spacer(),
                           Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: <Color>[pink, white.withOpacity(.3)]),
-                              borderRadius: BorderRadius.circular(3),
-                            ),
+                            decoration: BoxDecoration(gradient: LinearGradient(colors: <Color>[pink, white.withOpacity(.3)]), borderRadius: BorderRadius.circular(3)),
                             child: Text(_trueViews[index][1].category, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
                           ),
                           const Spacer(),
