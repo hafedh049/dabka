@@ -17,30 +17,31 @@ class SelectLanguage extends StatefulWidget {
 class _SelectLanguageState extends State<SelectLanguage> {
   final List<Language> _list = const <Language>[
     Language('English'),
+    Language('Français'),
     Language('العربية الدارجة'),
   ];
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(
-          "Select you language",
-          style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
+        Text("اختر لغتك", style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
         const SizedBox(height: 20),
         Text(
-          "Please choose your preferred language",
+          "الرجاء اختيار لغتك المفضلة",
           style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 20),
-        CustomDropdown<Language>.search(
-          hintText: 'Select you language',
-          items: _list,
-          excludeSelected: false,
-          initialItem: const Language("English"),
-          onChanged: (Language value) {},
+        Card(
+          elevation: 6,
+          shadowColor: dark,
+          child: CustomDropdown<Language>.search(
+            hintText: 'اختر لغتك',
+            items: _list,
+            excludeSelected: false,
+            initialItem: const Language('العربية الدارجة'),
+            onChanged: (Language value) {},
+          ),
         ),
         const SizedBox(height: 20),
         TextButton(
@@ -50,7 +51,7 @@ class _SelectLanguageState extends State<SelectLanguage> {
             padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 24)),
             shape: MaterialStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           ),
-          child: Text("Next", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
+          child: Text("التالي", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
         ),
       ],
     );

@@ -15,7 +15,7 @@ class HomeSellers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("Sellers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Text("البائعين", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         sellers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
@@ -55,7 +55,7 @@ class HomeSellers extends StatelessWidget {
                           children: <Widget>[
                             const Icon(FontAwesome.user_plus_solid, size: 10, color: white),
                             const SizedBox(width: 5),
-                            Text("★ Follow ★", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text("★ متابعة ★", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),

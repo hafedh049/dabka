@@ -30,7 +30,7 @@ class _SignUpState extends State<SignUp> {
           leading: widget.passed ? IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)) : null,
           centerTitle: true,
           backgroundColor: white,
-          title: Text("Sign Up", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+          title: Text("أفتح حساب الأن", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
           elevation: 5,
           shadowColor: dark,
         ),
@@ -39,13 +39,12 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Center(child: FlutterLogo(size: 150)),
               const SizedBox(height: 20),
-              Center(child: Text(appTitle, style: GoogleFonts.abel(fontSize: 25, color: blue, fontWeight: FontWeight.bold))),
+              Center(child: Image.asset("assets/images/logo.png", width: 150, height: 150)),
               const SizedBox(height: 40),
               Center(
                 child: Text(
-                  "Please enter your phone number to recieve the verification code.",
+                  "الرجاء إدخال رقم هاتفك لتلقي رمز التحقق",
                   style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 ),
@@ -72,9 +71,9 @@ class _SignUpState extends State<SignUp> {
                   searchBoxHintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   flatFlag: true,
                   itemFlagSize: 20,
-                  title: "Select Country",
+                  title: "حدد الدولة",
                   searchBoxRadius: 5,
-                  searchHintText: "Search",
+                  searchHintText: "بحث",
                 ),
                 countryConfig: CountryConfig(
                   decoration: BoxDecoration(border: Border.all(width: .3, color: grey), borderRadius: BorderRadius.circular(8)),
@@ -87,10 +86,10 @@ class _SignUpState extends State<SignUp> {
                   enabledColor: grey,
                   errorColor: grey,
                   labelStyle: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                  labelText: "Phone Number",
+                  labelText: "رقم الهاتف",
                   floatingLabelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   radius: 8,
-                  hintText: "Phone Number",
+                  hintText: "رقم الهاتف",
                   borderWidth: .3,
                   backgroundColor: transparent,
                   decoration: null,
@@ -111,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                    child: Text("Send", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                    child: Text("إرسال", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
@@ -15,15 +16,9 @@ class ExclusiveOffers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("Exclusive Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Text("عروض حصرية", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
-        Container(
-          height: 150,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Image.asset("assets/images/exclusive_offer.png", fit: BoxFit.cover),
-        ),
+        ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 80)),
         const SizedBox(height: 10),
         exclusiveOffers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
@@ -64,7 +59,7 @@ class ExclusiveOffers extends StatelessWidget {
                                 const SizedBox(height: 10),
                                 ShaderMask(
                                   shaderCallback: (Rect bounds) => const LinearGradient(colors: <Color>[blue, pink]).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                                  child: Text("CHECK OFFERS", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                  child: Text("التحقق من العروض", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                                 ),
                               ],
                             ),

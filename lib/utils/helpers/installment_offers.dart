@@ -15,15 +15,9 @@ class InstallmentOffers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("Installment Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Text("عروض التقسيط", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
-        Container(
-          height: 150,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Image.asset("assets/images/nh.jpg", fit: BoxFit.cover),
-        ),
+        ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 80)),
         const SizedBox(height: 10),
         installmentOffers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))

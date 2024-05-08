@@ -12,15 +12,12 @@ class Welcome extends StatelessWidget {
     return Column(
       children: <Widget>[
         Text(
-          "Your wedding is much easier!",
+          "حفل الزفاف الخاص بك هو أسهل بكثير!",
           style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 20),
-        Text(
-          "We will help you with everything",
-          style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
-        ),
+        Text("سوف نساعدك في كل شيء", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         TextButton(
           onPressed: () => pageController.nextPage(duration: 300.ms, curve: Curves.linear),
@@ -29,10 +26,7 @@ class Welcome extends StatelessWidget {
             padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 24)),
             shape: MaterialStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           ),
-          child: Text(
-            "Get Started",
-            style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500),
-          ),
+          child: Text("البدء", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
         ),
       ],
     );

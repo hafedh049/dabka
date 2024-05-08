@@ -22,31 +22,43 @@ class _HomeFilterState extends State<HomeFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      color: grey,
-      child: InkWell(
-        highlightColor: transparent,
-        splashColor: transparent,
-        hoverColor: transparent,
-        onTap: () {},
-        child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Expanded(
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Search",
-                    hintStyle: GoogleFonts.itim(color: grey),
+    return GestureDetector(
+      onTap: () {},
+      child: IgnorePointer(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Card(
+            elevation: 6,
+            shadowColor: dark,
+            child: SizedBox(
+              height: 40,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(5)),
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "بحث",
+                          contentPadding: const EdgeInsets.all(16),
+                          hintStyle: GoogleFonts.itim(color: grey, fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                    child: const Icon(FontAwesome.searchengin_brand, color: white, size: 15),
+                  ),
+                ],
               ),
-              Container(alignment: Alignment.center, child: const Icon(FontAwesome.searchengin_brand, color: white, size: 25)),
-            ],
+            ),
           ),
         ),
       ),

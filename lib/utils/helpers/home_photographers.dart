@@ -15,13 +15,9 @@ class HomePhotographers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("Photographers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Text("المصورين", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
-        Container(
-          height: 150,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-          child: Image.asset("assets/images/nh.jpg", fit: BoxFit.cover),
-        ),
+        ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 80)),
         const SizedBox(height: 10),
         photographers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
@@ -70,7 +66,7 @@ class HomePhotographers extends StatelessWidget {
                           child: const Icon(FontAwesome.database_solid, color: white, size: 15),
                         ),
                         const SizedBox(height: 10),
-                        Text("Installment Available", style: GoogleFonts.abel(color: pink, fontSize: 8, fontWeight: FontWeight.w500)),
+                        Text("متاح التقسيط", style: GoogleFonts.abel(color: pink, fontSize: 8, fontWeight: FontWeight.w500)),
                         const SizedBox(height: 10),
                         Text(photographers[index]["title"], style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),

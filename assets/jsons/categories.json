@@ -1,7 +1,32 @@
 [
     {
-        "name": "Dresses",
-        "icon": "assets/images/nh.jpg",
+        "name": "الديكور",
+        "icon": "assets/images/1.png",
         "color": "pink"
+    },
+    {
+        "name": "الحجامات",
+        "icon": "assets/images/2.png",
+        "color": "blue"
+    },
+    {
+        "name": "المصورين",
+        "icon": "assets/images/3.png",
+        "color": "purple"
+    },
+    {
+        "name": "كراء الروب",
+        "icon": "assets/images/4.png",
+        "color": "pink"
+    },
+    {
+        "name": "قاعات الافراح",
+        "icon": "assets/images/5.png",
+        "color": "blue"
+    },
+    {
+        "name": "الرحلات",
+        "icon": "assets/images/6.png",
+        "color": "purple"
     }
 ]

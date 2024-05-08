@@ -48,7 +48,7 @@ class _TrueViewState extends State<TrueView> {
                         const Spacer(),
                         Text(_trueViews[index][0].category, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
-                        Text("${_trueViews[index][0].price.toStringAsFixed(2).replaceAll(".", ",")} TND", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                        Text("${_trueViews[index][0].price.toStringAsFixed(2).replaceAll(".", ",")} د.ت", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
@@ -89,7 +89,7 @@ class _TrueViewState extends State<TrueView> {
                           const Spacer(),
                           Text(_trueViews[index][1].category, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
-                          Text("${_trueViews[index][1].price.toStringAsFixed(2).replaceAll(".", ",")} TND", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                          Text("${_trueViews[index][1].price.toStringAsFixed(2).replaceAll(".", ",")} د.ت", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 10),
                           Row(
                             children: <Widget>[

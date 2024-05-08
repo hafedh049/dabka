@@ -14,44 +14,49 @@ class _DDrawerState extends State<DDrawer> {
   final List<Map<String, dynamic>> _tiles = <Map<String, dynamic>>[
     <String, dynamic>{
       "icon": FontAwesome.house_chimney_solid,
-      "tile": "Home",
+      "tile": "الرئيسية",
       "page": const SizedBox(),
     },
     <String, dynamic>{
       "icon": Bootstrap.grid,
-      "tile": "Categories",
+      "tile": "الفئات",
       "page": const SizedBox(),
     },
     <String, dynamic>{
       "icon": FontAwesome.database_solid,
-      "tile": "Installments",
+      "tile": "الأقساط",
       "page": const SizedBox(),
     },
     <String, dynamic>{"tile": "DIVIDER"},
     <String, dynamic>{
       "icon": FontAwesome.user_tag_solid,
-      "tile": "Profile",
+      "tile": "الحساب التعريفي",
+      "page": const SizedBox(),
+    },
+    <String, dynamic>{
+      "icon": FontAwesome.user_tag_solid,
+      "tile": "الإعدادات",
       "page": const SizedBox(),
     },
     <String, dynamic>{
       "icon": FontAwesome.heart,
-      "tile": "Favorites",
+      "tile": "المفضلات",
       "page": const SizedBox(),
     },
     <String, dynamic>{
       "icon": FontAwesome.user_plus_solid,
-      "tile": "Followers",
+      "tile": "المتابعون",
       "page": const SizedBox(),
     },
     <String, dynamic>{"tile": "DIVIDER"},
     <String, dynamic>{
       "icon": FontAwesome.shop_solid,
-      "tile": "Become a Seller",
+      "tile": "اصبح بائعًا",
       "page": const SizedBox(),
     },
     <String, dynamic>{
       "icon": Bootstrap.hexagon_half,
-      "tile": "About us",
+      "tile": "معلومات عنا",
       "page": const SizedBox(),
     },
   ];
@@ -70,8 +75,8 @@ class _DDrawerState extends State<DDrawer> {
                 elevation: 6,
                 shadowColor: dark,
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Image.asset("assets/icons/lock.png", width: 60, height: 60),
+                  padding: const EdgeInsets.all(12),
+                  child: Image.asset("assets/images/logo.png", width: 60, height: 60),
                 ),
               ),
               const SizedBox(height: 20),

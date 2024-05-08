@@ -23,7 +23,7 @@ class _HomeRecommendedState extends State<HomeRecommended> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Recommended for you", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+              Text("موصى به لك", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               CarouselSlider.builder(
                 itemCount: widget.recommended.length,

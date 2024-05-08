@@ -30,13 +30,9 @@ class _OnboardingState extends State<Onboarding> {
   int _currentIndex = 0;
 
   final List<Image> _images = <Image>[
-    /*Image.asset("assets/images/welcome.png"),
-    Image.asset("assets/images/select_language.png"),
-    Image.asset("assets/images/what_is_your_gender.png"),*/
-
-    Image.asset("assets/images/nh.jpg"),
-    Image.asset("assets/images/nh.jpg"),
-    Image.asset("assets/images/nh.jpg"),
+    Image.asset("assets/images/welcome.png"),
+    Image.asset("assets/images/language.png"),
+    Image.asset("assets/images/gender.png"),
   ];
 
   @override
@@ -73,7 +69,7 @@ class _OnboardingState extends State<Onboarding> {
                                 elevation: MaterialStatePropertyAll<double>(2),
                                 padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(2)),
                               ),
-                              child: Text("Skip", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.bold)),
+                              child: Text("تخطى", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),
