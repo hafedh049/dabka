@@ -1,5 +1,6 @@
 import 'package:dabka/views/auth/sign_in.dart';
 import 'package:dabka/views/drawer/drawer.dart';
+import 'package:dabka/views/holder/chats.dart';
 import 'package:dabka/views/holder/home.dart';
 import 'package:dabka/views/holder/true_view.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _HolderState extends State<Holder> {
     <String, dynamic>{
       "title": "المحادثات",
       "icon": FontAwesome.message,
-      "page": const SizedBox(),
+      "page": const Chats(),
     },
     <String, dynamic>{
       "title": "العروض",
@@ -68,10 +69,7 @@ class _HolderState extends State<Holder> {
         centerTitle: true,
         backgroundColor: white,
         title: Text(appTitle, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
-        leading: IconButton(
-          onPressed: () => _drawerKey.currentState!.openDrawer(),
-          icon: const Icon(FontAwesome.bars_solid, size: 20, color: purple),
-        ),
+        leading: IconButton(onPressed: () => _drawerKey.currentState!.openDrawer(), icon: const Icon(FontAwesome.bars_solid, size: 20, color: purple)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -101,11 +99,7 @@ class _HolderState extends State<Holder> {
                           hoverColor: transparent,
                           splashColor: transparent,
                           highlightColor: transparent,
-                          onTap: () => e["page"] is Callback
-                              ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => e["page"]()))
-                              : _pageController.jumpToPage(
-                                  _pages.indexOf(e),
-                                ),
+                          onTap: () => e["page"] is Callback ? Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => e["page"]())) : _pageController.jumpToPage(_pages.indexOf(e)),
                           child: AnimatedContainer(
                             duration: 300.ms,
                             padding: EdgeInsets.symmetric(horizontal: _currentPage == _pages.indexOf(e) ? 10 : 0),
@@ -123,6 +117,10 @@ class _HolderState extends State<Holder> {
                                   ),
                                   child: Text(e["title"]),
                                 ),
+                                if (_currentPage == _pages.indexOf(e)) ...<Widget>[
+                                  const SizedBox(height: 5),
+                                  Container(color: purple, height: 2, width: 10),
+                                ],
                                 const SizedBox(height: 5),
                               ],
                             ),

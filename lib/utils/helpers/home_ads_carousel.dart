@@ -63,11 +63,14 @@ class _HomeAdsCarouselState extends State<HomeAdsCarousel> {
                       scrollDirection: Axis.horizontal,
                       controller: _imagesController,
                       itemCount: widget.images.length,
-                      itemBuilder: (BuildContext context, int index) => Image.asset(
-                        widget.images[index],
-                        width: MediaQuery.sizeOf(context).width - 2 * 16,
-                        height: 110,
-                        fit: BoxFit.cover,
+                      itemBuilder: (BuildContext context, int index) => ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.asset(
+                          widget.images[index],
+                          width: MediaQuery.sizeOf(context).width - 2 * 16,
+                          height: 110,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),

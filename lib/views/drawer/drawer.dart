@@ -1,4 +1,7 @@
 import 'package:dabka/utils/shared.dart';
+import 'package:dabka/views/drawer/about_us/about_us.dart';
+import 'package:dabka/views/drawer/become_seller.dart';
+import 'package:dabka/views/drawer/installment.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -25,7 +28,7 @@ class _DDrawerState extends State<DDrawer> {
     <String, dynamic>{
       "icon": FontAwesome.database_solid,
       "tile": "الأقساط",
-      "page": const SizedBox(),
+      "page": const Installment(),
     },
     <String, dynamic>{"tile": "DIVIDER"},
     <String, dynamic>{
@@ -52,12 +55,12 @@ class _DDrawerState extends State<DDrawer> {
     <String, dynamic>{
       "icon": FontAwesome.shop_solid,
       "tile": "اصبح بائعًا",
-      "page": const SizedBox(),
+      "page": const BecomeSeller(),
     },
     <String, dynamic>{
       "icon": Bootstrap.hexagon_half,
       "tile": "معلومات عنا",
-      "page": const SizedBox(),
+      "page": const AboutUs(),
     },
   ];
   @override
@@ -87,10 +90,7 @@ class _DDrawerState extends State<DDrawer> {
                         splashColor: transparent,
                         highlightColor: transparent,
                         hoverColor: transparent,
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (BuildContext context) => Scaffold(body: Padding(padding: const EdgeInsets.all(16), child: tile["page"]))),
-                        ),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => tile["page"])),
                         child: Row(
                           children: <Widget>[
                             Icon(tile["icon"], size: 20, color: dark.withOpacity(.5)),
