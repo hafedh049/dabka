@@ -1,5 +1,5 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:dabka/models/category_model.dart';
+import 'package:dabka/utils/helpers/category_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';

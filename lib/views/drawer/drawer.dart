@@ -1,7 +1,6 @@
 import 'package:dabka/utils/shared.dart';
 import 'package:dabka/views/drawer/about_us/about_us.dart';
 import 'package:dabka/views/drawer/become_seller.dart';
-import 'package:dabka/views/drawer/installment.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -25,11 +24,6 @@ class _DDrawerState extends State<DDrawer> {
       "tile": "الفئات",
       "page": const SizedBox(),
     },
-    <String, dynamic>{
-      "icon": FontAwesome.database_solid,
-      "tile": "الأقساط",
-      "page": const Installment(),
-    },
     <String, dynamic>{"tile": "DIVIDER"},
     <String, dynamic>{
       "icon": FontAwesome.user_tag_solid,
@@ -44,11 +38,6 @@ class _DDrawerState extends State<DDrawer> {
     <String, dynamic>{
       "icon": FontAwesome.heart,
       "tile": "المفضلات",
-      "page": const SizedBox(),
-    },
-    <String, dynamic>{
-      "icon": FontAwesome.user_plus_solid,
-      "tile": "المتابعون",
       "page": const SizedBox(),
     },
     <String, dynamic>{"tile": "DIVIDER"},

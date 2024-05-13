@@ -1,12 +1,27 @@
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
+class CategoryModel {
+  final String categoryID;
+  final String categoryName;
+  final String categoryUrl;
 
-class Category with CustomDropdownListFilter {
-  final String name;
-  const Category(this.name);
+  CategoryModel({
+    required this.categoryID,
+    required this.categoryName,
+    required this.categoryUrl,
+  });
 
-  @override
-  String toString() => name;
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      categoryID: json['categoryID'],
+      categoryName: json['categoryName'],
+      categoryUrl: json['categoryUrl'],
+    );
+  }
 
-  @override
-  bool filter(String query) => name.toLowerCase().contains(query.toLowerCase());
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'categoryID': categoryID,
+      'categoryName': categoryName,
+      'categoryUrl': categoryUrl,
+    };
+  }
 }

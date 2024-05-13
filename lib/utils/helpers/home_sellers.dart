@@ -15,7 +15,7 @@ class HomeSellers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("البائعين", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Align(alignment: Alignment.centerRight, child: Text("البائعين", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
         const SizedBox(height: 10),
         sellers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))

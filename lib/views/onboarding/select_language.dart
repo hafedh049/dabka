@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/language_model.dart';
+import '../../utils/helpers/language_filter.dart';
 import '../../utils/shared.dart';
 
 class SelectLanguage extends StatefulWidget {

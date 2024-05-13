@@ -25,20 +25,22 @@ class _ChatsState extends State<Chats> {
           shadowColor: dark,
           elevation: 6,
           child: Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(8),
             child: Row(
               children: <Widget>[
                 Card(
                   shadowColor: dark,
                   elevation: 4,
                   child: Container(
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: white,
-                      image: DecorationImage(image: AssetImage("assets/images/logo.png"), fit: BoxFit.contain),
+                      //image: DecorationImage(image: AssetImage("assets/images/logo.png"), fit: BoxFit.contain),
                     ),
                     width: 50,
                     height: 50,
+                    child: Image.asset("assets/images/logo.png"),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -56,7 +58,7 @@ class _ChatsState extends State<Chats> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Card(shadowColor: dark, elevation: 4, child: Image.asset("assets/images/empty_chat.png")),
+                    Image.asset("assets/images/empty_chat.png", color: purple),
                     const SizedBox(height: 20),
                     Text(
                       "Please be aware that we will do as much as we can to help you and tha we care for your experience with us feel free to contact us and thank you.",

@@ -15,7 +15,7 @@ class InstallmentOffers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("عروض التقسيط", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Align(alignment: Alignment.centerRight, child: Text("عروض التقسيط", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
         const SizedBox(height: 10),
         ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 80)),
         const SizedBox(height: 10),

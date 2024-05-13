@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -18,7 +19,7 @@ class _CategoriesListState extends State<CategoriesList> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("الاقسام", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Align(alignment: Alignment.centerRight, child: Text("الاقسام", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
         const SizedBox(height: 10),
         widget.categories.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
@@ -33,8 +34,8 @@ class _CategoriesListState extends State<CategoriesList> {
                     for (final Map<String, dynamic> category in widget.categories)
                       Card(
                         child: Container(
-                          height: 100,
-                          width: 60,
+                          height: 90,
+                          width: 70,
                           padding: const EdgeInsets.all(12),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +61,7 @@ class _CategoriesListState extends State<CategoriesList> {
                             ],
                           ),
                         ),
-                      ),
+                      ).animate().fadeIn(delay: (widget.categories.indexOf(category) * 120).ms),
                   ],
                 ),
               ),
