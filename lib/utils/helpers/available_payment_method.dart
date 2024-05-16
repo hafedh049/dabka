@@ -18,15 +18,16 @@ class _AvailablePaymentMethodState extends State<AvailablePaymentMethod> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const SizedBox(height: 10),
           Text("Available payment methods", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           Card(
             shadowColor: dark,
             elevation: 4,
             child: Container(
+              width: MediaQuery.sizeOf(context).width,
               padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,6 @@ class _AvailablePaymentMethodState extends State<AvailablePaymentMethod> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
         ],
       ),
     );

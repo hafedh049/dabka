@@ -1,5 +1,6 @@
 class ProductModel {
   final String categoryID;
+  final String categoryName;
   final String supplierID;
   final String productID;
   final String productName;
@@ -12,6 +13,7 @@ class ProductModel {
   final List<String> productShorts;
 
   ProductModel({
+    required this.categoryName,
     required this.categoryID,
     required this.supplierID,
     required this.productID,
@@ -38,12 +40,14 @@ class ProductModel {
       productRating: json['productRating'],
       productImages: List<String>.from(json['productImages'] ?? []),
       productShorts: List<String>.from(json['productShorts'] ?? []),
+      categoryName: json['categoryName'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'categoryID': categoryID,
+      'categoryName': categoryName,
       'supplierID': supplierID,
       'productID': productID,
       'productName': productName,

@@ -19,6 +19,7 @@ class _ProductReviewState extends State<ProductReview> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(height: 10),
@@ -83,7 +84,6 @@ class _ProductReviewState extends State<ProductReview> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
         ],
       ),
     );

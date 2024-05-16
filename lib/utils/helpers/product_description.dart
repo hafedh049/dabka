@@ -17,9 +17,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const SizedBox(height: 10),
           Text("Description", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           Card(
@@ -27,10 +27,10 @@ class _ProductDescriptionState extends State<ProductDescription> {
             elevation: 4,
             child: Container(
               padding: const EdgeInsets.all(8),
-              child: Text(widget.product.productDescription, style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.w500)),
+              width: MediaQuery.sizeOf(context).width,
+              child: Text(widget.product.productDescription, style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 8, fontWeight: FontWeight.w500)),
             ),
           ),
-          const SizedBox(height: 10),
         ],
       ),
     );
