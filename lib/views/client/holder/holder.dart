@@ -1,15 +1,15 @@
 import 'package:dabka/views/auth/sign_in.dart';
 import 'package:dabka/views/drawer/drawer.dart';
-import 'package:dabka/views/holder/chats.dart';
-import 'package:dabka/views/holder/home.dart';
-import 'package:dabka/views/holder/true_view.dart';
+import 'package:dabka/views/client/holder/chats.dart';
+import 'package:dabka/views/client/holder/home.dart';
+import 'package:dabka/views/client/holder/true_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../utils/shared.dart';
+import '../../../utils/shared.dart';
 
 class Holder extends StatefulWidget {
   const Holder({super.key});

@@ -4,7 +4,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../models/chat_head_model.dart';
+import '../../../models/chat_head_model.dart';
 
 class Chats extends StatefulWidget {
   const Chats({super.key});
@@ -33,11 +33,7 @@ class _ChatsState extends State<Chats> {
                   elevation: 4,
                   child: Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: white,
-                      //image: DecorationImage(image: AssetImage("assets/images/logo.png"), fit: BoxFit.contain),
-                    ),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
                     width: 50,
                     height: 50,
                     child: Image.asset("assets/images/logo.png"),

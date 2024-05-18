@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/shared.dart';
-import '../holder/holder.dart';
+import '../client/holder/holder.dart';
 import 'select_language.dart';
 import 'welcome.dart';
 import 'what_is_your_gender.dart';

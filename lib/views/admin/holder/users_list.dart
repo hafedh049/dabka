@@ -4,18 +4,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../utils/helpers/categories_list.dart';
-import '../../utils/helpers/error.dart';
-import '../../utils/helpers/exclusive_offers.dart';
-import '../../utils/helpers/home_ads_carousel.dart';
-import '../../utils/helpers/home_dresses.dart';
-import '../../utils/helpers/home_filter.dart';
-import '../../utils/helpers/home_makeup_artists.dart';
-import '../../utils/helpers/home_photographers.dart';
-import '../../utils/helpers/home_recommended.dart';
-import '../../utils/helpers/home_sellers.dart';
-import '../../utils/helpers/installment_offers.dart';
-import '../../utils/helpers/wait.dart';
+import '../../../utils/helpers/categories_list.dart';
+import '../../../utils/helpers/error.dart';
+import '../../../utils/helpers/exclusive_offers.dart';
+import '../../../utils/helpers/home_ads_carousel.dart';
+import '../../../utils/helpers/home_dresses.dart';
+import '../../../utils/helpers/home_filter.dart';
+import '../../../utils/helpers/home_makeup_artists.dart';
+import '../../../utils/helpers/home_photographers.dart';
+import '../../../utils/helpers/home_recommended.dart';
+import '../../../utils/helpers/home_sellers.dart';
+import '../../../utils/helpers/installment_offers.dart';
+import '../../../utils/helpers/wait.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

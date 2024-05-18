@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/shared.dart';
-import '../holder/holder.dart';
+import '../client/holder/holder.dart';
 
 class WhatIsYourGender extends StatefulWidget {
   const WhatIsYourGender({super.key});
