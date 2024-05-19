@@ -25,7 +25,7 @@ class Main extends StatelessWidget {
         future: init(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            return settingsBox!.get("first_time") ? const Onboarding() : const Holder();
+            return !settingsBox!.get("first_time") ? const Onboarding() : const Holder();
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Wait();
           } else {

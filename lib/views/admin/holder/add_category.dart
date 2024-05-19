@@ -1,10 +1,17 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dabka/models/category_model.dart';
 import 'package:dabka/utils/shared.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../utils/callbacks.dart';
 
 class AddCategory extends StatefulWidget {
   const AddCategory({super.key});
@@ -16,7 +23,11 @@ class AddCategory extends StatefulWidget {
 class _AddCategoryState extends State<AddCategory> {
   final TextEditingController _categoryNameController = TextEditingController();
 
+  final GlobalKey<State<StatefulWidget>> _categoryImageKey = GlobalKey<State<StatefulWidget>>();
+
   File? _image;
+
+  bool _ignoreStupidity = false;
 
   @override
   void dispose() {
@@ -40,19 +51,40 @@ class _AddCategoryState extends State<AddCategory> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              GestureDetector(
-                onTap: () async {},
-                child: AnimatedContainer(
-                  width: 80,
-                  height: 80,
-                  duration: 300.ms,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: white,
-                    border: Border.all(color: grey.withOpacity(.3), width: 2),
-                    image: _image == null ? DecorationImage(image: AssetImage("assets/images/nobody.png"), fit: BoxFit.cover) : DecorationImage(image: FileImage(_image!), fit: BoxFit.cover),
-                  ),
-                ),
+              StatefulBuilder(
+                key: _categoryImageKey,
+                builder: (BuildContext context, void Function(void Function()) _) {
+                  return GestureDetector(
+                    onTap: () async {
+                      final XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
+                      if (file != null) {
+                        final CroppedFile? finalFile = await ImageCropper().cropImage(sourcePath: file.path);
+                        if (finalFile != null) {
+                          _(() => _image = File(finalFile.path));
+                        }
+                      }
+                    },
+                    child: AnimatedContainer(
+                      width: 80,
+                      height: 80,
+                      duration: 300.ms,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: white,
+                        border: Border.all(color: grey.withOpacity(.3), width: 2),
+                        image: _image == null
+                            ? DecorationImage(
+                                image: AssetImage("assets/images/cat.png"),
+                                fit: BoxFit.cover,
+                              )
+                            : DecorationImage(
+                                image: FileImage(_image!),
+                                fit: BoxFit.cover,
+                              ),
+                      ),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 10),
               Card(
@@ -67,7 +99,7 @@ class _AddCategoryState extends State<AddCategory> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Text("Username", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                      Text("Category name", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                       const SizedBox(height: 10),
                       SizedBox(
                         height: 40,
@@ -81,9 +113,9 @@ class _AddCategoryState extends State<AddCategory> {
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                             enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                             focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                            hintText: "Username",
+                            hintText: "Category",
                             hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                            labelText: "Enter username",
+                            labelText: "Enter Category name",
                             labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                             prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.user, color: grey, size: 15)),
                           ),
@@ -95,16 +127,65 @@ class _AddCategoryState extends State<AddCategory> {
               ),
               const SizedBox(height: 20),
               Center(
-                child: InkWell(
-                  hoverColor: transparent,
-                  splashColor: transparent,
-                  highlightColor: transparent,
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                    child: Text("Create User", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
-                  ),
+                child: StatefulBuilder(
+                  builder: (BuildContext context, void Function(void Function()) _) {
+                    return IgnorePointer(
+                      ignoring: _ignoreStupidity,
+                      child: InkWell(
+                        hoverColor: transparent,
+                        splashColor: transparent,
+                        highlightColor: transparent,
+                        onTap: () async {
+                          if (_categoryNameController.text.trim().isEmpty) {
+                            showToast(context, "Category name is required", color: red);
+                          } else if (_image == null) {
+                            showToast(context, "Pick an image for the category", color: red);
+                          } else {
+                            try {
+                              _(() => _ignoreStupidity = true);
+                              showToast(context, "Please wait...");
+
+                              final DocumentReference<Map<String, dynamic>> docRef = await FirebaseFirestore.instance.collection("users").add(
+                                    CategoryModel(
+                                      categoryID: '',
+                                      categoryName: _categoryNameController.text,
+                                      categoryUrl: '',
+                                    ).toJson(),
+                                  );
+
+                              String path = "";
+
+                              if (_image != null) {
+                                final TaskSnapshot task = await FirebaseStorage.instance.ref().child("/categories/${docRef.id}.png").putFile(_image!);
+                                path = await task.ref.getDownloadURL();
+                              }
+
+                              await docRef.update(
+                                <String, dynamic>{
+                                  'categoryID': docRef.id.trim(),
+                                  'categoryUrl': path,
+                                },
+                              );
+
+                              _categoryNameController.clear();
+                              _categoryImageKey.currentState!.setState(() => _image = null);
+
+                              showToast(context, "Category Created Successfully");
+                              _(() => _ignoreStupidity = false);
+                            } catch (e) {
+                              showToast(context, e.toString(), color: red);
+                              _(() => _ignoreStupidity = false);
+                            }
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
+                          child: Text("Add Category", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],

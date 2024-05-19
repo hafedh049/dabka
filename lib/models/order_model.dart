@@ -23,13 +23,13 @@ class OrderModel {
       ownerID: json['ownerID'],
       timestamp: json['timestamp'].toDate(),
       ownerName: json['ownerName'],
-      products: (json['products'] as List).map((dynamic product) => ProductModel.fromJson(product)).toList().cast(),
+      products: (json['products'] as List).map((dynamic product) => ProductModel.fromJson(product)).toList().cast<ProductModel>(),
       state: json['state'] ?? "IN PROGRESS",
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return <String, dynamic>{
       'orderID': orderID,
       'ownerID': ownerID,
       'timestamp': timestamp.toIso8601String(),

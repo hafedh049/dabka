@@ -1,20 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dabka/utils/helpers/error.dart';
+import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
 import 'package:dabka/views/admin/holder/add_category.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../models/category_model.dart';
 
 class CategoriesList extends StatefulWidget {
-  const CategoriesList({super.key, required this.categories});
-  final List<CategoryModel> categories;
+  const CategoriesList({super.key});
   @override
   State<CategoriesList> createState() => _CategoriesListState();
 }
 
 class _CategoriesListState extends State<CategoriesList> {
   final TextEditingController _searchController = TextEditingController();
+
+  Future<List<CategoryModel>> _load() async {
+    try {
+      final QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance.collection("categories").get();
+      return query.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
+    } catch (e) {
+      return Future.error(e);
+    }
+  }
 
   @override
   void dispose() {
@@ -24,13 +36,14 @@ class _CategoriesListState extends State<CategoriesList> {
 
   @override
   Widget build(BuildContext context) {
+    List<CategoryModel> _categories = <CategoryModel>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text("Users List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+            Text("Categories List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
             const Spacer(),
             IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddCategory())),
@@ -80,104 +93,120 @@ class _CategoriesListState extends State<CategoriesList> {
         ),
         const SizedBox(height: 10),
         Expanded(
-          child: FutureBuilder<bool>(
-            future: null,
-            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-              return ListView.separated(
-                itemBuilder: (BuildContext context, int index) => GestureDetector(
-                  onLongPress: () {
-                    showBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) => Container(
-                        color: white,
+          child: FutureBuilder<List<CategoryModel>>(
+            future: _load(),
+            builder: (BuildContext context, AsyncSnapshot<List<CategoryModel>> snapshot) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                _categories = snapshot.data!;
+                return ListView.separated(
+                  itemBuilder: (BuildContext context, int index) => GestureDetector(
+                    onLongPress: () {
+                      showBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                          color: white,
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text("Are you sure ?", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: <Widget>[
+                                  const Spacer(),
+                                  TextButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
+                                    child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      shadowColor: dark,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                      color: white,
+                      child: Container(
                         padding: const EdgeInsets.all(8),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text("Are you sure ?", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
-                            const SizedBox(height: 20),
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: _categories[index].categoryUrl.isEmpty
+                                    ? DecorationImage(
+                                        image: AssetImage("assets/images/nobody.png"),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : DecorationImage(
+                                        image: NetworkImage(_categories[index].categoryUrl),
+                                        fit: BoxFit.cover,
+                                      ),
+                                border: Border.all(width: 2, color: pink),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
                             Row(
                               children: <Widget>[
-                                const Spacer(),
-                                TextButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                  child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                Container(
+                                  padding: const EdgeInsets.all(2),
+                                  color: purple,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                  child: Text("CATEGORY ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
                                 ),
                                 const SizedBox(width: 10),
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
-                                  child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                Flexible(child: Text(_categories[index].categoryID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  padding: const EdgeInsets.all(2),
+                                  color: purple,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                  child: Text("CATEGORY NAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
                                 ),
+                                const SizedBox(width: 10),
+                                Flexible(child: Text(_categories[index].categoryName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
                               ],
                             ),
                           ],
                         ),
                       ),
-                    );
-                  },
-                  child: Card(
-                    shadowColor: dark,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                    color: white,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: widget.categories[index].categoryUrl.isEmpty
-                                  ? DecorationImage(
-                                      image: AssetImage("assets/images/nobody.png"),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : DecorationImage(
-                                      image: NetworkImage(widget.categories[index].categoryUrl),
-                                      fit: BoxFit.cover,
-                                    ),
-                              border: Border.all(width: 2, color: pink),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.all(2),
-                                color: purple,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                child: Text("CATEGORY ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                              ),
-                              const SizedBox(width: 10),
-                              Flexible(child: Text(widget.categories[index].categoryID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.all(2),
-                                color: purple,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                child: Text("CATEGORY NAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                              ),
-                              const SizedBox(width: 10),
-                              Flexible(child: Text(widget.categories[index].categoryName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
-                            ],
-                          ),
-                        ],
-                      ),
                     ),
                   ),
-                ),
-                separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
-                itemCount: widget.categories.length,
-              );
+                  separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
+                  itemCount: _categories.length,
+                );
+              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
+                      Text("No Categories Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Wait();
+              } else {
+                return ErrorScreen(error: snapshot.error.toString());
+              }
             },
           ),
         ),

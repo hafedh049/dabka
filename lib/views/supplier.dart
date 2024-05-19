@@ -1,4 +1,4 @@
-import 'package:dabka/models/user_account_model.dart';
+import 'package:dabka/models/user_model.dart';
 import 'package:dabka/utils/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

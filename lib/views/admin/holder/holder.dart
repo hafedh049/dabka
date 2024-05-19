@@ -7,10 +7,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../../models/category_model.dart';
-import '../../../models/chat_head_model.dart';
-import '../../../models/order_model.dart';
-import '../../../models/user_account_model.dart';
 import '../../../utils/shared.dart';
 import 'users_list.dart';
 
@@ -27,45 +23,30 @@ class _HolderState extends State<Holder> {
 
   final PageController _pageController = PageController();
 
-  List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[
+    <String, dynamic>{
+      "title": "Users",
+      "icon": FontAwesome.users_between_lines_solid,
+      "page": UsersList(),
+    },
+    <String, dynamic>{
+      "title": "Categories",
+      "icon": FontAwesome.square_solid,
+      "page": CategoriesList(),
+    },
+    <String, dynamic>{
+      "title": "Orders",
+      "icon": FontAwesome.first_order_brand,
+      "page": OrdersList(),
+    },
+    <String, dynamic>{
+      "title": "Chats",
+      "icon": FontAwesome.heart,
+      "page": ChatsList(),
+    },
+  ];
 
   int _currentPage = 0;
-
-  List<UserModel> _users = <UserModel>[];
-  List<ChatHead> _chats = <ChatHead>[];
-  List<CategoryModel> _categories = <CategoryModel>[];
-  List<OrderModel> _orders = <OrderModel>[];
-
-  Future<bool> _load() async {
-    try {
-      _pages = <Map<String, dynamic>>[
-        <String, dynamic>{
-          "title": "Users",
-          "icon": FontAwesome.users_between_lines_solid,
-          "page": UsersList(users: _users),
-        },
-        <String, dynamic>{
-          "title": "Categories",
-          "icon": FontAwesome.square_solid,
-          "page": CategoriesList(categories: _categories),
-        },
-        <String, dynamic>{
-          "title": "Orders",
-          "icon": FontAwesome.first_order_brand,
-          "page": OrdersList(orders: _orders),
-        },
-        <String, dynamic>{
-          "title": "Chats",
-          "icon": FontAwesome.heart,
-          "page": ChatsList(chats: _chats),
-        },
-      ];
-      return true;
-    } catch (_) {
-      debugPrint(_.toString());
-      return false;
-    }
-  }
 
   @override
   void dispose() {
@@ -85,25 +66,20 @@ class _HolderState extends State<Holder> {
         leading: IconButton(onPressed: () => _drawerKey.currentState!.openDrawer(), icon: const Icon(FontAwesome.bars_solid, size: 20, color: purple)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: FutureBuilder<bool>(
-          future: _load(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            return PageView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              onPageChanged: (int page) => _menuKey.currentState!.setState(() => _currentPage = page),
-              itemBuilder: (BuildContext context, int index) => _pages[index]["page"],
-              itemCount: _pages.length,
-            );
-          },
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: PageView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          onPageChanged: (int page) => _menuKey.currentState!.setState(() => _currentPage = page),
+          itemBuilder: (BuildContext context, int index) => _pages[index]["page"],
+          itemCount: _pages.length,
         ),
       ),
       bottomNavigationBar: StatefulBuilder(
         key: _menuKey,
         builder: (BuildContext context, void Function(void Function()) _) {
           return Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             child: Card(
               elevation: 6,
               shadowColor: dark,

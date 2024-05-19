@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +20,15 @@ Future<bool> init() async {
       },
     );
   }
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      apiKey: 'AIzaSyDyv0OGE2Wx8DjmclF2IL346kPFyTHFzvs',
+      appId: '1:96485031528:android:85e4ffecda18ab498945dd',
+      messagingSenderId: '96485031528	',
+      projectId: 'dabka-5aec6',
+      storageBucket: 'dabka-5aec6.appspot.com',
+    ),
+  );
   return true;
 }
 
