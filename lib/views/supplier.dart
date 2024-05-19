@@ -54,28 +54,6 @@ class _SupplierState extends State<Supplier> {
                 const SizedBox(height: 10),
                 Text(widget.supplier.categoryName.toUpperCase(), style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 10, fontWeight: FontWeight.w500)),
                 const SizedBox(height: 10),
-                Card(
-                  borderOnForeground: true,
-                  color: white,
-                  elevation: 6,
-                  shadowColor: dark,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(widget.supplier.userRating.toStringAsFixed(1), style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 10, fontWeight: FontWeight.w500)),
-                        const SizedBox(width: 5),
-                        for (int index = 0; index < widget.supplier.userRating.ceil(); index++) ...<Widget>[
-                          Icon(FontAwesome.star, size: 10, color: purple),
-                          if (index != widget.supplier.userRating.ceil() - 1) const SizedBox(width: 5),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,

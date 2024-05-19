@@ -2,11 +2,11 @@ import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
+import 'package:dabka/views/admin/holder/holder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
-import 'views/admin/holder/holder.dart';
 import 'views/onboarding/onboarding_holder.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class Main extends StatelessWidget {
         future: init(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            return !settingsBox!.get("first_time") ? const Onboarding() : const Holder();
+            return settingsBox!.get("first_time") ? const Onboarding() : const Holder();
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Wait();
           } else {

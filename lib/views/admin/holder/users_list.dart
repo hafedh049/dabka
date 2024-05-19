@@ -1,90 +1,234 @@
-import 'dart:async';
-import 'dart:convert';
-
+import 'package:dabka/models/user_account_model.dart';
+import 'package:dabka/utils/shared.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:icons_plus/icons_plus.dart';
 
-import '../../../utils/helpers/categories_list.dart';
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/exclusive_offers.dart';
-import '../../../utils/helpers/home_ads_carousel.dart';
-import '../../../utils/helpers/home_dresses.dart';
-import '../../../utils/helpers/home_filter.dart';
-import '../../../utils/helpers/home_makeup_artists.dart';
-import '../../../utils/helpers/home_photographers.dart';
-import '../../../utils/helpers/home_recommended.dart';
-import '../../../utils/helpers/home_sellers.dart';
-import '../../../utils/helpers/installment_offers.dart';
-import '../../../utils/helpers/wait.dart';
+import 'add_user.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
-
+class UsersList extends StatefulWidget {
+  const UsersList({super.key, required this.users});
+  final List<UserModel> users;
   @override
-  State<Home> createState() => _HomeState();
+  State<UsersList> createState() => _UsersListState();
 }
 
-class _HomeState extends State<Home> {
-  List<String> _images = <String>[];
-  List<Map<String, dynamic>> _categories = <Map<String, dynamic>>[];
-  List<Map<String, dynamic>> _exclusiveOffers = <Map<String, dynamic>>[];
-  List<Map<String, dynamic>> _installmentOffers = <Map<String, dynamic>>[];
-  List<Map<String, dynamic>> _dresses = <Map<String, dynamic>>[];
-  List<Map<String, dynamic>> _makeupArtists = <Map<String, dynamic>>[];
-  List<Map<String, dynamic>> _photographers = <Map<String, dynamic>>[];
-  List<Map<String, dynamic>> _sellers = <Map<String, dynamic>>[];
-  List<Map<String, dynamic>> _recommended = <Map<String, dynamic>>[];
+class _UsersListState extends State<UsersList> {
+  final TextEditingController _searchController = TextEditingController();
 
-  List<Widget> _components = <Widget>[];
-
-  Future<bool> _load() async {
-    try {
-      _images = jsonDecode(await rootBundle.loadString("assets/jsons/ads.json")).cast<String>();
-      _categories = jsonDecode(await rootBundle.loadString("assets/jsons/categories.json")).cast<Map<String, dynamic>>();
-      _exclusiveOffers = jsonDecode(await rootBundle.loadString("assets/jsons/exclusive_offers.json")).cast<Map<String, dynamic>>();
-      _installmentOffers = jsonDecode(await rootBundle.loadString("assets/jsons/installment_offers.json")).cast<Map<String, dynamic>>();
-      _dresses = jsonDecode(await rootBundle.loadString("assets/jsons/dresses.json")).cast<Map<String, dynamic>>();
-      _makeupArtists = jsonDecode(await rootBundle.loadString("assets/jsons/makeup_artists.json")).cast<Map<String, dynamic>>();
-      _photographers = jsonDecode(await rootBundle.loadString("assets/jsons/photographers.json")).cast<Map<String, dynamic>>();
-      _sellers = jsonDecode(await rootBundle.loadString("assets/jsons/sellers.json")).cast<Map<String, dynamic>>();
-      _recommended = jsonDecode(await rootBundle.loadString("assets/jsons/recommended.json")).cast<Map<String, dynamic>>();
-      _components = <Widget>[
-        const HomeFilter(),
-        HomeAdsCarousel(images: _images),
-        CategoriesList(categories: _categories),
-        ExclusiveOffers(exclusiveOffers: _exclusiveOffers),
-        InstallmentOffers(installmentOffers: _installmentOffers),
-        HomeDresses(dresses: _dresses),
-        HomeMakeUpArtists(makeupArtists: _makeupArtists),
-        HomePhotographers(photographers: _photographers),
-        HomeSellers(sellers: _sellers),
-        HomeRecommended(recommended: _recommended),
-      ];
-      return true;
-    } catch (_) {
-      debugPrint(_.toString());
-      return false;
-    }
+  @override
+  void dispose() {
+    _searchController.clear();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _load(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.hasData && snapshot.data!) {
-          return ListView.separated(
-            itemBuilder: (BuildContext context, int index) => _components[index],
-            itemCount: _components.length,
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
-            padding: EdgeInsets.zero,
-          );
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Wait();
-        } else {
-          return ErrorScreen(error: snapshot.error.toString());
-        }
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text("Users List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+            const Spacer(),
+            IconButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddUser())),
+              icon: Icon(FontAwesome.circle_plus_solid, color: purple, size: 15),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        GestureDetector(
+          onTap: () {},
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Card(
+              elevation: 6,
+              shadowColor: dark,
+              child: SizedBox(
+                height: 40,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(5)),
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Search",
+                            contentPadding: const EdgeInsets.all(16),
+                            hintStyle: GoogleFonts.itim(color: grey, fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                      child: const Icon(FontAwesome.searchengin_brand, color: white, size: 15),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: FutureBuilder<bool>(
+            future: null,
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              return ListView.separated(
+                itemBuilder: (BuildContext context, int index) => GestureDetector(
+                  onLongPress: () {
+                    showBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) => Container(
+                        color: white,
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text("Are you sure ?", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: <Widget>[
+                                const Spacer(),
+                                TextButton(
+                                  onPressed: () {},
+                                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                  child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                ),
+                                const SizedBox(width: 10),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
+                                  child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    shadowColor: dark,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                    color: white,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: widget.users[index].userAvatar.isEmpty
+                                  ? DecorationImage(
+                                      image: AssetImage("assets/images/nobody.png"),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : DecorationImage(
+                                      image: NetworkImage(widget.users[index].userAvatar),
+                                      fit: BoxFit.cover,
+                                    ),
+                              border: Border.all(width: 2, color: pink),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                color: purple,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                child: Text("UID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                              ),
+                              const SizedBox(width: 10),
+                              Flexible(child: Text(widget.users[index].userID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                color: purple,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                child: Text("USERNAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                              ),
+                              const SizedBox(width: 10),
+                              Flexible(child: Text(widget.users[index].username, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                color: purple,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                child: Text("E-MAIL", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                              ),
+                              const SizedBox(width: 10),
+                              Flexible(child: Text(widget.users[index].email.isEmpty ? "NOT SET" : widget.users[index].email, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                color: purple,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                child: Text("PHONE NUMBER", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                              ),
+                              const SizedBox(width: 10),
+                              Flexible(child: Text(widget.users[index].phoneNumber, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.all(2),
+                                color: purple,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                child: Text("TYPE(S)", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: ListView.separated(
+                                  padding: EdgeInsets.zero,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (BuildContext context, int indexed) => Text(widget.users[index].userType[indexed].toUpperCase(), style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                  separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
+                                  itemCount: widget.users[index].userType.length,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
+                itemCount: widget.users.length,
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
