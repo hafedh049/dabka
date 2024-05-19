@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/order_model.dart';
 import 'package:dabka/models/product_model.dart';
+import 'package:dabka/utils/callbacks.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -130,6 +131,42 @@ class _OrdersListState extends State<OrdersList> {
                                   const Spacer(),
                                   TextButton(
                                     onPressed: () {},
+                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
+                                    child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    onTap: () {
+                      showBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                          color: white,
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text("Are you sure you want to confirm the order ? There is no turning back after this operation", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: <Widget>[
+                                  const Spacer(),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await FirebaseFirestore.instance.collection("orders").doc(snapshot.data!.docs[index].id).update({"state": "CONFIRMED"});
+                                      showToast(context, "Order confirmed successfully");
+                                    },
                                     style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                     child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                   ),
