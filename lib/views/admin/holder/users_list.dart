@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/user_model.dart';
+import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/utils/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,15 +23,6 @@ class _UsersListState extends State<UsersList> {
   List<UserModel> _users = <UserModel>[];
 
   final GlobalKey<State<StatefulWidget>> _searchKey = GlobalKey<State<StatefulWidget>>();
-
-  Future<List<UserModel>> _load() async {
-    try {
-      final QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance.collection("users").get();
-      return query.docs.map((e) => UserModel.fromJson(e.data())).toList();
-    } catch (e) {
-      return Future.error(e);
-    }
-  }
 
   @override
   void dispose() {
@@ -94,14 +86,14 @@ class _UsersListState extends State<UsersList> {
         ),
         const SizedBox(height: 10),
         Expanded(
-          child: FutureBuilder<List<UserModel>>(
-            future: _load(),
-            builder: (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance.collection("users").snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                 return StatefulBuilder(
                   key: _searchKey,
                   builder: (BuildContext context, void Function(void Function()) _) {
-                    _users = snapshot.data!.where((UserModel element) => element.username.toLowerCase().contains(_searchController.text.trim().toLowerCase())).toList();
+                    _users = snapshot.data!.docs.map((e) => UserModel.fromJson(e.data())).where((UserModel element) => element.username.toLowerCase().contains(_searchController.text.trim().toLowerCase())).toList();
                     return ListView.separated(
                       itemBuilder: (BuildContext context, int index) => GestureDetector(
                         onLongPress: () {
@@ -120,9 +112,13 @@ class _UsersListState extends State<UsersList> {
                                     children: <Widget>[
                                       const Spacer(),
                                       TextButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          await FirebaseFirestore.instance.collection("users").doc(snapshot.data!.docs[index].id).delete();
+                                          showToast(context, "User deleted successfully");
+                                          Navigator.pop(context);
+                                        },
                                         style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                        child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                        child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
                                       TextButton(
@@ -169,7 +165,7 @@ class _UsersListState extends State<UsersList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("UID", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                      child: Text("UID", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_users[index].userID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -181,7 +177,7 @@ class _UsersListState extends State<UsersList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("USERNAME", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                      child: Text("USERNAME", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_users[index].username, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -193,7 +189,7 @@ class _UsersListState extends State<UsersList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("E-MAIL", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                      child: Text("E-MAIL", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_users[index].email.isEmpty ? "NOT SET" : _users[index].email, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -205,7 +201,7 @@ class _UsersListState extends State<UsersList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PHONE NUMBER", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                      child: Text("PHONE NUMBER", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_users[index].phoneNumber, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -217,7 +213,7 @@ class _UsersListState extends State<UsersList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("TYPE(S)", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                      child: Text("TYPE(S)", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     for (final String type in _users[index].userType) ...<Widget>[
@@ -236,9 +232,11 @@ class _UsersListState extends State<UsersList> {
                     );
                   },
                 );
-              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+              } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                 return Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
                       Text("No Users Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),

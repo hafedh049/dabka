@@ -9,6 +9,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../models/category_model.dart';
+import '../../../utils/callbacks.dart';
 
 class CategoriesList extends StatefulWidget {
   const CategoriesList({super.key});
@@ -18,15 +19,6 @@ class CategoriesList extends StatefulWidget {
 
 class _CategoriesListState extends State<CategoriesList> {
   final TextEditingController _searchController = TextEditingController();
-
-  Future<List<CategoryModel>> _load() async {
-    try {
-      final QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance.collection("categories").get();
-      return query.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
-    } catch (e) {
-      return Future.error(e);
-    }
-  }
 
   @override
   void dispose() {
@@ -93,11 +85,11 @@ class _CategoriesListState extends State<CategoriesList> {
         ),
         const SizedBox(height: 10),
         Expanded(
-          child: FutureBuilder<List<CategoryModel>>(
-            future: _load(),
-            builder: (BuildContext context, AsyncSnapshot<List<CategoryModel>> snapshot) {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                _categories = snapshot.data!;
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance.collection("categories").snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                _categories = snapshot.data!.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
                 return ListView.separated(
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onLongPress: () {
@@ -116,9 +108,13 @@ class _CategoriesListState extends State<CategoriesList> {
                                 children: <Widget>[
                                   const Spacer(),
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      await FirebaseFirestore.instance.collection("categories").doc(snapshot.data!.docs[index].id).delete();
+                                      showToast(context, "User deleted successfully");
+                                      Navigator.pop(context);
+                                    },
                                     style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
                                   ),
                                   const SizedBox(width: 10),
                                   TextButton(
@@ -163,26 +159,24 @@ class _CategoriesListState extends State<CategoriesList> {
                             Row(
                               children: <Widget>[
                                 Container(
-                                  padding: const EdgeInsets.all(2),
-                                  color: purple,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                  child: Text("CATEGORY ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                  child: Text("CATEGORY ID", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                 ),
                                 const SizedBox(width: 10),
-                                Flexible(child: Text(_categories[index].categoryID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                Flexible(child: Text(_categories[index].categoryID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                               ],
                             ),
                             const SizedBox(height: 10),
                             Row(
                               children: <Widget>[
                                 Container(
-                                  padding: const EdgeInsets.all(2),
-                                  color: purple,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                  child: Text("CATEGORY NAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                  child: Text("CATEGORY NAME", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                 ),
                                 const SizedBox(width: 10),
-                                Flexible(child: Text(_categories[index].categoryName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                Flexible(child: Text(_categories[index].categoryName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                               ],
                             ),
                           ],
@@ -193,9 +187,11 @@ class _CategoriesListState extends State<CategoriesList> {
                   separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
                   itemCount: _categories.length,
                 );
-              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+              } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                 return Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
                       Text("No Categories Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),

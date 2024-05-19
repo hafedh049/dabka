@@ -145,7 +145,7 @@ class _AddCategoryState extends State<AddCategory> {
                               _(() => _ignoreStupidity = true);
                               showToast(context, "Please wait...");
 
-                              final DocumentReference<Map<String, dynamic>> docRef = await FirebaseFirestore.instance.collection("users").add(
+                              final DocumentReference<Map<String, dynamic>> docRef = await FirebaseFirestore.instance.collection("categories").add(
                                     CategoryModel(
                                       categoryID: '',
                                       categoryName: _categoryNameController.text,
