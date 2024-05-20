@@ -35,7 +35,7 @@ class _ChatListState extends State<ChatRoom> {
                 _chats = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => ChatHead.fromJson(e.data())).toList();
                 return ListView.separated(
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ChatRoom(chatHead: _chats[index]))),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(chatHead: _chats[index]))),
                     onLongPress: () {
                       showBottomSheet(
                         context: context,

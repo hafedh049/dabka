@@ -3,7 +3,7 @@ class MessageModel {
   final String message;
   final DateTime createdAt;
   final String senderId;
-  final String receiverId; // Add receiverId field
+  final String receiverId;
   final bool isMe;
   final String type;
 
@@ -12,7 +12,7 @@ class MessageModel {
     required this.message,
     required this.createdAt,
     required this.senderId,
-    required this.receiverId, // Include receiverId in constructor
+    required this.receiverId,
     required this.isMe,
     required this.type,
   });
@@ -23,7 +23,7 @@ class MessageModel {
       message: json['message'],
       createdAt: DateTime.parse(json['createdAt']),
       senderId: json['senderId'],
-      receiverId: json['receiverId'], // Parse receiverId from JSON
+      receiverId: json['receiverId'],
       isMe: json['isMe'],
       type: json['type'],
     );
@@ -35,7 +35,7 @@ class MessageModel {
       'message': message,
       'createdAt': createdAt.toIso8601String(),
       'senderId': senderId,
-      'receiverId': receiverId, // Include receiverId in JSON
+      'receiverId': receiverId,
       'isMe': isMe,
       'type': type,
     };
