@@ -2,12 +2,12 @@ import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
-import 'package:dabka/views/admin/holder/holder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import 'views/onboarding/onboarding_holder.dart';
+import 'views/supplier/holder/holder.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

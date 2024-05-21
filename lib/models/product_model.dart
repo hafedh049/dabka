@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 class ProductModel {
   final String categoryID;
   final String categoryName;
@@ -9,8 +12,8 @@ class ProductModel {
   final double productBuyPrice;
   final double productSellPrice;
   final double productRating;
-  final List<String> productImages;
-  final List<String> productShorts;
+  final List<MediaModel> productImages;
+  final List<MediaModel> productShorts;
 
   ProductModel({
     required this.categoryName,
@@ -30,17 +33,17 @@ class ProductModel {
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
       categoryID: json['categoryID'],
+      categoryName: json['categoryName'],
       supplierID: json['supplierID'],
       productID: json['productID'],
       productName: json['productName'],
       productType: json['productType'],
       productDescription: json['productDescription'],
-      productBuyPrice: json['productBuyPrice'],
-      productSellPrice: json['productSellPrice'],
-      productRating: json['productRating'],
-      productImages: List<String>.from(json['productImages'] ?? []),
-      productShorts: List<String>.from(json['productShorts'] ?? []),
-      categoryName: json['categoryName'],
+      productBuyPrice: (json['productBuyPrice'] as num).toDouble(),
+      productSellPrice: (json['productSellPrice'] as num).toDouble(),
+      productRating: (json['productRating'] as num).toDouble(),
+      productImages: (json['productImages'] as List<dynamic>).map((e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
+      productShorts: (json['productShorts'] as List<dynamic>).map((e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
     );
   }
 
@@ -56,8 +59,44 @@ class ProductModel {
       'productBuyPrice': productBuyPrice,
       'productSellPrice': productSellPrice,
       'productRating': productRating,
-      'productImages': productImages,
-      'productShorts': productShorts,
+      'productImages': productImages.map((e) => e.toJson()).toList(),
+      'productShorts': productShorts.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+class MediaModel {
+  final Uint8List bytes;
+  final String ext;
+  final String name;
+  final String path;
+  final String type;
+
+  MediaModel({
+    required this.bytes,
+    required this.ext,
+    required this.name,
+    required this.path,
+    required this.type,
+  });
+
+  factory MediaModel.fromJson(Map<String, dynamic> json) {
+    return MediaModel(
+      bytes: base64Decode(json['bytes']),
+      ext: json['ext'],
+      name: json['name'],
+      path: json['path'],
+      type: json['type'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'bytes': base64Encode(bytes),
+      'ext': ext,
+      'name': name,
+      'path': path,
+      'type': type,
     };
   }
 }

@@ -160,7 +160,7 @@ class _ProductState extends State<Product> {
                         borderRadius: BorderRadius.circular(15),
                         child: PageView.builder(
                           onPageChanged: (int image) => _imagesKey.currentState!.setState(() => _selectedPicture = image),
-                          itemBuilder: (BuildContext context, int index) => Image.network(widget.product.productImages[index], fit: BoxFit.cover),
+                          itemBuilder: (BuildContext context, int index) => Image.network(widget.product.productImages[index].path, fit: BoxFit.cover),
                           itemCount: widget.product.productImages.length,
                           scrollDirection: Axis.horizontal,
                         ),

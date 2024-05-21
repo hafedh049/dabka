@@ -35,7 +35,7 @@ class _ProvidedByState extends State<ProvidedBy> {
                     height: 100,
                     width: 100,
                     decoration: BoxDecoration(
-                      image: DecorationImage(image: NetworkImage(widget.product.productImages.first), fit: BoxFit.cover),
+                      image: DecorationImage(image: NetworkImage(widget.product.productImages.first.path), fit: BoxFit.cover),
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),

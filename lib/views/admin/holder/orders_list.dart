@@ -276,7 +276,7 @@ class _OrdersListState extends State<OrdersList> {
                                     Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(image: NetworkImage(product.value.productImages.first), fit: BoxFit.cover),
+                                        image: DecorationImage(image: NetworkImage(product.value.productImages.first.path), fit: BoxFit.cover),
                                       ),
                                     ),
                                     const SizedBox(width: 10),
