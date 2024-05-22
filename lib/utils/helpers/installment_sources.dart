@@ -11,7 +11,7 @@ final class InstallmentPeriodModel {
   final String twentyfourMonth;
   final String thirtysixMonth;
 
-  InstallmentPeriodModel({required this.methodPath, required this.sixMonth, required this.twelveMonth, required this.twentyfourMonth, required this.thirtysixMonth});
+  const InstallmentPeriodModel({required this.methodPath, required this.sixMonth, required this.twelveMonth, required this.twentyfourMonth, required this.thirtysixMonth});
 }
 
 class RestorableInstallmentPeriodSelections extends RestorableProperty<Set<int>> {
@@ -58,7 +58,7 @@ class InstallmentPeriodDataSource extends DataTableSource {
     final InstallmentPeriodModel installmentPeriod = installmentPeriods[index];
     return DataRow2.byIndex(
       index: index,
-      color: color != null ? MaterialStateProperty.all(color) : (hasZebraStripes && index.isEven ? MaterialStateProperty.all(Theme.of(context).highlightColor) : null),
+      color: color != null ? WidgetStateProperty.all(color) : (hasZebraStripes && index.isEven ? WidgetStateProperty.all(Theme.of(context).highlightColor) : null),
       cells: <DataCell>[
         DataCell(
           Container(

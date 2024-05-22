@@ -48,11 +48,11 @@ class _TrueViewState extends State<TrueView> {
                         const Spacer(),
                         Text(_trueViews[index][0].category, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
-                        Text("${_trueViews[index][0].price.toStringAsFixed(2).replaceAll(".", ",")} د.ت", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                        Text("${_trueViews[index][0].price.toStringAsFixed(2).replaceAll(".", ",")} DT", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         Row(
                           children: <Widget>[
-                            CircleAvatar(radius: 10, backgroundImage: AssetImage(_trueViews[index][0].reelUrl)),
+                            CircleAvatar(radius: 10, backgroundImage: AssetImage(_trueViews[index][0].reelUrl.path)),
                             const SizedBox(width: 10),
                             Text(_trueViews[index][0].category, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
                           ],
@@ -93,7 +93,7 @@ class _TrueViewState extends State<TrueView> {
                           const SizedBox(height: 10),
                           Row(
                             children: <Widget>[
-                              CircleAvatar(radius: 10, backgroundImage: AssetImage(_trueViews[index][0].reelUrl)),
+                              CircleAvatar(radius: 10, backgroundImage: AssetImage(_trueViews[index][1].reelUrl.path)),
                               const SizedBox(width: 10),
                               Text(_trueViews[index][1].category, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
                             ],

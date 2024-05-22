@@ -20,22 +20,22 @@ class _InstallmentPeriodState extends State<InstallmentPeriod> with RestorationM
 
   final List<String> _columns = const <String>["\t\t", "6 Month", "12 Month", "24 Month", "32 Month"];
 
-  List<InstallmentPeriodModel> _installmentPeriods = <InstallmentPeriodModel>[
-    InstallmentPeriodModel(
+  final List<InstallmentPeriodModel> _installmentPeriods = <InstallmentPeriodModel>[
+    const InstallmentPeriodModel(
       methodPath: "aman",
       sixMonth: "Allowed",
       twelveMonth: "Allowed",
       twentyfourMonth: "Allowed",
       thirtysixMonth: "Allowed",
     ),
-    InstallmentPeriodModel(
+    const InstallmentPeriodModel(
       methodPath: "contact",
       sixMonth: "Allowed",
       twelveMonth: "No",
       twentyfourMonth: "No",
       thirtysixMonth: "No",
     ),
-    InstallmentPeriodModel(
+    const InstallmentPeriodModel(
       methodPath: "valu",
       sixMonth: "Allowed",
       twelveMonth: "No",
@@ -84,7 +84,7 @@ class _InstallmentPeriodState extends State<InstallmentPeriod> with RestorationM
           const SizedBox(height: 10),
           Expanded(
             child: PaginatedDataTable2(
-              availableRowsPerPage: <int>[3],
+              availableRowsPerPage: const <int>[3],
               renderEmptyRowsInTheEnd: false,
               minWidth: 650,
               dataRowHeight: 60,

@@ -1,5 +1,6 @@
 import 'package:dabka/views/drawer/drawer.dart';
 import 'package:dabka/views/supplier/holder/products_list.dart';
+import 'package:dabka/views/supplier/holder/views_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +21,7 @@ class _HolderState extends State<Holder> {
 
   final PageController _pageController = PageController();
 
-  List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[
+  final List<Map<String, dynamic>> _pages = const <Map<String, dynamic>>[
     <String, dynamic>{
       "title": "Products List",
       "icon": FontAwesome.product_hunt_brand,
@@ -29,7 +30,7 @@ class _HolderState extends State<Holder> {
     <String, dynamic>{
       "title": "Views List",
       "icon": FontAwesome.users_viewfinder_solid,
-      "page": Container(),
+      "page": ViewsList(),
     },
   ];
 

@@ -19,7 +19,7 @@ class _SupplierState extends State<Supplier> {
     <String, dynamic>{"icon": "assets/images/ticket.png", "method": "Cash"},
   ];
 
-  List<String> _tabs = <String>["Dress"];
+  final List<String> _tabs = <String>["Dress"];
   int _selectedTab = 0;
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _SupplierState extends State<Supplier> {
       backgroundColor: const Color.fromARGB(255, 233, 233, 233),
       appBar: AppBar(
         backgroundColor: white,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(FontAwesome.chevron_left_solid, size: 25, color: dark)),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 25, color: dark)),
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
@@ -65,7 +65,7 @@ class _SupplierState extends State<Supplier> {
                       shadowColor: blue,
                       child: Container(
                         padding: const EdgeInsets.all(8),
-                        child: Icon(FontAwesome.user_plus_solid, color: blue, size: 15),
+                        child: const Icon(FontAwesome.user_plus_solid, color: blue, size: 15),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -78,7 +78,7 @@ class _SupplierState extends State<Supplier> {
                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                         child: Row(
                           children: <Widget>[
-                            Icon(Bootstrap.chat_square_text, color: white, size: 20),
+                            const Icon(Bootstrap.chat_square_text, color: white, size: 20),
                             const SizedBox(width: 10),
                             Text("Chat", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
                           ],
@@ -92,7 +92,7 @@ class _SupplierState extends State<Supplier> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(FontAwesome.user_plus_solid, color: blue, size: 20),
+                    const Icon(FontAwesome.user_plus_solid, color: blue, size: 20),
                     const SizedBox(height: 10),
                     Text(widget.supplier.followers.toString(), style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 5),
@@ -156,7 +156,7 @@ class _SupplierState extends State<Supplier> {
                               child: AnimatedDefaultTextStyle(
                                 style: GoogleFonts.abel(color: _selectedTab == 0 ? blue : dark, fontSize: 12, fontWeight: FontWeight.bold),
                                 duration: 300.ms,
-                                child: Text("All Products"),
+                                child: const Text("All Products"),
                               ),
                             ),
                           ),

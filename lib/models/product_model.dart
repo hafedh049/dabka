@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'dart:typed_data';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 
-class ProductModel {
+class ProductModel with CustomDropdownListFilter {
   final String categoryID;
   final String categoryName;
   final String supplierID;
@@ -39,11 +38,11 @@ class ProductModel {
       productName: json['productName'],
       productType: json['productType'],
       productDescription: json['productDescription'],
-      productBuyPrice: (json['productBuyPrice'] as num).toDouble(),
-      productSellPrice: (json['productSellPrice'] as num).toDouble(),
-      productRating: (json['productRating'] as num).toDouble(),
-      productImages: (json['productImages'] as List<dynamic>).map((e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
-      productShorts: (json['productShorts'] as List<dynamic>).map((e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
+      productBuyPrice: json['productBuyPrice'],
+      productSellPrice: json['productSellPrice'],
+      productRating: json['productRating'],
+      productImages: (json['productImages'] as List<dynamic>).map((dynamic e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
+      productShorts: (json['productShorts'] as List<dynamic>).map((dynamic e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
     );
   }
 
@@ -59,21 +58,25 @@ class ProductModel {
       'productBuyPrice': productBuyPrice,
       'productSellPrice': productSellPrice,
       'productRating': productRating,
-      'productImages': productImages.map((e) => e.toJson()).toList(),
-      'productShorts': productShorts.map((e) => e.toJson()).toList(),
+      'productImages': [for (final MediaModel e in productImages) e.toJson()],
+      'productShorts': [for (final MediaModel e in productShorts) e.toJson()],
     };
   }
+
+  @override
+  String toString() => productName;
+
+  @override
+  bool filter(String query) => productName.toLowerCase().contains(query.toLowerCase());
 }
 
 class MediaModel {
-  final Uint8List bytes;
   final String ext;
   final String name;
   final String path;
   final String type;
 
   MediaModel({
-    required this.bytes,
     required this.ext,
     required this.name,
     required this.path,
@@ -82,7 +85,6 @@ class MediaModel {
 
   factory MediaModel.fromJson(Map<String, dynamic> json) {
     return MediaModel(
-      bytes: base64Decode(json['bytes']),
       ext: json['ext'],
       name: json['name'],
       path: json['path'],
@@ -91,8 +93,7 @@ class MediaModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'bytes': base64Encode(bytes),
+    return <String, dynamic>{
       'ext': ext,
       'name': name,
       'path': path,

@@ -1,7 +1,12 @@
+// ignore_for_file: use_build_context_synchronously, await_only_futures
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/views/supplier/holder/add_product.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +14,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:uuid/uuid.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../models/user_model.dart';
 import '../../../utils/callbacks.dart';
@@ -32,6 +38,8 @@ class _ProductsListState extends State<ProductsList> {
 
   Map<ProductModel, MultiImagePickerController> _images = {};
   Map<ProductModel, MultiImagePickerController> _videos = {};
+
+  final Map<ImageFile, VideoPlayerController> _videoPlayerControllers = <ImageFile, VideoPlayerController>{};
 
   @override
   void dispose() {
@@ -77,7 +85,7 @@ class _ProductsListState extends State<ProductsList> {
                   ),
                 ),
               ),
-              icon: Icon(FontAwesome.circle_plus_solid, color: purple, size: 20),
+              icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 20),
             ),
           ],
         ),
@@ -133,14 +141,29 @@ class _ProductsListState extends State<ProductsList> {
                       for (final ProductModel product in _products)
                         product: MultiImagePickerController(
                           picker: (bool allowMultiple) async {
-                            return [
+                            return <ImageFile>[
                               for (final MediaModel image in product.productImages)
                                 ImageFile(
                                   const Uuid().v8(),
                                   name: image.name,
                                   extension: image.ext,
                                   path: image.path,
-                                  bytes: image.bytes,
+                                ),
+                            ];
+                          },
+                        ),
+                    };
+                    _videos = <ProductModel, MultiImagePickerController>{
+                      for (final ProductModel product in _products)
+                        product: MultiImagePickerController(
+                          picker: (bool allowMultiple) async {
+                            return <ImageFile>[
+                              for (final MediaModel video in product.productShorts)
+                                ImageFile(
+                                  const Uuid().v8(),
+                                  name: video.name,
+                                  extension: video.ext,
+                                  path: video.path,
                                 ),
                             ];
                           },
@@ -169,7 +192,7 @@ class _ProductsListState extends State<ProductsList> {
                                           showToast(context, "Product deleted successfully");
                                           Navigator.pop(context);
                                         },
-                                        style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                        style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                         child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
@@ -207,6 +230,7 @@ class _ProductsListState extends State<ProductsList> {
                                           child: MultiImagePickerView(
                                             controller: _images.values.elementAt(index),
                                             addMoreButton: const SizedBox(),
+                                            initialWidget: DefaultInitialWidget(centerWidget: Text("Tap to Show", style: GoogleFonts.abel(fontSize: 18, color: purple, fontWeight: FontWeight.bold))),
                                           ),
                                         ),
                                       );
@@ -225,7 +249,83 @@ class _ProductsListState extends State<ProductsList> {
                                           itemBorderColor: purple,
                                           itemCount: 2,
                                           showTotalCount: true,
-                                          itemRadius: 40,
+                                          itemRadius: 80,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Center(
+                                  child: InkWell(
+                                    hoverColor: transparent,
+                                    splashColor: transparent,
+                                    highlightColor: transparent,
+                                    onTap: _videos[_products[index]]!.hasNoImages
+                                        ? null
+                                        : () async {
+                                            for (final ImageFile video in _videos[_products[index]]!.images) {
+                                              _videoPlayerControllers[video] = await VideoPlayerController.file(File(video.path!))
+                                                ..initialize();
+                                            }
+                                            await showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) => Container(
+                                                padding: const EdgeInsets.all(8),
+                                                child: MultiImagePickerView(
+                                                  controller: _videos[_products[index]]!,
+                                                  initialWidget: DefaultInitialWidget(centerWidget: Text('Tap to open', style: GoogleFonts.abel(fontSize: 18, fontWeight: FontWeight.bold, color: purple))),
+                                                  builder: (BuildContext context, ImageFile imageFile) => GestureDetector(
+                                                    onTap: () async {
+                                                      await _videoPlayerControllers[imageFile]!.play();
+                                                      showModalBottomSheet(
+                                                        context: context,
+                                                        builder: (BuildContext context) => StatefulBuilder(
+                                                          builder: (BuildContext context, void Function(void Function()) setS) {
+                                                            return InkWell(
+                                                              splashColor: transparent,
+                                                              hoverColor: transparent,
+                                                              highlightColor: transparent,
+                                                              onTap: () async {
+                                                                if (_videoPlayerControllers[imageFile]!.value.isPlaying) {
+                                                                  await _videoPlayerControllers[imageFile]!.pause();
+                                                                } else {
+                                                                  await _videoPlayerControllers[imageFile]!.play();
+                                                                }
+                                                                setS(() {});
+                                                              },
+                                                              child: ClipRRect(
+                                                                borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                                                                child: VideoPlayer(_videoPlayerControllers[imageFile]!),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ).then(
+                                                        (void value) async {
+                                                          await _videoPlayerControllers[imageFile]!.seekTo(0.seconds);
+                                                          await _videoPlayerControllers[imageFile]!.pause();
+                                                        },
+                                                      );
+                                                    },
+                                                    child: DefaultDraggableItemWidget(imageFile: imageFile),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                    child: Card(
+                                      elevation: 4,
+                                      borderOnForeground: true,
+                                      color: white,
+                                      shadowColor: dark,
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Text(
+                                          'Videos ${_videos[_products[index]]!.hasNoImages ? "(EMPTY)" : "(${_videos[_products[index]]!.images.length})"}',
+                                          style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: purple),
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),
@@ -317,9 +417,9 @@ class _ProductsListState extends State<ProductsList> {
                                       ignoreGestures: true,
                                       allowHalfRating: true,
                                       itemCount: 5,
-                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                       itemSize: 20,
-                                      itemBuilder: (BuildContext context, _) => Icon(Icons.star, color: Colors.amber),
+                                      itemBuilder: (BuildContext context, _) => const Icon(Icons.star, color: Colors.amber),
                                       onRatingUpdate: (rating) {},
                                     ),
                                   ],

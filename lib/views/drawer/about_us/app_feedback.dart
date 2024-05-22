@@ -47,6 +47,8 @@ class _AppFeedbackState extends State<AppFeedback> {
           children: <Widget>[
             Center(
               child: Card(
+                elevation: 4,
+                shadowColor: dark,
                 child: Container(
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                   padding: const EdgeInsets.all(16),
@@ -72,8 +74,6 @@ class _AppFeedbackState extends State<AppFeedback> {
                     ],
                   ),
                 ),
-                elevation: 4,
-                shadowColor: dark,
               ),
             ),
             const SizedBox(height: 10),

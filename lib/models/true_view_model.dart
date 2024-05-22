@@ -1,12 +1,16 @@
+import 'package:dabka/models/product_model.dart';
+
 class TrueViewModel {
   final String categoryID;
   final String category;
   final String package;
   final double price;
-  final String reelUrl;
+  final MediaModel reelUrl;
   final int reelDuration;
   final String reelID;
   final String userID;
+  final String productID;
+  final String userName;
   final int reelViews;
 
   TrueViewModel({
@@ -18,20 +22,24 @@ class TrueViewModel {
     required this.reelDuration,
     required this.reelID,
     required this.userID,
+    required this.productID,
+    required this.userName,
     required this.reelViews,
   });
 
   factory TrueViewModel.fromJson(Map<String, dynamic> json) {
     return TrueViewModel(
-      categoryID: json['categoryID'],
-      category: json['category'],
-      package: json['package'],
-      price: json['price'],
-      reelUrl: json['reelUrl'],
-      reelDuration: json['reelDuration'],
-      reelID: json['reelID'],
-      userID: json['userID'],
-      reelViews: json['reelViews'],
+      categoryID: json['categoryID'] as String,
+      category: json['category'] as String,
+      package: json['package'] as String,
+      price: (json['price'] as num).toDouble(),
+      reelUrl: MediaModel.fromJson(json['reelUrl'] as Map<String, dynamic>),
+      reelDuration: json['reelDuration'] as int,
+      reelID: json['reelID'] as String,
+      userID: json['userID'] as String,
+      productID: json['productID'] as String,
+      userName: json['userName'] as String,
+      reelViews: json['reelViews'] as int,
     );
   }
 
@@ -41,10 +49,12 @@ class TrueViewModel {
       'category': category,
       'package': package,
       'price': price,
-      'reelUrl': reelUrl,
+      'reelUrl': reelUrl.toJson(),
       'reelDuration': reelDuration,
       'reelID': reelID,
       'userID': userID,
+      'productID': productID,
+      'userName': userName,
       'reelViews': reelViews,
     };
   }

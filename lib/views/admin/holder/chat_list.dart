@@ -57,7 +57,7 @@ class _ChatListState extends State<ChatsList> {
                                       showToast(context, "Chat deleted successfully");
                                       Navigator.pop(context);
                                     },
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                     child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
                                   ),
                                   const SizedBox(width: 10),

@@ -42,7 +42,7 @@ class _AddCategoryState extends State<AddCategory> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(FontAwesome.chevron_left_solid, size: 15, color: purple),
+          icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple),
         ),
       ),
       body: Padding(
@@ -73,7 +73,7 @@ class _AddCategoryState extends State<AddCategory> {
                         color: white,
                         border: Border.all(color: grey.withOpacity(.3), width: 2),
                         image: _image == null
-                            ? DecorationImage(
+                            ? const DecorationImage(
                                 image: AssetImage("assets/images/cat.png"),
                                 fit: BoxFit.cover,
                               )

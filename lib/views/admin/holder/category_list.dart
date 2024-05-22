@@ -28,7 +28,7 @@ class _CategoriesListState extends State<CategoriesList> {
 
   @override
   Widget build(BuildContext context) {
-    List<CategoryModel> _categories = <CategoryModel>[];
+    List<CategoryModel> categories = <CategoryModel>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -39,7 +39,7 @@ class _CategoriesListState extends State<CategoriesList> {
             const Spacer(),
             IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddCategory())),
-              icon: Icon(FontAwesome.circle_plus_solid, color: purple, size: 15),
+              icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 15),
             ),
           ],
         ),
@@ -89,7 +89,7 @@ class _CategoriesListState extends State<CategoriesList> {
             stream: FirebaseFirestore.instance.collection("categories").snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                _categories = snapshot.data!.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
+                categories = snapshot.data!.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
                 return ListView.separated(
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onLongPress: () {
@@ -113,7 +113,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                       showToast(context, "User deleted successfully");
                                       Navigator.pop(context);
                                     },
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                     child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
                                   ),
                                   const SizedBox(width: 10),
@@ -143,13 +143,13 @@ class _CategoriesListState extends State<CategoriesList> {
                               height: 80,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: _categories[index].categoryUrl.isEmpty
-                                    ? DecorationImage(
+                                image: categories[index].categoryUrl.isEmpty
+                                    ? const DecorationImage(
                                         image: AssetImage("assets/images/nobody.png"),
                                         fit: BoxFit.cover,
                                       )
                                     : DecorationImage(
-                                        image: NetworkImage(_categories[index].categoryUrl),
+                                        image: NetworkImage(categories[index].categoryUrl),
                                         fit: BoxFit.cover,
                                       ),
                                 border: Border.all(width: 2, color: pink),
@@ -164,7 +164,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                   child: Text("CATEGORY ID", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                 ),
                                 const SizedBox(width: 10),
-                                Flexible(child: Text(_categories[index].categoryID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
+                                Flexible(child: Text(categories[index].categoryID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                               ],
                             ),
                             const SizedBox(height: 10),
@@ -176,7 +176,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                   child: Text("CATEGORY NAME", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                 ),
                                 const SizedBox(width: 10),
-                                Flexible(child: Text(_categories[index].categoryName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
+                                Flexible(child: Text(categories[index].categoryName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                               ],
                             ),
                           ],
@@ -185,7 +185,7 @@ class _CategoriesListState extends State<CategoriesList> {
                     ),
                   ),
                   separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
-                  itemCount: _categories.length,
+                  itemCount: categories.length,
                 );
               } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                 return Center(

@@ -16,7 +16,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   final List<Map<String, dynamic>> _list = const <Map<String, dynamic>>[
     <String, dynamic>{
       "tile": "How can I contact the support?",
-      "page": const ContactSupport(),
+      "page": ContactSupport(),
     },
     <String, dynamic>{
       "tile": "Use of your information",

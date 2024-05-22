@@ -54,7 +54,7 @@ class _AddUserState extends State<AddUser> {
           backgroundColor: white,
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: Icon(FontAwesome.chevron_left_solid, size: 15, color: purple),
+            icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple),
           ),
         ),
         body: Padding(
@@ -92,7 +92,7 @@ class _AddUserState extends State<AddUser> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Icon(FontAwesome.camera_solid, color: purple, size: 20),
+                                      const Icon(FontAwesome.camera_solid, color: purple, size: 20),
                                       const SizedBox(width: 5),
                                       Text("Camera", style: GoogleFonts.abel(fontSize: 16, color: purple, fontWeight: FontWeight.w500)),
                                     ],
@@ -118,7 +118,7 @@ class _AddUserState extends State<AddUser> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Icon(FontAwesome.camera_solid, color: purple, size: 20),
+                                      const Icon(FontAwesome.camera_solid, color: purple, size: 20),
                                       const SizedBox(width: 5),
                                       Text("Gallery", style: GoogleFonts.abel(fontSize: 16, color: purple, fontWeight: FontWeight.w500)),
                                     ],
@@ -137,7 +137,7 @@ class _AddUserState extends State<AddUser> {
                           shape: BoxShape.circle,
                           color: white,
                           border: Border.all(color: grey.withOpacity(.3), width: 2),
-                          image: _image == null ? DecorationImage(image: AssetImage("assets/images/nobody.png"), fit: BoxFit.cover) : DecorationImage(image: FileImage(_image!), fit: BoxFit.cover),
+                          image: _image == null ? const DecorationImage(image: AssetImage("assets/images/nobody.png"), fit: BoxFit.cover) : DecorationImage(image: FileImage(_image!), fit: BoxFit.cover),
                         ),
                       ),
                     );

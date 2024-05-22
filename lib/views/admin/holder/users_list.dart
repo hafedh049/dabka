@@ -42,7 +42,7 @@ class _UsersListState extends State<UsersList> {
             const Spacer(),
             IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddUser())),
-              icon: Icon(FontAwesome.circle_plus_solid, color: purple, size: 15),
+              icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 15),
             ),
           ],
         ),
@@ -117,7 +117,7 @@ class _UsersListState extends State<UsersList> {
                                           showToast(context, "User deleted successfully");
                                           Navigator.pop(context);
                                         },
-                                        style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                        style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                         child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),

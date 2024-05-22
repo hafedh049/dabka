@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OnlineProcess extends StatelessWidget {
-  OnlineProcess({super.key});
+  const OnlineProcess({super.key});
   final List<String> _steps = const <String>[
     "Select the payment method you prefer than click book now",
     "Select the day that you want, notice there will be some days hidden that you cannot select because the produit will not be available",

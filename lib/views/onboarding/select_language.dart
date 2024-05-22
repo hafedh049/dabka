@@ -47,9 +47,9 @@ class _SelectLanguageState extends State<SelectLanguage> {
         TextButton(
           onPressed: () => widget.pageController.nextPage(duration: 300.ms, curve: Curves.linear),
           style: ButtonStyle(
-            backgroundColor: const MaterialStatePropertyAll<Color>(purple),
-            padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 24)),
-            shape: MaterialStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+            backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+            padding: const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 24)),
+            shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           ),
           child: Text("التالي", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
         ),

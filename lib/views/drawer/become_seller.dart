@@ -59,13 +59,13 @@ class _BecomeSellerState extends State<BecomeSeller> {
         child: Column(
           children: <Widget>[
             Card(
+              elevation: 4,
+              shadowColor: dark,
               child: Container(
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
                 padding: const EdgeInsets.all(8),
                 child: Image.asset("assets/images/logo.png", width: 80, height: 80),
               ),
-              elevation: 4,
-              shadowColor: dark,
             ),
             const SizedBox(height: 10),
             Text("Join Our Team", style: GoogleFonts.abel(fontSize: 15, fontWeight: FontWeight.bold, color: dark)),
@@ -96,7 +96,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                           ? null
                           : IconButton(
                               onPressed: () => _(() => _storeNameController.text = ""),
-                              icon: Icon(FontAwesome.circle_xmark_solid, color: grey, size: 15),
+                              icon: const Icon(FontAwesome.circle_xmark_solid, color: grey, size: 15),
                             ),
                     ),
                   );
@@ -128,7 +128,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                           ? null
                           : IconButton(
                               onPressed: () => _(() => _usernameController.text = ""),
-                              icon: Icon(FontAwesome.circle_xmark_solid, color: grey, size: 15),
+                              icon: const Icon(FontAwesome.circle_xmark_solid, color: grey, size: 15),
                             ),
                     ),
                   );
@@ -196,7 +196,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                     style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                   hintText: "Pick Category",
-                  closedHeaderPadding: EdgeInsets.all(10),
+                  closedHeaderPadding: const EdgeInsets.all(10),
                   items: _list,
                   excludeSelected: false,
                   initialItem: const Category('Photographers'),

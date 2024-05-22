@@ -42,7 +42,7 @@ class _ProductState extends State<Product> {
             stretch: true,
             automaticallyImplyLeading: true,
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(111),
+              preferredSize: const Size.fromHeight(111),
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -60,7 +60,7 @@ class _ProductState extends State<Product> {
                         elevation: 2,
                         child: Container(
                           padding: const EdgeInsets.all(4),
-                          child: Icon(FontAwesome.chevron_left_solid, size: 20, color: pink),
+                          child: const Icon(FontAwesome.chevron_left_solid, size: 20, color: pink),
                         ),
                       ),
                     ),
@@ -85,7 +85,7 @@ class _ProductState extends State<Product> {
                                   style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(width: 3),
-                                Icon(FontAwesome.star, size: 8, color: purple),
+                                const Icon(FontAwesome.star, size: 8, color: purple),
                               ],
                             ),
                           ),
@@ -105,7 +105,7 @@ class _ProductState extends State<Product> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(FontAwesome.share_nodes_solid, size: 15, color: dark),
+                                const Icon(FontAwesome.share_nodes_solid, size: 15, color: dark),
                                 Text("Share", style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.w500)),
                               ],
                             ),
@@ -135,7 +135,7 @@ class _ProductState extends State<Product> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(FontAwesome.heart, size: 15, color: dark),
+                                const Icon(FontAwesome.heart, size: 15, color: dark),
                                 Text("Favorite", style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.w500)),
                               ],
                             ),
@@ -148,7 +148,7 @@ class _ProductState extends State<Product> {
               ),
             ),
             shadowColor: dark,
-            shape: ContinuousRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25))),
+            shape: const ContinuousRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25))),
             flexibleSpace: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -207,7 +207,7 @@ class _ProductState extends State<Product> {
       ),
       bottomSheet: Container(
         height: 40,
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), border: Border.all(width: 2, color: purple)),
         child: Row(
           children: <Widget>[
@@ -221,7 +221,7 @@ class _ProductState extends State<Product> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Bootstrap.chat_square_quote, size: 15, color: purple),
+                    const Icon(Bootstrap.chat_square_quote, size: 15, color: purple),
                     const SizedBox(width: 10),
                     Text("Seller Chat", style: GoogleFonts.abel(color: purple, fontSize: 12, fontWeight: FontWeight.bold)),
                   ],
@@ -236,12 +236,12 @@ class _ProductState extends State<Product> {
                 onTap: () {},
                 child: Container(
                   height: 40,
-                  decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.only(topRight: Radius.circular(22), bottomRight: Radius.circular(22))),
+                  decoration: const BoxDecoration(color: purple, borderRadius: BorderRadius.only(topRight: Radius.circular(22), bottomRight: Radius.circular(22))),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(FontAwesome.cart_shopping_solid, size: 15, color: white),
+                      const Icon(FontAwesome.cart_shopping_solid, size: 15, color: white),
                       const SizedBox(width: 10),
                       Text("Request Reservation", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
                     ],

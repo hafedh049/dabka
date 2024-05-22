@@ -19,15 +19,15 @@ class _AboutUsState extends State<AboutUs> {
   final List<Map<String, dynamic>> _list = const <Map<String, dynamic>>[
     <String, dynamic>{
       "tile": "FAQ",
-      "page": const FAQ(),
+      "page": FAQ(),
     },
     <String, dynamic>{
       "tile": "App Feedback",
-      "page": const AppFeedback(),
+      "page": AppFeedback(),
     },
     <String, dynamic>{
       "tile": "Privacy Policy",
-      "page": const PrivacyPolicy(),
+      "page": PrivacyPolicy(),
     },
     <String, dynamic>{
       "tile": "Terms & Conditions",

@@ -36,7 +36,7 @@ class _AvailablePaymentMethodState extends State<AvailablePaymentMethod> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Icon(FontAwesome.cash_register_solid, size: 10, color: purple),
+                      const Icon(FontAwesome.cash_register_solid, size: 10, color: purple),
                       const SizedBox(width: 10),
                       Column(
                         mainAxisSize: MainAxisSize.min,

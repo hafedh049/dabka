@@ -30,18 +30,18 @@ class _OrdersListState extends State<OrdersList> {
     final dayBeforeYesterday = today.subtract(2.days);
 
     if (date.year == today.year && date.month == today.month && date.day == today.day) {
-      return 'Today, at ' + formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am]);
+      return 'Today, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
     } else if (date.year == today.year && date.month == today.month && date.day == yesterday.day) {
-      return 'Yesterday, at ' + formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am]);
+      return 'Yesterday, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
     } else if (date.year == today.year && date.month == today.month && date.day == dayBeforeYesterday.day) {
-      return '2 days ago, at ' + formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am]);
+      return '2 days ago, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
     } else {
       return formatDate(date, const <String>[dd, '/', mm, '/', yyyy, ' ', hh, ':', nn, ':', ss, ' ', am]);
     }
   }
 
   Map<int, ProductModel> _productsCounter(int index) {
-    final Map<int, ProductModel> products = Map<int, ProductModel>();
+    final Map<int, ProductModel> products = <int, ProductModel>{};
     for (final ProductModel product in _orders[index].products) {
       if (!products.containsValue(product)) {
         products[_orders[index].products.where((ProductModel e) => e.productID == product.productID).length] = product;
@@ -131,7 +131,7 @@ class _OrdersListState extends State<OrdersList> {
                                   const Spacer(),
                                   TextButton(
                                     onPressed: () {},
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                     child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                   ),
                                   const SizedBox(width: 10),
@@ -167,7 +167,7 @@ class _OrdersListState extends State<OrdersList> {
                                       await FirebaseFirestore.instance.collection("orders").doc(snapshot.data!.docs[index].id).update({"state": "CONFIRMED"});
                                       showToast(context, "Order confirmed successfully");
                                     },
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                     child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                   ),
                                   const SizedBox(width: 10),

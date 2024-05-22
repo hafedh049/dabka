@@ -64,7 +64,7 @@ class _ProvidedByState extends State<ProvidedBy> {
                                         style: GoogleFonts.abel(color: dark, fontSize: 9, fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(width: 3),
-                                      Icon(FontAwesome.star, size: 9, color: purple),
+                                      const Icon(FontAwesome.star, size: 9, color: purple),
                                     ],
                                   ),
                                 ),
@@ -83,7 +83,7 @@ class _ProvidedByState extends State<ProvidedBy> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(FontAwesome.circle_user, size: 15, color: white),
+                                  const Icon(FontAwesome.circle_user, size: 15, color: white),
                                   const SizedBox(width: 5),
                                   Text("Follow", style: GoogleFonts.abel(color: white, fontSize: 10, fontWeight: FontWeight.w500)),
                                 ],

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../shared.dart';
 
 class DirectInstallment extends StatelessWidget {
-  DirectInstallment({super.key});
+  const DirectInstallment({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class DirectInstallment extends StatelessWidget {
               Container(
                 width: 100,
                 height: 60,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/images/valu.png"), fit: BoxFit.cover)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: const DecorationImage(image: AssetImage("assets/images/valu.png"), fit: BoxFit.cover)),
               ),
               const SizedBox(height: 10),
               Text("Valu Installment", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold)),
@@ -48,7 +48,7 @@ class DirectInstallment extends StatelessWidget {
               Container(
                 width: 100,
                 height: 60,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: AssetImage("assets/images/aman.png"), fit: BoxFit.cover)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: const DecorationImage(image: AssetImage("assets/images/aman.png"), fit: BoxFit.cover)),
               ),
               const SizedBox(height: 10),
               Text("Aman Installment", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold)),

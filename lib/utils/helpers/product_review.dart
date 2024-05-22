@@ -55,7 +55,7 @@ class _ProductReviewState extends State<ProductReview> {
                                     style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(width: 5),
-                                  Icon(FontAwesome.star, size: 9, color: purple),
+                                  const Icon(FontAwesome.star, size: 9, color: purple),
                                 ],
                               ),
                             ),

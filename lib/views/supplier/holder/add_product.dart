@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, await_only_futures
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,7 +38,13 @@ class _AddProductState extends State<AddProduct> {
   final MultiImagePickerController _imageController = MultiImagePickerController(
     maxImages: 10,
     picker: (bool allowMultiple) async {
-      final List<XFile> pickedImages = await ImagePicker().pickMultiImage();
+      final List<XFile> pickedImages = await ImagePicker().pickMultiImage(
+        maxHeight: 200,
+        maxWidth: 200,
+        imageQuality: 70,
+        requestFullMetadata: false,
+        limit: 3,
+      );
       return pickedImages
           .map(
             (XFile e) => ImageFile(
@@ -44,7 +52,6 @@ class _AddProductState extends State<AddProduct> {
               name: e.name,
               extension: e.name.split('.').last,
               path: e.path,
-              bytes: File(e.path).readAsBytesSync(),
             ),
           )
           .toList();
@@ -66,7 +73,13 @@ class _AddProductState extends State<AddProduct> {
     _videoController = MultiImagePickerController(
       maxImages: 3,
       picker: (bool allowMultiple) async {
-        List<XFile> pickedVideos = await ImagePicker().pickMultipleMedia(limit: 3);
+        List<XFile> pickedVideos = await ImagePicker().pickMultipleMedia(
+          limit: 3,
+          maxHeight: 200,
+          maxWidth: 200,
+          imageQuality: 70,
+          requestFullMetadata: false,
+        );
         return pickedVideos
             .where((XFile element) => _videoExtensions.contains(element.name.split('.').last))
             .map(
@@ -108,7 +121,7 @@ class _AddProductState extends State<AddProduct> {
       child: Scaffold(
         backgroundColor: white,
         appBar: AppBar(
-          leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(FontAwesome.chevron_left_solid, size: 15, color: purple)),
+          leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple)),
           title: Text('Add Product', style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
           backgroundColor: white,
           elevation: 6,
@@ -150,7 +163,7 @@ class _AddProductState extends State<AddProduct> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Icon(FontAwesome.circle_plus_solid, size: 20, color: purple),
+                                const Icon(FontAwesome.circle_plus_solid, size: 20, color: purple),
                                 const SizedBox(height: 10),
                                 Text('Add Product Images', style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: purple)),
                                 const SizedBox(height: 10),
@@ -197,11 +210,11 @@ class _AddProductState extends State<AddProduct> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      Icon(FontAwesome.image_portrait_solid, size: 25, color: Color.fromARGB(255, 137, 0, 161)),
+                                      const Icon(FontAwesome.image_portrait_solid, size: 25, color: Color.fromARGB(255, 137, 0, 161)),
                                       const SizedBox(height: 5),
                                       Text(
                                         'Add Videos',
-                                        style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 137, 0, 161)),
+                                        style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 137, 0, 161)),
                                         textAlign: TextAlign.center,
                                       ),
                                     ],
@@ -227,7 +240,7 @@ class _AddProductState extends State<AddProduct> {
                                               setS(() {});
                                             },
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                                              borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
                                               child: VideoPlayer(_videoPlayerControllers[imageFile]!),
                                             ),
                                           );
@@ -267,7 +280,7 @@ class _AddProductState extends State<AddProduct> {
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Icon(FontAwesome.circle_plus_solid, size: 20, color: purple),
+                                const Icon(FontAwesome.circle_plus_solid, size: 20, color: purple),
                                 const SizedBox(height: 10),
                                 Text(
                                   'Add Product Shorts${_videoController.hasNoImages ? "" : "\n(${_videoController.images.length})"}',
@@ -450,59 +463,65 @@ class _AddProductState extends State<AddProduct> {
                                         final String productID = const Uuid().v8();
                                         showToast(context, "Uploading Images...");
 
-                                        await Future.wait(
-                                          <Future>[
-                                            for (final ImageFile image in _imageController.images)
-                                              FirebaseStorage.instance.ref().child("/images/${image.name}").putFile(File(image.path!)).then(
-                                                (TaskSnapshot task) async {
-                                                  showToast(context, "Uploading Image N °${imagePaths.length + 1}");
+                                        for (final ImageFile image in _imageController.images) {
+                                          await FirebaseStorage.instance.ref().child("/images/${const Uuid().v8()}${image.name}").putFile(File(image.path!)).then(
+                                            (TaskSnapshot task) async {
+                                              showToast(context, "Uploading Image N °${imagePaths.length + 1}");
+                                              imagePaths.add(
+                                                MediaModel(
+                                                  ext: image.extension,
+                                                  name: image.name,
+                                                  path: await task.ref.getDownloadURL(),
+                                                  type: "IMAGE",
+                                                ),
+                                              );
+                                              showToast(context, "Image N °${imagePaths.length} Uploaded");
+                                            },
+                                          );
+                                        }
 
-                                                  imagePaths.add(
-                                                    MediaModel(
-                                                      bytes: image.bytes!,
-                                                      ext: image.extension,
-                                                      name: image.name,
-                                                      path: await task.ref.getDownloadURL(),
-                                                      type: "IMAGE",
-                                                    ),
-                                                  );
-                                                  showToast(context, "Image N °${imagePaths.length} Uploaded");
-                                                },
-                                              ),
-                                          ],
-                                        );
                                         showToast(context, "Images Uploaded");
 
                                         if (_videoController.images.isNotEmpty) {
                                           showToast(context, "Uploading Videos...");
                                         }
 
-                                        await Future.wait(
-                                          <Future>[
-                                            for (final ImageFile video in _videoController.images)
-                                              FirebaseStorage.instance.ref().child("/videos/${video.name}}").putFile(File(video.path!)).then(
-                                                (TaskSnapshot task) async {
-                                                  showToast(context, "Uploading Video N °${videoPaths.length + 1}");
-
-                                                  videoPaths.add(
-                                                    MediaModel(
-                                                      bytes: video.bytes!,
-                                                      ext: video.extension,
-                                                      name: video.name,
-                                                      path: await task.ref.getDownloadURL(),
-                                                      type: "VIDEO",
-                                                    ),
-                                                  );
-                                                  showToast(context, "Video N °${videoPaths.length} Uploaded");
-                                                },
-                                              ),
-                                          ],
-                                        );
+                                        for (final ImageFile video in _videoController.images) {
+                                          await FirebaseStorage.instance.ref().child("/videos/${const Uuid().v8()}${video.name}").putFile(File(video.path!)).then(
+                                            (TaskSnapshot task) async {
+                                              showToast(context, "Uploading Video N °${videoPaths.length + 1}");
+                                              videoPaths.add(
+                                                MediaModel(
+                                                  ext: video.extension,
+                                                  name: video.name,
+                                                  path: await task.ref.getDownloadURL(),
+                                                  type: "VIDEO",
+                                                ),
+                                              );
+                                              showToast(context, "Video N °${videoPaths.length} Uploaded");
+                                            },
+                                          );
+                                        }
 
                                         if (_videoController.images.isNotEmpty) {
                                           showToast(context, "Videos Uploaded");
                                         }
-
+                                        debugPrint(
+                                          ProductModel(
+                                            categoryName: widget.user.categoryName,
+                                            categoryID: widget.user.categoryID,
+                                            supplierID: widget.user.userID,
+                                            productID: productID,
+                                            productName: _productNameController.text.trim(),
+                                            productType: _productTypeController.text.trim(),
+                                            productDescription: _productDescriptionController.text.trim(),
+                                            productBuyPrice: double.parse(_productBuyPriceController.text),
+                                            productSellPrice: double.parse(_productSellPriceController.text),
+                                            productRating: 0,
+                                            productImages: imagePaths,
+                                            productShorts: videoPaths,
+                                          ).toJson().toString(),
+                                        );
                                         await FirebaseFirestore.instance.collection("products").doc(productID).set(
                                               ProductModel(
                                                 categoryName: widget.user.categoryName,
@@ -534,6 +553,7 @@ class _AddProductState extends State<AddProduct> {
                                         showToast(context, "Product Created Successfully");
                                         _(() => _ignoreStupidity = false);
                                       } catch (e) {
+                                        debugPrint(e.toString());
                                         showToast(context, e.toString(), color: red);
                                         _(() => _ignoreStupidity = false);
                                       }

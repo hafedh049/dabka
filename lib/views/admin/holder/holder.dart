@@ -23,26 +23,26 @@ class _HolderState extends State<Holder> {
 
   final PageController _pageController = PageController();
 
-  List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[
+  final List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[
     <String, dynamic>{
       "title": "Users",
       "icon": FontAwesome.users_between_lines_solid,
-      "page": UsersList(),
+      "page": const UsersList(),
     },
     <String, dynamic>{
       "title": "Categories",
       "icon": FontAwesome.square_solid,
-      "page": CategoriesList(),
+      "page": const CategoriesList(),
     },
     <String, dynamic>{
       "title": "Orders",
       "icon": FontAwesome.first_order_brand,
-      "page": OrdersList(),
+      "page": const OrdersList(),
     },
     <String, dynamic>{
       "title": "Chats",
       "icon": FontAwesome.heart,
-      "page": ChatsList(),
+      "page": const ChatsList(),
     },
   ];
 

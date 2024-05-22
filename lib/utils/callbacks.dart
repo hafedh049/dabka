@@ -21,7 +21,7 @@ Future<bool> init() async {
     );
   }
   await Firebase.initializeApp(
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
       apiKey: 'AIzaSyDyv0OGE2Wx8DjmclF2IL346kPFyTHFzvs',
       appId: '1:96485031528:android:85e4ffecda18ab498945dd',
       messagingSenderId: '96485031528	',
