@@ -1,10 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dabka/utils/shared.dart';
-import 'package:dabka/views/auth/forget_password.dart';
 import 'package:dabka/views/auth/sign_up.dart';
+import 'package:dabka/views/auth/forget_password.dart';
+import 'package:dabka/views/client/holder/holder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl_phone_number_field/intl_phone_number_field.dart';
+
+import '../../utils/callbacks.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key, this.passed = false});
@@ -16,6 +22,9 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  bool _ignoreStupidity = false;
 
   bool _obscureText = true;
 
@@ -36,7 +45,7 @@ class _SignInState extends State<SignIn> {
           leading: widget.passed ? IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)) : null,
           centerTitle: true,
           backgroundColor: white,
-          title: Text("تسجيل الدخول", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+          title: Text("Sign-In", style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold)),
           elevation: 5,
           shadowColor: dark,
         ),
@@ -69,9 +78,9 @@ class _SignInState extends State<SignIn> {
                   searchBoxHintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   flatFlag: true,
                   itemFlagSize: 20,
-                  title: "حدد الدولة",
+                  title: "Select the country",
                   searchBoxRadius: 5,
-                  searchHintText: "بحث",
+                  searchHintText: "Search",
                 ),
                 countryConfig: CountryConfig(
                   decoration: BoxDecoration(border: Border.all(width: .3, color: grey), borderRadius: BorderRadius.circular(8)),
@@ -84,10 +93,10 @@ class _SignInState extends State<SignIn> {
                   enabledColor: grey,
                   errorColor: grey,
                   labelStyle: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                  labelText: "رقم الهاتف",
+                  labelText: "Phone Number",
                   floatingLabelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   radius: 8,
-                  hintText: "رقم الهاتف",
+                  hintText: "Phone Number",
                   borderWidth: .3,
                   backgroundColor: transparent,
                   decoration: null,
@@ -98,6 +107,31 @@ class _SignInState extends State<SignIn> {
                   hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                 ),
               ),
+              SizedBox(
+                height: 40,
+                child: StatefulBuilder(
+                  builder: (BuildContext context, void Function(void Function()) _) {
+                    return TextField(
+                      controller: _emailController,
+                      style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(6),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                        disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                        focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                        hintText: "abc@xyz.com",
+                        hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
+                        labelText: "E-mail",
+                        labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
+                        prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
               SizedBox(
                 height: 40,
                 child: StatefulBuilder(
@@ -115,7 +149,7 @@ class _SignInState extends State<SignIn> {
                         focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                         hintText: "**********",
                         hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                        labelText: "كلمة المرور",
+                        labelText: "Password",
                         labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                         prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.lock_solid, color: grey, size: 15)),
                         suffixIcon: IconButton(
@@ -133,20 +167,47 @@ class _SignInState extends State<SignIn> {
                 splashColor: transparent,
                 highlightColor: transparent,
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ForgetPassword())),
-                child: Text("هل نسيت كلمة المرور؟", style: GoogleFonts.abel(color: purple, fontSize: 12, fontWeight: FontWeight.w500)),
+                child: Text("Did you forget you password ?", style: GoogleFonts.abel(color: purple, fontSize: 12, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 20),
               Center(
-                child: InkWell(
-                  hoverColor: transparent,
-                  splashColor: transparent,
-                  highlightColor: transparent,
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                    child: Text("تسجيل الدخول", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
-                  ),
+                child: StatefulBuilder(
+                  builder: (BuildContext context, void Function(void Function()) _) {
+                    return IgnorePointer(
+                      ignoring: _ignoreStupidity,
+                      child: InkWell(
+                        hoverColor: transparent,
+                        splashColor: transparent,
+                        highlightColor: transparent,
+                        onTap: () async {
+                          if (!_emailController.text.contains(RegExp(r'^[\w\-\.]+@([\w\-]+\.)+[\w-]{2,4}$'))) {
+                            showToast(context, "Enter a correct e-mail address", color: red);
+                          } else if (_passwordController.text.isEmpty) {
+                            showToast(context, "Enter a correct password", color: red);
+                          } else if (_phoneController.text.trim().replaceAll(" ", "").isEmpty || _phoneController.text.trim().replaceAll(" ", "").length < 8) {
+                            showToast(context, "Enter a valid phone number please", color: red);
+                          } else {
+                            try {
+                              _(() => _ignoreStupidity = true);
+                              showToast(context, "Please wait...");
+                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false);
+                              showToast(context, "Welcome back");
+                              _(() => _ignoreStupidity = false);
+                            } catch (e) {
+                              showToast(context, e.toString(), color: red);
+                              _(() => _ignoreStupidity = false);
+                            }
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 48),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
+                          child: Text("Sign-in", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 20),
@@ -157,14 +218,14 @@ class _SignInState extends State<SignIn> {
                   highlightColor: transparent,
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignUp())),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 48),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: purple)),
-                    child: Text("أفتح حساب الأن", style: GoogleFonts.abel(color: purple, fontSize: 14, fontWeight: FontWeight.bold)),
+                    child: Text("Create account", style: GoogleFonts.abel(color: purple, fontSize: 14, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              Center(child: Text("أو قم بتسجيل الدخول باستخدام", style: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500))),
+              Center(child: Text("OR", style: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500))),
               const SizedBox(height: 10),
               const Divider(indent: 50, endIndent: 50, color: grey, height: .2, thickness: .2),
               const SizedBox(height: 10),

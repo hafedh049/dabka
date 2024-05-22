@@ -29,7 +29,7 @@ class _ViewSpaceState extends State<ViewSpace> {
   final List<VideoPlayerController> _videoPlayers = <VideoPlayerController>[];
   final List<GlobalKey<State<StatefulWidget>>> _videoKeys = <GlobalKey<State<StatefulWidget>>>[];
 
-  final PageController _trueViewController = PageController();
+  late final PageController _trueViewController;
 
   String _formatDuration(int durationInSeconds) {
     final int minutes = durationInSeconds ~/ 60;
@@ -54,25 +54,6 @@ class _ViewSpaceState extends State<ViewSpace> {
   }
 
   @override
-  void initState() {
-    _videoPlayers.clear();
-    for (final TrueViewModel view in widget.views) {
-      _videoKeys.add(GlobalKey<State<StatefulWidget>>());
-      _videoPlayers.add(VideoPlayerController.networkUrl(Uri.parse(view.reelUrl.path))..initialize());
-      _videoPlayers.last.addListener(
-        () {
-          if (_videoPlayers.last.value.isPlaying) {
-            _videoKeys.last.currentState!.setState(() {});
-          } else if (_videoPlayers.last.value.isCompleted) {
-            _trueViewController.nextPage(duration: 300.ms, curve: Curves.linear);
-          }
-        },
-      );
-    }
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _trueViewController.dispose();
 
@@ -90,6 +71,22 @@ class _ViewSpaceState extends State<ViewSpace> {
 
   Future<bool> _load() async {
     try {
+      _videoPlayers.clear();
+      for (int index = 0; index < widget.views.length; index++) {
+        _videoKeys.add(GlobalKey<State<StatefulWidget>>());
+        _videoPlayers.add(VideoPlayerController.networkUrl(Uri.parse(widget.views[index].reelUrl.path)));
+        await _videoPlayers[index].initialize();
+        _videoPlayers[index].addListener(
+          () {
+            if (_videoPlayers[index].value.isPlaying) {
+              _videoKeys[index].currentState!.setState(() {});
+            } else if (_videoPlayers[index].value.isCompleted) {
+              _trueViewController.nextPage(duration: 300.ms, curve: Curves.linear);
+            }
+          },
+        );
+      }
+      _trueViewController = PageController(initialPage: widget.currentIndex);
       _userDoc = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
       _user = UserModel.fromJson(_userDoc!.data()!);
       _products.clear();
@@ -111,7 +108,13 @@ class _ViewSpaceState extends State<ViewSpace> {
         future: _load(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
+            //Future.delayed(500.ms, ()async =>await _videoPlayers[widget.currentIndex].play());
             return PageView.builder(
+              onPageChanged: (int value) {
+                _videoPlayers[value - 1].pause();
+                _videoPlayers[value].play();
+              },
+              scrollDirection: Axis.vertical,
               controller: _trueViewController,
               itemBuilder: (BuildContext context, int index) => SizedBox(
                 width: MediaQuery.sizeOf(context).width,

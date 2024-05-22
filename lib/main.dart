@@ -2,13 +2,13 @@ import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dabka/views/auth/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import 'views/onboarding/onboarding_holder.dart';
-import 'views/supplier/holder/holder.dart';
+import 'views/client/holder/holder.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,20 +26,7 @@ class Main extends StatelessWidget {
         future: init(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            return !settingsBox!.get("first_time")
-                ? const Onboarding()
-                : FutureBuilder<UserCredential>(
-                    future: FirebaseAuth.instance.signInWithEmailAndPassword(email: 'hafedhgunichi@gmail.com', password: '20012002HN*'),
-                    builder: (BuildContext context, AsyncSnapshot<UserCredential> snap) {
-                      if (snap.hasData) {
-                        return const Holder();
-                      } else if (snap.connectionState == ConnectionState.waiting) {
-                        return const Wait();
-                      } else {
-                        return ErrorScreen(error: snap.error.toString());
-                      }
-                    },
-                  );
+            return !settingsBox!.get("first_time") ? const Onboarding() : const SignIn(); //const Holder();
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Wait();
           } else {

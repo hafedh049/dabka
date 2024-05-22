@@ -506,22 +506,7 @@ class _AddProductState extends State<AddProduct> {
                                         if (_videoController.images.isNotEmpty) {
                                           showToast(context, "Videos Uploaded");
                                         }
-                                        debugPrint(
-                                          ProductModel(
-                                            categoryName: widget.user.categoryName,
-                                            categoryID: widget.user.categoryID,
-                                            supplierID: widget.user.userID,
-                                            productID: productID,
-                                            productName: _productNameController.text.trim(),
-                                            productType: _productTypeController.text.trim(),
-                                            productDescription: _productDescriptionController.text.trim(),
-                                            productBuyPrice: double.parse(_productBuyPriceController.text),
-                                            productSellPrice: double.parse(_productSellPriceController.text),
-                                            productRating: 0,
-                                            productImages: imagePaths,
-                                            productShorts: videoPaths,
-                                          ).toJson().toString(),
-                                        );
+
                                         await FirebaseFirestore.instance.collection("products").doc(productID).set(
                                               ProductModel(
                                                 categoryName: widget.user.categoryName,
