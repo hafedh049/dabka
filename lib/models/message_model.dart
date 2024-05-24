@@ -5,7 +5,6 @@ class MessageModel {
   final DateTime timestamp;
   final String senderID;
   final String receiverID;
-  final bool isMe;
   final String type;
 
   MessageModel({
@@ -15,7 +14,6 @@ class MessageModel {
     required this.timestamp,
     required this.senderID,
     required this.receiverID,
-    required this.isMe,
     required this.type,
   });
 
@@ -27,7 +25,6 @@ class MessageModel {
       timestamp: json['timestamp'].toDate(),
       senderID: json['senderID'],
       receiverID: json['receiverID'],
-      isMe: json['isMe'],
       type: json['type'],
     );
   }
@@ -40,7 +37,6 @@ class MessageModel {
       'timestamp': timestamp,
       'senderID': senderID,
       'receiverID': receiverID,
-      'isMe': isMe,
       'type': type,
     };
   }

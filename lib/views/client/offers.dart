@@ -6,9 +6,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
+import '../../utils/shared.dart';
 
 class OffersList extends StatefulWidget {
   const OffersList({super.key});
@@ -50,6 +50,7 @@ class _OffersListState extends State<OffersList> with TickerProviderStateMixin {
       body: Column(
         children: <Widget>[
           TabBar(
+            indicatorColor: purple,
             controller: _tabsController,
             tabs: <Widget>[
               Container(

@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dabka/models/category_model.dart';
-import 'package:dabka/views/client/holder/category_view.dart';
+import 'package:dabka/views/client/category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';

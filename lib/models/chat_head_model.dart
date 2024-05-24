@@ -2,19 +2,19 @@ class ChatHead {
   final String roomID;
   final DateTime timestamp;
   final String remoteName;
+  final String remoteID;
   final String remoteImage;
   final String lastMessage;
   final String lastMessageType;
-  final bool yourMessage;
 
   ChatHead({
     required this.roomID,
     required this.timestamp,
     required this.remoteName,
+    required this.remoteID,
     required this.remoteImage,
     required this.lastMessage,
     required this.lastMessageType,
-    required this.yourMessage,
   });
 
   factory ChatHead.fromJson(Map<String, dynamic> json) {
@@ -22,10 +22,10 @@ class ChatHead {
       roomID: json['roomID'],
       timestamp: json['timestamp'].toDate(),
       remoteName: json['remoteName'],
+      remoteID: json['remoteID'],
       remoteImage: json['remoteImage'],
       lastMessage: json['lastMessage'],
       lastMessageType: json['lastMessageType'],
-      yourMessage: json['yourMessage'],
     );
   }
 
@@ -34,10 +34,10 @@ class ChatHead {
       'roomID': roomID,
       'timestamp': timestamp,
       'remoteName': remoteName,
+      'remoteID': remoteID, // Added this line
       'remoteImage': remoteImage,
       'lastMessage': lastMessage,
-      'lastMessageType': lastMessageType, // Added this line
-      'yourMessage': yourMessage,
+      'lastMessageType': lastMessageType,
     };
   }
 }

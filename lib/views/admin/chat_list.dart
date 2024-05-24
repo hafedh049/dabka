@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/chat_head_model.dart';
 import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,7 +28,8 @@ class _ChatListState extends State<ChatsList> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("Old Chats", style: GoogleFonts.abel(color: dark, fontSize: 16, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        Text("Old Chats", style: GoogleFonts.abel(color: dark, fontSize: 22, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         Expanded(
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -97,7 +99,7 @@ class _ChatListState extends State<ChatsList> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Text("${_chats[index].yourMessage ? 'You: ' : ''}${_chats[index].remoteName}", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+                                Text("${_chats[index].remoteID == FirebaseAuth.instance.currentUser!.uid ? 'You: ' : ''}${_chats[index].remoteName}", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 5),
                                 Row(
                                   children: <Widget>[
@@ -106,7 +108,7 @@ class _ChatListState extends State<ChatsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: purple),
-                                      child: Text(formatDate(_chats[index].timestamp, const <String>[HH, ":", nn, ":", am]), style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.w500)),
+                                      child: Text(formatDate(_chats[index].timestamp, const <String>[HH, ":", nn, " ", am]), style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.w500)),
                                     ),
                                   ],
                                 ),

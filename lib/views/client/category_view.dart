@@ -5,7 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../../utils/shared.dart';
+import '../../utils/shared.dart';
 
 class CategoryView extends StatefulWidget {
   const CategoryView({super.key, required this.category});

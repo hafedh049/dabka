@@ -1,5 +1,5 @@
 import 'package:dabka/utils/shared.dart';
-import 'package:dabka/views/client/holder/home.dart';
+import 'package:dabka/views/client/home.dart';
 import 'package:dabka/views/drawer/about_us/about_us.dart';
 import 'package:dabka/views/drawer/become_seller.dart';
 import 'package:dabka/views/drawer/settings.dart';

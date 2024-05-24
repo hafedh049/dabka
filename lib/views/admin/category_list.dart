@@ -21,7 +21,7 @@ class CategoriesList extends StatefulWidget {
 
 class _CategoriesListState extends State<CategoriesList> {
   final TextEditingController _searchController = TextEditingController();
-  List<CategoryModel> categories = <CategoryModel>[];
+  List<CategoryModel> _categories = <CategoryModel>[];
 
   @override
   void dispose() {
@@ -88,10 +88,10 @@ class _CategoriesListState extends State<CategoriesList> {
         const SizedBox(height: 10),
         Expanded(
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("categories").snapshots(),
+            stream: FirebaseFirestore.instance.collection("_categories").snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                categories = snapshot.data!.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
+                _categories = snapshot.data!.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
                 return ListView.separated(
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onLongPress: () {
@@ -111,8 +111,8 @@ class _CategoriesListState extends State<CategoriesList> {
                                   const Spacer(),
                                   TextButton(
                                     onPressed: () async {
-                                      await FirebaseFirestore.instance.collection("categories").doc(snapshot.data!.docs[index].id).delete();
-                                      showToast(context, "User deleted successfully");
+                                      await FirebaseFirestore.instance.collection("_categories").doc(snapshot.data!.docs[index].id).delete();
+                                      showToast(context, "Category deleted successfully");
                                       Navigator.pop(context);
                                     },
                                     style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
@@ -145,13 +145,13 @@ class _CategoriesListState extends State<CategoriesList> {
                               height: 80,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: categories[index].categoryUrl.isEmpty
+                                image: _categories[index].categoryUrl.isEmpty
                                     ? const DecorationImage(
                                         image: AssetImage("assets/images/nobody.png"),
                                         fit: BoxFit.cover,
                                       )
                                     : DecorationImage(
-                                        image: NetworkImage(categories[index].categoryUrl),
+                                        image: NetworkImage(_categories[index].categoryUrl),
                                         fit: BoxFit.cover,
                                       ),
                                 border: Border.all(width: 2, color: pink),
@@ -166,7 +166,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                   child: Text("CATEGORY ID", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                 ),
                                 const SizedBox(width: 10),
-                                Flexible(child: Text(categories[index].categoryID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
+                                Flexible(child: Text(_categories[index].categoryID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                               ],
                             ),
                             const SizedBox(height: 10),
@@ -178,7 +178,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                   child: Text("CATEGORY NAME", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                 ),
                                 const SizedBox(width: 10),
-                                Flexible(child: Text(categories[index].categoryName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
+                                Flexible(child: Text(_categories[index].categoryName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                               ],
                             ),
                           ],
@@ -187,7 +187,7 @@ class _CategoriesListState extends State<CategoriesList> {
                     ),
                   ),
                   separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
-                  itemCount: categories.length,
+                  itemCount: _categories.length,
                 );
               } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                 return Center(

@@ -12,9 +12,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
+import '../../utils/shared.dart';
 
 class BookingList extends StatefulWidget {
   const BookingList({super.key});

@@ -9,9 +9,9 @@ import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
+import '../../utils/shared.dart';
 
 class TrueView extends StatefulWidget {
   const TrueView({super.key});

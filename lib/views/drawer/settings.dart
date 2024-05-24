@@ -2,7 +2,7 @@
 
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:dabka/utils/callbacks.dart';
-import 'package:dabka/views/client/holder/holder.dart';
+import 'package:dabka/views/client/holder.dart';
 import 'package:dabka/views/drawer/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

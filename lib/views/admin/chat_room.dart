@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/chat_head_model.dart';
 
@@ -28,13 +29,34 @@ class _ChatRoomState extends State<ChatRoom> {
 
   void _sendMessage() async {
     if (_messageController.text.trim().isEmpty) return;
-    await FirebaseFirestore.instance.collection('messages').add(
-      <String, dynamic>{
-        'roomID': widget.chatHead.roomID,
-        'userID': FirebaseAuth.instance.currentUser!.uid,
-        'message': _messageController.text.trim(),
-        'timestamp': Timestamp.now(),
-      },
+    final String messageID = const Uuid().v8();
+    final Timestamp now = Timestamp.now();
+
+    await Future.wait(
+      <Future>[
+        FirebaseFirestore.instance.collection('messages').doc(messageID).set(
+              MessageModel(
+                messageID: messageID,
+                roomID: widget.chatHead.roomID,
+                message: _messageController.text.trim(),
+                timestamp: now.toDate(),
+                senderID: FirebaseAuth.instance.currentUser!.uid,
+                receiverID: widget.chatHead.remoteID,
+                type: "text",
+              ).toJson(),
+            ),
+        FirebaseFirestore.instance.collection('chat_heads').doc(widget.chatHead.roomID).update(
+              ChatHead(
+                roomID: widget.chatHead.roomID,
+                timestamp: now.toDate(),
+                remoteName: widget.chatHead.remoteName,
+                remoteID: widget.chatHead.remoteID,
+                remoteImage: widget.chatHead.remoteImage,
+                lastMessage: _messageController.text.trim(),
+                lastMessageType: "text",
+              ).toJson(),
+            ),
+      ],
     );
 
     _messageController.clear();
@@ -50,11 +72,19 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.chatHead.remoteName, style: GoogleFonts.abel(color: white)),
+        title: Text(widget.chatHead.remoteName, style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.w500)),
         backgroundColor: white,
+        elevation: 8,
+        shadowColor: dark,
       ),
       body: Column(
         children: <Widget>[
@@ -135,27 +165,27 @@ class _ChatRoomState extends State<ChatRoom> {
     final messageTime = message.timestamp;
 
     return Row(
-      mainAxisAlignment: message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: message.senderID == FirebaseAuth.instance.currentUser!.uid ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: <Widget>[
-        if (!message.isMe)
+        if (message.senderID != FirebaseAuth.instance.currentUser!.uid)
           CircleAvatar(
             backgroundImage: AssetImage(widget.chatHead.remoteImage),
             radius: 15,
           ),
         const SizedBox(width: 8),
         Column(
-          crossAxisAlignment: message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          crossAxisAlignment: message.senderID == FirebaseAuth.instance.currentUser!.uid ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
               constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
               decoration: BoxDecoration(
-                color: message.isMe ? purple : grey,
+                color: message.senderID == FirebaseAuth.instance.currentUser!.uid ? purple : grey,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 messageText,
-                style: GoogleFonts.abel(color: message.isMe ? white : dark),
+                style: GoogleFonts.abel(color: message.senderID == FirebaseAuth.instance.currentUser!.uid ? white : dark),
               ),
             ),
             const SizedBox(height: 4),
@@ -165,8 +195,8 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           ],
         ),
-        if (message.isMe) const SizedBox(width: 8),
-        if (message.isMe)
+        if (message.senderID == FirebaseAuth.instance.currentUser!.uid) const SizedBox(width: 8),
+        if (message.senderID == FirebaseAuth.instance.currentUser!.uid)
           CircleAvatar(
             backgroundImage: AssetImage(widget.chatHead.remoteImage),
             radius: 15,

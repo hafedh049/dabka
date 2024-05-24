@@ -7,7 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 
 import 'views/onboarding/onboarding_holder.dart';
-import 'views/client/holder/holder.dart';
+import 'views/admin/holder.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
