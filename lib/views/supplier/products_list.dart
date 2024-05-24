@@ -16,7 +16,6 @@ import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../models/user_model.dart';
 import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
@@ -64,28 +63,8 @@ class _ProductsListState extends State<ProductsList> {
             Text("Products List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
             const Spacer(),
             IconButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => AddProduct(
-                    user: UserModel(
-                      userID: "1",
-                      email: "1",
-                      password: "1",
-                      phoneNumber: "1",
-                      username: "1",
-                      categoryName: "1",
-                      categoryID: "1",
-                      userAvatar: "1",
-                      userType: ["1"],
-                      userDescription: "1",
-                      followers: 1,
-                      gender: "M",
-                    ),
-                  ),
-                ),
-              ),
-              icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 20),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddProduct())),
+              icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 25),
             ),
           ],
         ),

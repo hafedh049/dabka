@@ -28,7 +28,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
 
-  String _category = "";
+  CategoryModel? _category;
 
   List<CategoryModel> _categories = <CategoryModel>[];
 
@@ -44,7 +44,8 @@ class _BecomeSellerState extends State<BecomeSeller> {
       await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update(
         <String, dynamic>{
           'userType': const <String>['CLIENT', 'SUPPLIER'],
-          'categoryName': _category,
+          'categoryName': _category!.categoryName,
+          'categoryID': _category!.categoryID,
         },
       );
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false);
@@ -80,7 +81,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
             builder: (BuildContext context, AsyncSnapshot<List<CategoryModel>> snapshot) {
               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 _categories = snapshot.data!;
-                _category = _categories.first.categoryName;
+                _category = _categories.first;
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -227,7 +228,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                           items: _categories,
                           excludeSelected: false,
                           initialItem: _categories.first,
-                          onChanged: (CategoryModel value) => _category = value.categoryName,
+                          onChanged: (CategoryModel value) => _category = value,
                         ),
                       ),
                     ),

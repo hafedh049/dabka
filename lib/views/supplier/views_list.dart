@@ -12,7 +12,6 @@ import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../models/user_model.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
 import '../../utils/shared.dart';
@@ -48,27 +47,7 @@ class _ViewsListState extends State<ViewsList> {
             Text("True Views List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
             const Spacer(),
             IconButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => AddTrueView(
-                    user: UserModel(
-                      userID: "1",
-                      email: "1",
-                      password: "1",
-                      phoneNumber: "1",
-                      username: "1",
-                      categoryName: "1",
-                      categoryID: "1",
-                      userAvatar: "1",
-                      userType: ["1"],
-                      userDescription: "1",
-                      followers: 1,
-                      gender: "M",
-                    ),
-                  ),
-                ),
-              ),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddTrueView())),
               icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 20),
             ),
           ],
