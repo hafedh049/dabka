@@ -26,91 +26,68 @@ class HomePart extends StatelessWidget {
         const SizedBox(height: 10),
         products.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
-            : SizedBox(
-                height: 300,
-                width: 200,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int index) => GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Product(product: products[index]))),
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          height: 300,
-                          width: 200,
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), image: DecorationImage(image: CachedNetworkImageProvider(products[index].productImages.first.path), fit: BoxFit.cover)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              const Spacer(),
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                margin: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white),
-                                child: Text("${products[index].productRating.toStringAsFixed(1)} ★", style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.bold)),
-                              ),
-                              const SizedBox(height: 10),
-                              Container(
-                                height: 100,
-                                decoration: BoxDecoration(color: white, border: Border.all(color: gold, width: 2)),
-                                child: Row(
-                                  children: <Widget>[
-                                    const Spacer(),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: const BoxDecoration(color: gold, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15))),
-                                      child: const Icon(FontAwesome.crown_solid, color: white, size: 15),
-                                    ),
-                                  ],
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: SizedBox(
+                  height: 300,
+                  width: 200,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) => GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Product(product: products[index]))),
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: <Widget>[
+                          Container(
+                            height: 300,
+                            width: 200,
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), image: DecorationImage(image: CachedNetworkImageProvider(products[index].productImages.first.path), fit: BoxFit.cover)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Spacer(),
+                                Container(
+                                  height: 100,
+                                  decoration: BoxDecoration(color: white, border: Border.all(color: gold, width: 2)),
+                                  child: Row(
+                                    children: <Widget>[
+                                      const Spacer(),
+                                      Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(color: gold, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15))),
+                                        child: const Icon(FontAwesome.crown_solid, color: white, size: 15),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  const Spacer(),
-                                  Container(
-                                    decoration: BoxDecoration(color: pink, borderRadius: BorderRadius.circular(5)),
-                                    padding: const EdgeInsets.all(4),
-                                    child: const Icon(FontAwesome.database_solid, color: white, size: 15),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text("Installment Available", style: GoogleFonts.abel(color: pink, fontSize: 8, fontWeight: FontWeight.w500)),
-                                ],
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  const Spacer(),
-                                  Text(products[index].productName, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 10),
-                                  Text(products[index].productType, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.w500)),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    padding: const EdgeInsets.all(4),
-                                    alignment: Alignment.center,
-                                    child: Text("${products[index].productBuyPrice.toStringAsFixed(3).replaceAll(".", ",")} TND", style: GoogleFonts.abel(color: pink, fontSize: 12, fontWeight: FontWeight.bold)),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const Spacer(),
+                                Text(products[index].productName, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 10),
+                                Text(products[index].productType, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.w500)),
+                                const SizedBox(height: 10),
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  alignment: Alignment.center,
+                                  child: Text("${products[index].productBuyPrice.toStringAsFixed(3).replaceAll(".", ",")} TND", style: GoogleFonts.abel(color: pink, fontSize: 12, fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                    separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
+                    itemCount: products.length,
                   ),
-                  separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
-                  itemCount: products.length,
                 ),
               ),
       ],

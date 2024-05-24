@@ -39,14 +39,14 @@ class _CategoriesListState extends State<CategoriesList> {
                         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CategoryView(category: category))),
                         child: Card(
                           child: Container(
-                            height: 90,
-                            width: 70,
+                            height: 120,
+                            width: 80,
                             padding: const EdgeInsets.all(12),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  height: 40,
+                                  height: 60,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(image: CachedNetworkImageProvider(category.categoryUrl), fit: BoxFit.cover),
                                     borderRadius: BorderRadius.circular(5),
@@ -55,7 +55,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                   padding: const EdgeInsets.all(4),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(category.categoryName, style: GoogleFonts.abel(color: dark, fontSize: 8, fontWeight: FontWeight.w900), textAlign: TextAlign.center),
+                                Text(category.categoryName, style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.w900), textAlign: TextAlign.center),
                               ],
                             ),
                           ),

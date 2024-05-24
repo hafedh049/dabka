@@ -11,7 +11,6 @@ import 'shared.dart';
 Future<bool> init() async {
   Hive.init((await getApplicationDocumentsDirectory()).path);
   settingsBox = await Hive.openBox('settings');
-  //await settingsBox!.clear();
   if (settingsBox!.isEmpty) {
     await settingsBox!.putAll(
       <String, dynamic>{

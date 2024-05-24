@@ -1,10 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dabka/models/order_model.dart';
 import 'package:dabka/models/product_model.dart';
+import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/utils/helpers/available_payment_method.dart';
 import 'package:dabka/utils/helpers/select_request_reservation.dart';
 import 'package:dabka/utils/shared.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:uuid/uuid.dart';
 
 import '../utils/helpers/product_description.dart';
 import '../utils/helpers/product_details.dart';
@@ -233,7 +240,57 @@ class _ProductState extends State<Product> {
                 hoverColor: transparent,
                 splashColor: transparent,
                 highlightColor: transparent,
-                onTap: () {},
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("Are you sure ?", style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
+                          const SizedBox(height: 20),
+                          Text("Total Cart (${widget.product.productBuyPrice.toStringAsFixed(2)} DT)", style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: <Widget>[
+                              const Spacer(),
+                              TextButton(
+                                onPressed: () async {
+                                  final String orderID = const Uuid().v8();
+                                  String username = '';
+
+                                  final DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+
+                                  username = userDoc.get('userName');
+                                  await FirebaseFirestore.instance.collection('orders').doc(orderID).set(
+                                        OrderModel(
+                                          orderID: orderID,
+                                          ownerID: FirebaseAuth.instance.currentUser!.uid,
+                                          timestamp: Timestamp.now().toDate(),
+                                          ownerName: username,
+                                          products: <ProductModel>[widget.product],
+                                        ).toJson(),
+                                      );
+                                  showToast(context, 'Product Requested Successfully');
+                                  Navigator.pop(context);
+                                },
+                                style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                child: Text("Confirm", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                              ),
+                              const SizedBox(width: 10),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(blue)),
+                                child: Text("Cancel", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
                 child: Container(
                   height: 40,
                   decoration: const BoxDecoration(color: purple, borderRadius: BorderRadius.only(topRight: Radius.circular(22), bottomRight: Radius.circular(22))),

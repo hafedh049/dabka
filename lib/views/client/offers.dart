@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/offer_model.dart';
 import 'package:date_format/date_format.dart';
@@ -78,45 +79,59 @@ class _OffersListState extends State<OffersList> with TickerProviderStateMixin {
                             child: Container(
                               padding: const EdgeInsets.all(8),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
+                                  Container(
+                                    width: double.infinity,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      image: _offers[index].offerImage.isEmpty
+                                          ? const DecorationImage(
+                                              image: AssetImage('assets/images/thumbnail1.png'),
+                                              fit: BoxFit.cover,
+                                            )
+                                          : DecorationImage(
+                                              image: CachedNetworkImageProvider(_offers[index].offerImage),
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                  ),
                                   const SizedBox(height: 10),
                                   Row(
                                     children: <Widget>[
                                       Container(
-                                        padding: const EdgeInsets.all(4),
-                                        color: purple,
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                        child: Text("OFFER NAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                        child: Text("OFFER NAME", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
-                                      Flexible(child: Text(_offers[index].offerName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                      Flexible(child: Text(_offers[index].offerName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                                     ],
                                   ),
                                   const SizedBox(height: 10),
                                   Row(
                                     children: <Widget>[
                                       Container(
-                                        padding: const EdgeInsets.all(4),
-                                        color: purple,
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                        child: Text("OFFER TYPE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                        child: Text("OFFER TYPE", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
-                                      Flexible(child: Text(_offers[index].offerType, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                      Flexible(child: Text(_offers[index].offerType, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                                     ],
                                   ),
                                   const SizedBox(height: 10),
                                   Row(
                                     children: <Widget>[
                                       Container(
-                                        padding: const EdgeInsets.all(4),
-                                        color: purple,
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                        child: Text("OFFER DATE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                        child: Text("OFFER DATE", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
-                                      Text(_formatCustomDate(_offers[index].timestamp), style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                      Text(_formatCustomDate(_offers[index].timestamp), style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                     ],
                                   ),
                                 ],
@@ -124,7 +139,7 @@ class _OffersListState extends State<OffersList> with TickerProviderStateMixin {
                             ),
                           ),
                           separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
-                          itemCount: 0,
+                          itemCount: _offers.length,
                         );
                       } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                         return Center(

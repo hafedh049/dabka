@@ -32,7 +32,7 @@ class OrderModel {
     return <String, dynamic>{
       'orderID': orderID,
       'ownerID': ownerID,
-      'timestamp': timestamp.toIso8601String(),
+      'timestamp': timestamp,
       'ownerName': ownerName,
       'products': products.map((ProductModel product) => product.toJson()).toList(),
       'state': state,

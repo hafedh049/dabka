@@ -141,6 +141,7 @@ class _OrdersListState extends State<OrdersList> {
                                         onPressed: () async {
                                           await FirebaseFirestore.instance.collection("orders").doc(snapshot.data!.docs[index].id).update({"state": "CONFIRMED"});
                                           showToast(context, "Order confirmed successfully");
+                                          Navigator.pop(context);
                                         },
                                         style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
                                         child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
@@ -170,73 +171,68 @@ class _OrdersListState extends State<OrdersList> {
                                 Row(
                                   children: <Widget>[
                                     Container(
-                                      padding: const EdgeInsets.all(4),
-                                      color: purple,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                      child: Text("ORDER ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                      child: Text("ORDER ID", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
-                                    Flexible(child: Text(_orders[index].orderID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                    Flexible(child: Text(_orders[index].orderID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                                   ],
                                 ),
                                 const SizedBox(height: 10),
                                 Row(
                                   children: <Widget>[
                                     Container(
-                                      padding: const EdgeInsets.all(4),
-                                      color: purple,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                      child: Text("OWNER ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                      child: Text("OWNER ID", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
-                                    Flexible(child: Text(_orders[index].ownerID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                    Flexible(child: Text(_orders[index].ownerID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                                   ],
                                 ),
                                 const SizedBox(height: 10),
                                 Row(
                                   children: <Widget>[
                                     Container(
-                                      padding: const EdgeInsets.all(4),
-                                      color: purple,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                      child: Text("OWNER NAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                      child: Text("OWNER NAME", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
-                                    Flexible(child: Text(_orders[index].ownerName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                    Flexible(child: Text(_orders[index].ownerName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                                   ],
                                 ),
                                 const SizedBox(height: 10),
                                 Row(
                                   children: <Widget>[
                                     Container(
-                                      padding: const EdgeInsets.all(4),
-                                      color: purple,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
                                       child: Text("ORDER DATE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text(_formatCustomDate(_orders[index].timestamp), style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                    Text(_formatCustomDate(_orders[index].timestamp), style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                   ],
                                 ),
                                 const SizedBox(height: 10),
                                 Row(
                                   children: <Widget>[
                                     Container(
-                                      padding: const EdgeInsets.all(4),
-                                      color: purple,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                      child: Text("STATE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                      child: Text("STATE", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Container(
-                                      padding: const EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
                                         color: _orders[index].state.toUpperCase() == "IN PROGRESS" ? green : blue,
                                       ),
                                       child: Text(
                                         _orders[index].state.toUpperCase(),
-                                        style: GoogleFonts.abel(fontSize: 10, color: white, fontWeight: FontWeight.w500),
+                                        style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                   ],
@@ -249,6 +245,8 @@ class _OrdersListState extends State<OrdersList> {
                                     child: Row(
                                       children: <Widget>[
                                         Container(
+                                          width: 80,
+                                          height: 80,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(10),
                                             image: DecorationImage(image: NetworkImage(product.value.productImages.first.path), fit: BoxFit.cover),
@@ -260,18 +258,17 @@ class _OrdersListState extends State<OrdersList> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
-                                              Text(product.value.productName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                              Text(product.value.productName, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.bold)),
                                               const SizedBox(height: 5),
-                                              Text(product.value.categoryName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                              Text(product.value.categoryName, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
                                             ],
                                           ),
                                         ),
                                         const SizedBox(width: 10),
-                                        Text((product.value.productBuyPrice * product.key).toStringAsFixed(2), style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.bold)),
+                                        Text("${(product.value.productBuyPrice * product.key).toStringAsFixed(2)} TND", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.bold)),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
                                 ],
                               ],
                             ),

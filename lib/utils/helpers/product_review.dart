@@ -71,7 +71,7 @@ class _ProductReviewState extends State<ProductReview> {
               shadowColor: dark,
               elevation: 4,
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection('reviews').orderBy('timestamp', descending: true).snapshots(),
+                stream: FirebaseFirestore.instance.collection('reviews').where('productID', isEqualTo: widget.product.productID).orderBy('timestamp', descending: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                   if (snapshot.hasData) {
                     final List<ReviewModel> reviews = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> review) => ReviewModel.fromJson(review.data())).toList();
@@ -84,7 +84,7 @@ class _ProductReviewState extends State<ProductReview> {
                             padding: const EdgeInsets.all(8),
                             child: Row(
                               children: <Widget>[
-                                Text("Over all rate", style: GoogleFonts.abel(color: grey, fontSize: 10, fontWeight: FontWeight.bold)),
+                                Text("Over all rate", style: GoogleFonts.abel(color: dark.withOpacity(.8), fontSize: 12, fontWeight: FontWeight.bold)),
                                 const SizedBox(width: 10),
                                 Card(
                                   color: white,
@@ -206,6 +206,11 @@ class _ProductReviewState extends State<ProductReview> {
                                                               timestamp: Timestamp.now().toDate(),
                                                             ).toJson(),
                                                           );
+
+                                                      _applierNameController.clear();
+                                                      _descriptionController.clear();
+                                                      _rating = 0;
+
                                                       showToast(context, "Review submitted");
                                                       Navigator.pop(context);
                                                     }
@@ -226,7 +231,14 @@ class _ProductReviewState extends State<ProductReview> {
                                       ),
                                     );
                                   },
-                                  child: Text("Write review", style: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500)),
+                                  child: Card(
+                                    shadowColor: dark,
+                                    elevation: 4,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      child: Text("Write review", style: GoogleFonts.abel(color: dark.withOpacity(.8), fontSize: 12, fontWeight: FontWeight.w500)),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -251,7 +263,7 @@ class _ProductReviewState extends State<ProductReview> {
                                         const SizedBox(height: 10),
                                         Flexible(child: Text(reviews[index].comment, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500))),
                                         const SizedBox(height: 10),
-                                        Text(_formatCustomDate(reviews[index].timestamp), style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 10, fontWeight: FontWeight.w500)),
+                                        Text(_formatCustomDate(reviews[index].timestamp), style: GoogleFonts.abel(color: dark.withOpacity(.8), fontSize: 10, fontWeight: FontWeight.w500)),
                                       ],
                                     ),
                                   ),

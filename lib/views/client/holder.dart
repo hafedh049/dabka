@@ -51,7 +51,7 @@ class _HolderState extends State<Holder> {
     <String, dynamic>{
       "title": "الحجوزات",
       "icon": FontAwesome.wolf_pack_battalion_brand,
-      "page": FirebaseAuth.instance.currentUser == null ? const SignIn() : const BookingList(),
+      "page": FirebaseAuth.instance.currentUser == null ? () => const SignIn(passed: true) : const BookingList(),
     },
   ];
 
