@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
-import 'package:dabka/views/admin/add_category.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -14,6 +13,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../models/offer_model.dart';
 import '../../utils/callbacks.dart';
+import 'add_offer.dart';
 
 class OffersList extends StatefulWidget {
   const OffersList({super.key});
