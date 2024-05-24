@@ -11,9 +11,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
+import '../../utils/shared.dart';
 
 class OrdersList extends StatefulWidget {
   const OrdersList({super.key});

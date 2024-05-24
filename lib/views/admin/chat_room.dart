@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../models/chat_head_model.dart';
+import '../../models/chat_head_model.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({super.key, required this.chatHead});

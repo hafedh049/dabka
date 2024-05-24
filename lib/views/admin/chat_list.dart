@@ -6,10 +6,10 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../utils/callbacks.dart';
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../utils/callbacks.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
+import '../../utils/shared.dart';
 import 'chat_room.dart';
 
 class ChatsList extends StatefulWidget {

@@ -4,14 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
-import 'package:dabka/views/admin/holder/add_category.dart';
+import 'package:dabka/views/admin/add_category.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../models/category_model.dart';
-import '../../../utils/callbacks.dart';
+import '../../models/category_model.dart';
+import '../../utils/callbacks.dart';
 
 class CategoriesList extends StatefulWidget {
   const CategoriesList({super.key});

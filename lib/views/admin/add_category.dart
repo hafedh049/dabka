@@ -11,7 +11,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../utils/callbacks.dart';
+import '../../utils/callbacks.dart';
 
 class AddCategory extends StatefulWidget {
   const AddCategory({super.key});

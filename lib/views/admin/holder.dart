@@ -1,13 +1,14 @@
-import 'package:dabka/views/admin/holder/category_list.dart';
-import 'package:dabka/views/admin/holder/chat_list.dart';
-import 'package:dabka/views/admin/holder/orders_list.dart';
+import 'package:dabka/views/admin/category_list.dart';
+import 'package:dabka/views/admin/charts.dart';
+import 'package:dabka/views/admin/chat_list.dart';
+import 'package:dabka/views/admin/orders_list.dart';
 import 'package:dabka/views/drawer/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../../utils/shared.dart';
+import '../../utils/shared.dart';
 import 'users_list.dart';
 
 class Holder extends StatefulWidget {
@@ -43,6 +44,11 @@ class _HolderState extends State<Holder> {
       "title": "Chats",
       "icon": FontAwesome.heart,
       "page": const ChatsList(),
+    },
+    <String, dynamic>{
+      "title": "Charts",
+      "icon": FontAwesome.chart_pie_solid,
+      "page": const Charts(),
     },
   ];
 
@@ -100,12 +106,12 @@ class _HolderState extends State<Holder> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(e["icon"], size: 10, color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6)),
+                                Icon(e["icon"], size: 20, color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6)),
                                 const SizedBox(height: 5),
                                 AnimatedDefaultTextStyle(
                                   duration: 300.ms,
                                   style: GoogleFonts.abel(
-                                    fontSize: 9,
+                                    fontSize: 12,
                                     color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6),
                                     fontWeight: _currentPage == e["title"] ? FontWeight.bold : FontWeight.w500,
                                   ),

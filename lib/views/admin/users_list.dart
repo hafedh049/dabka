@@ -7,8 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
 import 'add_user.dart';
 
 class UsersList extends StatefulWidget {
