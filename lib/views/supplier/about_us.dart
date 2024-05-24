@@ -1,5 +1,5 @@
-import 'package:dabka/views/drawer/about_us/app_feedback.dart';
-import 'package:dabka/views/drawer/about_us/privacy_policy/privacy_policy.dart';
+import 'package:dabka/views/client/app_feedback.dart';
+import 'package:dabka/views/client/privacy_policy.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';

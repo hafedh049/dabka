@@ -1,9 +1,9 @@
-import 'package:dabka/views/drawer/about_us/privacy_policy/contact_support.dart';
+import 'package:dabka/views/client/contact_support.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../../../utils/shared.dart';
+import '../../utils/shared.dart';
 
 class PrivacyPolicy extends StatefulWidget {
   const PrivacyPolicy({super.key});

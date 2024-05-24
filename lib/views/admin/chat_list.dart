@@ -1,13 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/chat_head_model.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
 import '../../utils/shared.dart';
@@ -21,6 +22,23 @@ class ChatsList extends StatefulWidget {
 
 class _ChatListState extends State<ChatsList> {
   List<ChatHead> _chats = <ChatHead>[];
+
+  String _formatCustomDate(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(1.days);
+    final dayBeforeYesterday = today.subtract(2.days);
+
+    if (date.year == today.year && date.month == today.month && date.day == today.day) {
+      return 'Today, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
+    } else if (date.year == today.year && date.month == today.month && date.day == yesterday.day) {
+      return 'Yesterday, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
+    } else if (date.year == today.year && date.month == today.month && date.day == dayBeforeYesterday.day) {
+      return '2 days ago, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
+    } else {
+      return formatDate(date, const <String>[dd, '/', mm, '/', yyyy, ' ', hh, ':', nn, ':', ss, ' ', am]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,43 +58,6 @@ class _ChatListState extends State<ChatsList> {
                 return ListView.separated(
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(chatHead: _chats[index]))),
-                    onLongPress: () {
-                      showBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) => Container(
-                          color: white,
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text("Are you sure you want to delete this chat ?", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 20),
-                              Row(
-                                children: <Widget>[
-                                  const Spacer(),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await FirebaseFirestore.instance.collection("chat_heads").doc(snapshot.data!.docs[index].id).delete();
-                                      showToast(context, "Chat deleted successfully");
-                                      Navigator.pop(context);
-                                    },
-                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
-                                    child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
                     child: Card(
                       shadowColor: dark,
                       elevation: 4,
@@ -84,13 +65,22 @@ class _ChatListState extends State<ChatsList> {
                         padding: const EdgeInsets.all(4),
                         child: Row(
                           children: <Widget>[
+                            const SizedBox(height: 10),
                             Container(
-                              width: 60,
-                              height: 60,
+                              width: 80,
+                              height: 80,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: white,
-                                image: DecorationImage(image: AssetImage(_chats[index].remoteImage), fit: BoxFit.contain),
+                                image: _chats[index].remoteImage.isEmpty
+                                    ? const DecorationImage(
+                                        image: AssetImage('assets/images/nobody.png'),
+                                        fit: BoxFit.contain,
+                                      )
+                                    : DecorationImage(
+                                        image: CachedNetworkImageProvider(_chats[index].remoteImage),
+                                        fit: BoxFit.contain,
+                                      ),
                                 border: Border.all(width: 2, color: purple),
                               ),
                             ),
@@ -99,18 +89,24 @@ class _ChatListState extends State<ChatsList> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Text("${_chats[index].remoteID == FirebaseAuth.instance.currentUser!.uid ? 'You: ' : ''}${_chats[index].remoteName}", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: purple),
+                                  child: Text(_chats[index].remoteName, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      if (_chats[index].remoteID == FirebaseAuth.instance.currentUser!.uid) TextSpan(text: 'You: ', style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+                                      TextSpan(text: _chats[index].lastMessage, style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 14, fontWeight: FontWeight.w500)),
+                                    ],
+                                  ),
+                                ),
                                 const SizedBox(height: 5),
-                                Row(
-                                  children: <Widget>[
-                                    Flexible(child: Text(_chats[index].lastMessage, style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 10, fontWeight: FontWeight.w500))),
-                                    const SizedBox(width: 5),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: purple),
-                                      child: Text(formatDate(_chats[index].timestamp, const <String>[HH, ":", nn, " ", am]), style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.w500)),
-                                    ),
-                                  ],
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: purple),
+                                  child: Text(_formatCustomDate(_chats[index].timestamp), style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
                                 ),
                               ],
                             ),

@@ -185,8 +185,6 @@ class _SignInState extends State<SignIn> {
                             showToast(context, "Enter a correct e-mail address", color: red);
                           } else if (_passwordController.text.isEmpty) {
                             showToast(context, "Enter a correct password", color: red);
-                          } else if (_phoneController.text.trim().replaceAll(" ", "").isEmpty || _phoneController.text.trim().replaceAll(" ", "").length < 8) {
-                            showToast(context, "Enter a valid phone number please", color: red);
                           } else {
                             try {
                               _(() => _ignoreStupidity = true);

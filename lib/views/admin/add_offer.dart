@@ -2,9 +2,12 @@
 
 import 'dart:io';
 
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/category_model.dart';
+import 'package:dabka/models/offer_model.dart';
 import 'package:dabka/utils/shared.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -12,6 +15,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
@@ -26,6 +30,7 @@ class AddOffer extends StatefulWidget {
 
 class _AddOfferState extends State<AddOffer> {
   final TextEditingController _offerNameController = TextEditingController();
+  final TextEditingController _offerTypeController = TextEditingController(text: "EXCLUSIVE");
 
   final GlobalKey<State<StatefulWidget>> _offerImageKey = GlobalKey<State<StatefulWidget>>();
 
@@ -33,9 +38,16 @@ class _AddOfferState extends State<AddOffer> {
 
   bool _ignoreStupidity = false;
 
+  List<CategoryModel> _categories = <CategoryModel>[];
+
+  CategoryModel? _selectedCategory;
+
+  double _max = 100;
+
   @override
   void dispose() {
     _offerNameController.dispose();
+    _offerTypeController.dispose();
     super.dispose();
   }
 
@@ -44,6 +56,8 @@ class _AddOfferState extends State<AddOffer> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
+        centerTitle: true,
+        title: Text("Add Offer", style: GoogleFonts.poppins(color: dark, fontSize: 20)),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple),
@@ -55,6 +69,8 @@ class _AddOfferState extends State<AddOffer> {
           future: FirebaseFirestore.instance.collection('categories').get(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+              _categories = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => CategoryModel.fromJson(e.data())).toList();
+              _selectedCategory = _categories.first;
               return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -70,7 +86,7 @@ class _AddOfferState extends State<AddOffer> {
                             }
                           },
                           child: AnimatedContainer(
-                            width: MediaQuery.sizeOf(context).width * .6,
+                            width: MediaQuery.sizeOf(context).width,
                             height: 150,
                             duration: 300.ms,
                             decoration: BoxDecoration(
@@ -104,7 +120,18 @@ class _AddOfferState extends State<AddOffer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text("Offer name", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                            Card(
+                              elevation: 6,
+                              shadowColor: dark,
+                              child: CustomDropdown<CategoryModel>.search(
+                                hintText: 'Pick a category',
+                                items: _categories,
+                                excludeSelected: false,
+                                initialItem: _categories.first,
+                                onChanged: (CategoryModel value) => _selectedCategory = value,
+                              ),
+                            ),
+                            Text("Offer Name", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                             const SizedBox(height: 10),
                             SizedBox(
                               height: 40,
@@ -126,8 +153,58 @@ class _AddOfferState extends State<AddOffer> {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 10),
+                            Text("Offer Type", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: 40,
+                              child: TextField(
+                                controller: _offerTypeController,
+                                readOnly: true,
+                                style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.all(6),
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                  disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                  focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                  hintText: "Offer Type",
+                                  hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
+                                  labelText: "Pick the offer type",
+                                  labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
+                                  prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.user, color: grey, size: 15)),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 40,
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, void Function(void Function()) _) {
+                          return Row(
+                            children: <Widget>[
+                              Text("0 %", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.bold)),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Slider(
+                                  value: _max,
+                                  max: 100,
+                                  onChanged: (double value) => _(() => _max = value),
+                                  activeColor: purple,
+                                  divisions: 10,
+                                  label: '${_max.toStringAsFixed(0)}%',
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text("100 %", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.bold)),
+                            ],
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -142,40 +219,43 @@ class _AddOfferState extends State<AddOffer> {
                               highlightColor: transparent,
                               onTap: () async {
                                 if (_offerNameController.text.trim().isEmpty) {
-                                  showToast(context, "Category name is required", color: red);
-                                } else if (_banner == null) {
-                                  showToast(context, "Pick an image for the category", color: red);
+                                  showToast(context, "Offer name is required", color: red);
+                                } else if (_max == 0) {
+                                  showToast(context, "Why are you doing a discount then ?", color: red);
+                                } else if (_max == 100) {
+                                  showToast(context, "Are you serious ?", color: red);
                                 } else {
                                   try {
                                     _(() => _ignoreStupidity = true);
                                     showToast(context, "Please wait...");
-
-                                    final DocumentReference<Map<String, dynamic>> docRef = await FirebaseFirestore.instance.collection("categories").add(
-                                          CategoryModel(
-                                            categoryID: '',
-                                            categoryName: _offerNameController.text,
-                                            categoryUrl: '',
-                                          ).toJson(),
-                                        );
-
                                     String path = "";
 
+                                    final String offerID = const Uuid().v8();
+
                                     if (_banner != null) {
-                                      final TaskSnapshot task = await FirebaseStorage.instance.ref().child("/categories/${docRef.id}.png").putFile(_banner!);
+                                      final TaskSnapshot task = await FirebaseStorage.instance.ref().child("/offers/$offerID.png").putFile(_banner!);
                                       path = await task.ref.getDownloadURL();
                                     }
 
-                                    await docRef.update(
-                                      <String, dynamic>{
-                                        'categoryID': docRef.id.trim(),
-                                        'categoryUrl': path,
-                                      },
-                                    );
+                                    await FirebaseFirestore.instance.collection("offers").doc(offerID).set(
+                                          OfferModel(
+                                            offerID: offerID,
+                                            categoryID: _selectedCategory!.categoryID,
+                                            category: _selectedCategory!.categoryName,
+                                            username: "ADMIN",
+                                            userID: FirebaseAuth.instance.currentUser!.uid,
+                                            offerName: _offerNameController.text.trim(),
+                                            offerType: _offerTypeController.text.trim(),
+                                            offerImage: path,
+                                            offerDiscount: _max,
+                                            timestamp: Timestamp.now().toDate(),
+                                          ).toJson(),
+                                        );
 
                                     _offerNameController.clear();
                                     _offerImageKey.currentState!.setState(() => _banner = null);
 
-                                    showToast(context, "Category Created Successfully");
+                                    showToast(context, "Offer Created Successfully");
                                     _(() => _ignoreStupidity = false);
                                   } catch (e) {
                                     showToast(context, e.toString(), color: red);
@@ -186,7 +266,7 @@ class _AddOfferState extends State<AddOffer> {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                                child: Text("Add Category", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                child: Text("Add Offer", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           );

@@ -1,12 +1,12 @@
-import 'package:dabka/views/drawer/drawer.dart';
-import 'package:dabka/views/supplier/holder/products_list.dart';
-import 'package:dabka/views/supplier/holder/views_list.dart';
+import 'package:dabka/views/supplier/drawer.dart';
+import 'package:dabka/views/supplier/products_list.dart';
+import 'package:dabka/views/supplier/views_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../../utils/shared.dart';
+import '../../utils/shared.dart';
 
 class Holder extends StatefulWidget {
   const Holder({super.key});

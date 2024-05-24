@@ -1,4 +1,6 @@
-class CategoryModel {
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
+
+class CategoryModel with CustomDropdownListFilter {
   final String categoryID;
   final String categoryName;
   final String categoryUrl;
@@ -24,4 +26,10 @@ class CategoryModel {
       'categoryUrl': categoryUrl,
     };
   }
+
+  @override
+  String toString() => categoryName;
+
+  @override
+  bool filter(String query) => categoryName.toLowerCase().contains(query.toLowerCase());
 }

@@ -53,7 +53,9 @@ class _AddUserState extends State<AddUser> {
       child: Scaffold(
         backgroundColor: white,
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: white,
+          title: Text("Add User", style: GoogleFonts.poppins(color: dark, fontSize: 20)),
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple),

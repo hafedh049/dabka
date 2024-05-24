@@ -18,7 +18,7 @@ import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../utils/callbacks.dart';
+import '../../utils/callbacks.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key, required this.user});

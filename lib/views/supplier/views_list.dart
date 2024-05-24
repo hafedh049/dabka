@@ -2,8 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/true_view_model.dart';
-import 'package:dabka/views/supplier/holder/add_view.dart';
-import 'package:dabka/views/supplier/holder/view_space.dart';
+import 'package:dabka/views/supplier/add_view.dart';
+import 'package:dabka/views/supplier/view_space.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,10 +12,10 @@ import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../models/user_model.dart';
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../models/user_model.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
+import '../../utils/shared.dart';
 
 class ViewsList extends StatefulWidget {
   const ViewsList({super.key});

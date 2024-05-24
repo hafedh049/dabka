@@ -41,16 +41,20 @@ class _ChartsState extends State<Charts> with TickerProviderStateMixin {
 
   Stream<List<CategoryModel>> _fetchCategories() {
     final Stream<QuerySnapshot<Map<String, dynamic>>> query = FirebaseFirestore.instance.collection("categories").snapshots();
-    return query.map((QuerySnapshot<Map<String, dynamic>> event) {
-      return event.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => CategoryModel.fromJson(e.data())).toList();
-    });
+    return query.map(
+      (QuerySnapshot<Map<String, dynamic>> event) {
+        return event.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => CategoryModel.fromJson(e.data())).toList();
+      },
+    );
   }
 
   Stream<List<ProductModel>> _fetchProducts() {
-    final Stream<QuerySnapshot<Map<String, dynamic>>> query = FirebaseFirestore.instance.collection("categories").snapshots();
-    return query.map((QuerySnapshot<Map<String, dynamic>> event) {
-      return event.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => ProductModel.fromJson(e.data())).toList();
-    });
+    final Stream<QuerySnapshot<Map<String, dynamic>>> query = FirebaseFirestore.instance.collection("products").snapshots();
+    return query.map(
+      (QuerySnapshot<Map<String, dynamic>> event) {
+        return event.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => ProductModel.fromJson(e.data())).toList();
+      },
+    );
   }
 
   @override
@@ -196,7 +200,7 @@ class _ChartsState extends State<Charts> with TickerProviderStateMixin {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Expanded(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true)),
-                              Text("No Categories Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                              Text("No Products Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                             ],
                           ),
                         );

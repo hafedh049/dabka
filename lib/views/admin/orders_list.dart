@@ -25,6 +25,7 @@ class OrdersList extends StatefulWidget {
 class _OrdersListState extends State<OrdersList> {
   final TextEditingController _searchController = TextEditingController();
   List<OrderModel> _orders = <OrderModel>[];
+  final GlobalKey<State<StatefulWidget>> _searchKey = GlobalKey<State<StatefulWidget>>();
 
   String _formatCustomDate(DateTime date) {
     final now = DateTime.now();
@@ -86,6 +87,7 @@ class _OrdersListState extends State<OrdersList> {
                     child: Container(
                       decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(5)),
                       child: TextField(
+                        onChanged: (String value) => _searchKey.currentState!.setState(() {}),
                         controller: _searchController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -114,167 +116,172 @@ class _OrdersListState extends State<OrdersList> {
             stream: FirebaseFirestore.instance.collection("orders").where("state", isEqualTo: "IN PROGRESS").orderBy("timestamp", descending: true).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                _orders = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => OrderModel.fromJson(e.data())).toList();
-                return ListView.separated(
-                  itemBuilder: (BuildContext context, int index) => GestureDetector(
-                    onTap: () {
-                      showBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) => Container(
-                          color: white,
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text("Are you sure you want to confirm the order ? There is no turning back after this operation", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 20),
-                              Row(
+                return StatefulBuilder(
+                  key: _searchKey,
+                  builder: (BuildContext context, void Function(void Function()) _) {
+                    _orders = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => OrderModel.fromJson(e.data())).where((OrderModel element) => element.ownerName.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList();
+                    return ListView.separated(
+                      itemBuilder: (BuildContext context, int index) => GestureDetector(
+                        onTap: () {
+                          showBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) => Container(
+                              color: white,
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  const Spacer(),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await FirebaseFirestore.instance.collection("orders").doc(snapshot.data!.docs[index].id).update({"state": "CONFIRMED"});
-                                      showToast(context, "Order confirmed successfully");
-                                    },
-                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
-                                    child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                  Text("Are you sure you want to confirm the order ? There is no turning back after this operation", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: <Widget>[
+                                      const Spacer(),
+                                      TextButton(
+                                        onPressed: () async {
+                                          await FirebaseFirestore.instance.collection("orders").doc(snapshot.data!.docs[index].id).update({"state": "CONFIRMED"});
+                                          showToast(context, "Order confirmed successfully");
+                                        },
+                                        style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                        child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
+                                        child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      shadowColor: dark,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                      color: white,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  color: purple,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                  child: Text("ORDER ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                                ),
-                                const SizedBox(width: 10),
-                                Flexible(child: Text(_orders[index].orderID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
-                              ],
                             ),
-                            const SizedBox(height: 10),
-                            Row(
+                          );
+                        },
+                        child: Card(
+                          shadowColor: dark,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                          color: white,
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  color: purple,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                  child: Text("OWNER ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                                ),
-                                const SizedBox(width: 10),
-                                Flexible(child: Text(_orders[index].ownerID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  color: purple,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                  child: Text("OWNER NAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                                ),
-                                const SizedBox(width: 10),
-                                Flexible(child: Text(_orders[index].ownerName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  color: purple,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                  child: Text("ORDER DATE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(_formatCustomDate(_orders[index].timestamp), style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  color: purple,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
-                                  child: Text("STATE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                                ),
-                                const SizedBox(width: 10),
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: _orders[index].state.toUpperCase() == "IN PROGRESS" ? green : blue,
-                                  ),
-                                  child: Text(
-                                    _orders[index].state.toUpperCase(),
-                                    style: GoogleFonts.abel(fontSize: 10, color: white, fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            for (final MapEntry<int, ProductModel> product in _productsCounter(index).entries) ...<Widget>[
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: grey.withOpacity(.1)),
-                                child: Row(
+                                Row(
                                   children: <Widget>[
                                     Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(image: NetworkImage(product.value.productImages.first.path), fit: BoxFit.cover),
-                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                      color: purple,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                      child: Text("ORDER ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Text(product.value.productName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                                          const SizedBox(height: 5),
-                                          Text(product.value.categoryName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text((product.value.productBuyPrice * product.key).toStringAsFixed(2), style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.bold)),
+                                    Flexible(child: Text(_orders[index].orderID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
                                   ],
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ],
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      color: purple,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                      child: Text("OWNER ID", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Flexible(child: Text(_orders[index].ownerID, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      color: purple,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                      child: Text("OWNER NAME", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Flexible(child: Text(_orders[index].ownerName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500))),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      color: purple,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                      child: Text("ORDER DATE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(_formatCustomDate(_orders[index].timestamp), style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      color: purple,
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                                      child: Text("STATE", style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: _orders[index].state.toUpperCase() == "IN PROGRESS" ? green : blue,
+                                      ),
+                                      child: Text(
+                                        _orders[index].state.toUpperCase(),
+                                        style: GoogleFonts.abel(fontSize: 10, color: white, fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                for (final MapEntry<int, ProductModel> product in _productsCounter(index).entries) ...<Widget>[
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: grey.withOpacity(.1)),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            image: DecorationImage(image: NetworkImage(product.value.productImages.first.path), fit: BoxFit.cover),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Text(product.value.productName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                              const SizedBox(height: 5),
+                                              Text(product.value.categoryName, style: GoogleFonts.abel(fontSize: 10, color: dark, fontWeight: FontWeight.w500)),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text((product.value.productBuyPrice * product.key).toStringAsFixed(2), style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
-                  itemCount: _orders.length,
+                      separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
+                      itemCount: _orders.length,
+                    );
+                  },
                 );
               } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                 return Center(

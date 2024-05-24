@@ -13,9 +13,9 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:scrolling_text/scrolling_text.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../models/user_model.dart';
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
+import '../../models/user_model.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
 
 class ViewSpace extends StatefulWidget {
   const ViewSpace({super.key, required this.views, required this.currentIndex});

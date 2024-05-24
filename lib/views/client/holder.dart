@@ -1,7 +1,7 @@
 import 'package:dabka/views/auth/sign_in.dart';
 import 'package:dabka/views/client/booking.dart';
 import 'package:dabka/views/client/offers.dart';
-import 'package:dabka/views/drawer/drawer.dart';
+import 'package:dabka/views/client/drawer.dart';
 import 'package:dabka/views/client/chats.dart';
 import 'package:dabka/views/client/home.dart';
 import 'package:dabka/views/client/true_view.dart';

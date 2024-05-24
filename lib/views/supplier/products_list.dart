@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
-import 'package:dabka/views/supplier/holder/add_product.dart';
+import 'package:dabka/views/supplier/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
@@ -16,11 +16,11 @@ import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../../models/user_model.dart';
-import '../../../utils/callbacks.dart';
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../models/user_model.dart';
+import '../../utils/callbacks.dart';
+import '../../utils/helpers/error.dart';
+import '../../utils/helpers/wait.dart';
+import '../../utils/shared.dart';
 
 class ProductsList extends StatefulWidget {
   const ProductsList({super.key});

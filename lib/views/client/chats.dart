@@ -25,11 +25,13 @@ class Chats extends StatefulWidget {
 class _ChatsState extends State<Chats> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
+  final GlobalKey<State<StatefulWidget>> _firstTimeKey = GlobalKey<State<StatefulWidget>>();
   List<MessageModel> _messages = <MessageModel>[];
 
   UserModel? _user;
   String _roomID = '';
+
+  bool _firstTime = true;
 
   Future<bool> _loadUserInfo() async {
     final DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
@@ -44,6 +46,10 @@ class _ChatsState extends State<Chats> {
 
   void _sendMessage() async {
     if (_messageController.text.trim().isEmpty) return;
+
+    if (_messages.isNotEmpty) {
+      _firstTime = false;
+    }
 
     final String message = _messageController.text.trim();
     _messageController.clear();
@@ -83,6 +89,10 @@ class _ChatsState extends State<Chats> {
     );
 
     _scrollToBottom();
+
+    if (_firstTime) {
+      _firstTimeKey.currentState!.setState(() {});
+    }
   }
 
   void _scrollToBottom() {
@@ -173,75 +183,80 @@ class _ChatsState extends State<Chats> {
               } else if (snapshoted.hasError) {
                 return ErrorScreen(error: snapshoted.error.toString());
               }
-              return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: FirebaseFirestore.instance.collection('messages').where('roomID', isEqualTo: _roomID).orderBy('timestamp', descending: true).snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Wait();
-                  } else if (snapshot.hasError) {
-                    return ErrorScreen(error: snapshot.error.toString());
-                  }
-                  _messages = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> doc) => MessageModel.fromJson(doc.data())).toList();
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _messages.isEmpty
-                          ? Expanded(
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
+              return StatefulBuilder(
+                key: _firstTimeKey,
+                builder: (BuildContext context, void Function(void Function()) _) {
+                  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: FirebaseFirestore.instance.collection('messages').where('roomID', isEqualTo: _roomID).orderBy('timestamp', descending: true).snapshots(),
+                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Wait();
+                      } else if (snapshot.hasError) {
+                        return ErrorScreen(error: snapshot.error.toString());
+                      }
+                      _messages = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> doc) => MessageModel.fromJson(doc.data())).toList();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _messages.isEmpty
+                              ? Expanded(
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
+                                        Text("No Chats Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: ListView.separated(
+                                    controller: _scrollController,
+                                    reverse: true,
+                                    itemCount: _messages.length,
+                                    separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 10),
+                                    itemBuilder: (BuildContext context, int index) {
+                                      final MessageModel message = _messages[index];
+                                      final messageWidget = _buildMessage(message);
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 4),
+                                        child: messageWidget,
+                                      );
+                                    },
+                                  ),
+                                ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Card(
+                              shadowColor: dark,
+                              elevation: 6,
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                child: Row(
                                   children: <Widget>[
-                                    LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
-                                    Text("No Chats Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                    Expanded(
+                                      child: TextField(
+                                        controller: _messageController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Type a message',
+                                          hintStyle: GoogleFonts.abel(color: grey),
+                                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
+                                        ),
+                                        onSubmitted: (String _) => _sendMessage(),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    IconButton(icon: const Icon(Icons.send, color: purple), onPressed: _sendMessage),
                                   ],
                                 ),
                               ),
-                            )
-                          : Expanded(
-                              child: ListView.separated(
-                                controller: _scrollController,
-                                reverse: true,
-                                itemCount: _messages.length,
-                                separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 10),
-                                itemBuilder: (BuildContext context, int index) {
-                                  final MessageModel message = _messages[index];
-                                  final messageWidget = _buildMessage(message);
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 4),
-                                    child: messageWidget,
-                                  );
-                                },
-                              ),
-                            ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Card(
-                          shadowColor: dark,
-                          elevation: 6,
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: TextField(
-                                    controller: _messageController,
-                                    decoration: InputDecoration(
-                                      hintText: 'Type a message',
-                                      hintStyle: GoogleFonts.abel(color: grey),
-                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
-                                    ),
-                                    onSubmitted: (String _) => _sendMessage(),
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                IconButton(icon: const Icon(Icons.send, color: purple), onPressed: _sendMessage),
-                              ],
                             ),
                           ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    },
                   );
                 },
               );

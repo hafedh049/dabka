@@ -42,7 +42,7 @@ class _UsersListState extends State<UsersList> {
             const Spacer(),
             IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddUser())),
-              icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 15),
+              icon: const Icon(FontAwesome.circle_plus_solid, color: purple, size: 25),
             ),
           ],
         ),

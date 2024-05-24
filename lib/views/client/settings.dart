@@ -3,7 +3,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/views/client/holder.dart';
-import 'package:dabka/views/drawer/profile.dart';
+import 'package:dabka/views/client/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,8 +21,8 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   final Map<String, String> _languages = <String, String>{
     "en": "English",
-    "fr": "French",
-    "ar": "Darija",
+    "fr": "Français",
+    "ar": "العربية",
   };
   @override
   Widget build(BuildContext context) {
@@ -35,46 +35,48 @@ class _SettingsState extends State<Settings> {
       ),
       body: Column(
         children: <Widget>[
-          GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Profile())),
-            child: Card(
-              shadowColor: dark,
-              elevation: 6,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: <Widget>[
-                    Card(
-                      shadowColor: dark,
-                      elevation: 4,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
-                        width: 50,
-                        height: 50,
-                        child: Image.asset("assets/images/logo.png"),
+          if (FirebaseAuth.instance.currentUser != null) ...<Widget>[
+            GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const Profile())),
+              child: Card(
+                shadowColor: dark,
+                elevation: 6,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: <Widget>[
+                      Card(
+                        shadowColor: dark,
+                        elevation: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                          width: 50,
+                          height: 50,
+                          child: Image.asset("assets/images/logo.png"),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text("Check your profile", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
-                    const Spacer(),
-                    Card(
-                      shadowColor: dark,
-                      elevation: 4,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
-                        width: 50,
-                        height: 50,
-                        child: const Icon(FontAwesome.chevron_right_solid, size: 25, color: dark),
+                      const SizedBox(width: 10),
+                      Text("Check your profile", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      const Spacer(),
+                      Card(
+                        shadowColor: dark,
+                        elevation: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                          width: 50,
+                          height: 50,
+                          child: const Icon(FontAwesome.chevron_right_solid, size: 25, color: dark),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
+          ],
           Card(
             shadowColor: dark,
             elevation: 6,
@@ -152,50 +154,52 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
-          GestureDetector(
-            onTap: () async {
-              showToast(context, "Bye");
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false);
-            },
-            child: Card(
-              shadowColor: dark,
-              elevation: 6,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: <Widget>[
-                    Card(
-                      shadowColor: dark,
-                      elevation: 4,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
-                        width: 50,
-                        height: 50,
-                        child: const Icon(FontAwesome.door_closed_solid, size: 25, color: purple),
+          if (FirebaseAuth.instance.currentUser != null) ...<Widget>[
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () async {
+                showToast(context, "Bye");
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false);
+              },
+              child: Card(
+                shadowColor: dark,
+                elevation: 6,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: <Widget>[
+                      Card(
+                        shadowColor: dark,
+                        elevation: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                          width: 50,
+                          height: 50,
+                          child: const Icon(FontAwesome.door_closed_solid, size: 25, color: purple),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text("Sign Out", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
-                    const Spacer(),
-                    Card(
-                      shadowColor: dark,
-                      elevation: 4,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
-                        width: 50,
-                        height: 50,
-                        child: const Icon(FontAwesome.chevron_right_solid, size: 25, color: dark),
+                      const SizedBox(width: 10),
+                      Text("Sign Out", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      const Spacer(),
+                      Card(
+                        shadowColor: dark,
+                        elevation: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                          width: 50,
+                          height: 50,
+                          child: const Icon(FontAwesome.chevron_right_solid, size: 25, color: dark),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ],
       ),
     );

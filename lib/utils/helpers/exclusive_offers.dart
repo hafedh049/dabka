@@ -18,56 +18,70 @@ class ExclusiveOffers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Align(alignment: Alignment.centerRight, child: Text("Exclusive Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
+        Text("Exclusive Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
-        ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 80)),
+        ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 100, width: double.infinity)),
         const SizedBox(height: 10),
         exclusiveOffers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
             : SizedBox(
-                height: 160,
+                height: 200,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) => ClipRRect(
                     borderRadius: BorderRadius.circular(15),
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          width: 150,
-                          height: 160,
-                          alignment: Alignment.bottomCenter,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: CachedNetworkImageProvider(exclusiveOffers[index].offerImage), fit: BoxFit.cover),
+                    child: ShadowOverlay(
+                      shadowHeight: 150,
+                      shadowWidth: 150,
+                      shadowColor: pink.withOpacity(.2),
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            width: 150,
+                            height: 200,
+                            alignment: Alignment.bottomCenter,
+                            decoration: BoxDecoration(
+                              image: exclusiveOffers[index].offerImage.isEmpty
+                                  ? const DecorationImage(
+                                      image: AssetImage("assets/images/thumbnail1.png"),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : DecorationImage(
+                                      image: CachedNetworkImageProvider(exclusiveOffers[index].offerImage),
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                            child: Image.asset("assets/images/exclusive_offer.png", width: 150, height: 75, scale: 1.5),
                           ),
-                          child: Image.asset("assets/images/exclusive_offer.png", width: 150, height: 75, scale: 1.5),
-                        ),
-                        ShadowOverlay(
-                          shadowHeight: 160,
-                          shadowWidth: 150,
-                          shadowColor: pink.withOpacity(.3),
-                          child: Padding(
+                          Padding(
                             padding: const EdgeInsets.all(8),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                const Spacer(),
+                                Container(
+                                  color: pink,
+                                  padding: const EdgeInsets.all(2),
+                                  child: Text(exclusiveOffers[index].offerName.toUpperCase(), style: GoogleFonts.abel(color: dark, fontSize: 16, fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 10),
                                 Text(exclusiveOffers[index].username, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 10),
                                 Container(
                                   color: pink,
                                   padding: const EdgeInsets.all(2),
-                                  child: Text(exclusiveOffers[index].offerDiscount.toStringAsFixed(0), style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+                                  child: Text("${exclusiveOffers[index].offerDiscount.toStringAsFixed(0)} %", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 10),
                                 ShaderMask(
-                                  shaderCallback: (Rect bounds) => const LinearGradient(colors: <Color>[blue, pink]).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                                  child: Text("CHECK OFFERS", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                  shaderCallback: (Rect bounds) => const LinearGradient(colors: <Color>[blue, green]).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                                  child: Text("CHECK OFFERS", style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
