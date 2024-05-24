@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
@@ -108,7 +110,6 @@ class _ViewSpaceState extends State<ViewSpace> {
         future: _load(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            //Future.delayed(500.ms, ()async =>await _videoPlayers[widget.currentIndex].play());
             return PageView.builder(
               onPageChanged: (int value) {
                 _videoPlayers[value - 1].pause();
@@ -195,7 +196,10 @@ class _ViewSpaceState extends State<ViewSpace> {
                               ),
                               const SizedBox(width: 10),
                               GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Product(product: _products[index]))),
+                                onTap: () async {
+                                  await _videoPlayers[index].pause();
+                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Product(product: _products[index])));
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(

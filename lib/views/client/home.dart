@@ -63,7 +63,6 @@ class _HomeState extends State<Home> {
         ExclusiveOffers(exclusiveOffers: _exclusiveOffers),
         for (final MapEntry<CategoryModel, List<ProductModel>> item in _products.entries) HomePart(categoryModel: item.key, products: item.value),
         HomeSellers(sellers: _sellers),
-        // HomeRecommended(recommended: _recommended),
       ];
       return true;
     } catch (_) {

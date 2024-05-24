@@ -1,15 +1,15 @@
 class ReviewModel {
   final String reviewID;
-  final String supplierID;
-  final String clientID;
+  final String applierName;
   final String productID;
   final double rating;
   final String comment;
+  final DateTime timestamp;
 
   ReviewModel({
+    required this.timestamp,
     required this.reviewID,
-    required this.supplierID,
-    required this.clientID,
+    required this.applierName,
     required this.productID,
     required this.rating,
     required this.comment,
@@ -17,9 +17,9 @@ class ReviewModel {
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
     return ReviewModel(
+      timestamp: json['timestamp'].toDate(),
       reviewID: json['reviewID'],
-      supplierID: json['supplierID'],
-      clientID: json['clientID'],
+      applierName: json['applierName'],
       productID: json['productID'],
       rating: json['rating'],
       comment: json['comment'],
@@ -28,9 +28,9 @@ class ReviewModel {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'timestamp': timestamp,
       'reviewID': reviewID,
-      'supplierID': supplierID,
-      'clientID': clientID,
+      'applierName': applierName,
       'productID': productID,
       'rating': rating,
       'comment': comment,

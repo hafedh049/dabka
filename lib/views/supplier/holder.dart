@@ -88,12 +88,12 @@ class _HolderState extends State<Holder> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(e["icon"], size: 10, color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6)),
+                                Icon(e["icon"], size: 20, color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6)),
                                 const SizedBox(height: 5),
                                 AnimatedDefaultTextStyle(
                                   duration: 300.ms,
                                   style: GoogleFonts.abel(
-                                    fontSize: 9,
+                                    fontSize: 14,
                                     color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6),
                                     fontWeight: _currentPage == e["title"] ? FontWeight.bold : FontWeight.w500,
                                   ),
