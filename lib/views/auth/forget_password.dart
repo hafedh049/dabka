@@ -20,17 +20,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  final TextEditingController _oobCodeController = TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-
-  bool _obscureText = true;
-
   @override
   void dispose() {
     _phoneController.dispose();
     _emailController.dispose();
-    _oobCodeController.dispose();
-    _newPasswordController.dispose();
     super.dispose();
   }
 
@@ -160,119 +153,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     if (_emailController.text.contains(RegExp(r'^[\w\-\.]+@([\w\-]+\.)+[\w-]{2,4}$'))) {
                       showToast(context, "We will send an e-mail to your registered e-mail address");
                       await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text);
-                      showToast(context, "Confirmation E-mail sent");
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => PopScope(
-                          canPop: false,
-                          child: AlertDialog(
-                            content: Container(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 40,
-                                    child: StatefulBuilder(
-                                      builder: (BuildContext context, void Function(void Function()) _) {
-                                        return TextField(
-                                          controller: _oobCodeController,
-                                          style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                                          decoration: InputDecoration(
-                                            contentPadding: const EdgeInsets.all(6),
-                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            hintText: "...",
-                                            hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                            labelText: "OOB Code",
-                                            labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                            prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: 40,
-                                    child: StatefulBuilder(
-                                      builder: (BuildContext context, void Function(void Function()) _) {
-                                        return TextField(
-                                          controller: _newPasswordController,
-                                          obscureText: _obscureText,
-                                          style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                                          decoration: InputDecoration(
-                                            contentPadding: const EdgeInsets.all(6),
-                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                            hintText: "**********",
-                                            hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                            labelText: "New Password",
-                                            labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                            prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.lock_solid, color: grey, size: 15)),
-                                            suffixIcon: IconButton(
-                                              onPressed: () => _(() => _obscureText = !_obscureText),
-                                              icon: Icon(_obscureText ? FontAwesome.eye_slash : FontAwesome.eye, color: grey, size: 15),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    children: <Widget>[
-                                      const Spacer(),
-                                      TextButton(
-                                        onPressed: () async {
-                                          if (_oobCodeController.text.trim().isEmpty) {
-                                            showToast(context, "You should enter the OOB Code", color: red);
-                                          } else if (_newPasswordController.text.trim().isEmpty) {
-                                            showToast(context, "Enter you new password to verify its you", color: red);
-                                          } else {
-                                            try {
-                                              await FirebaseAuth.instance.confirmPasswordReset(
-                                                code: _oobCodeController.text.trim().split("?").last.split("&").firstWhere((String element) => element.startsWith("oobCode")).split("=").last,
-                                                newPassword: _newPasswordController.text,
-                                              );
-                                              showToast(context, "Congratulations, your password has been changed");
-                                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
-                                            } catch (e) {
-                                              debugPrint(e.toString());
-                                              showToast(context, e.toString(), color: red);
-                                            }
-                                          }
-                                        },
-                                        style: ButtonStyle(
-                                          shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                          backgroundColor: const WidgetStatePropertyAll<Color>(purple),
-                                        ),
-                                        child: Text("CONFIRM", style: GoogleFonts.abel(fontSize: 18, color: white, fontWeight: FontWeight.w500)),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        style: ButtonStyle(
-                                          shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                          backgroundColor: const WidgetStatePropertyAll<Color>(purple),
-                                        ),
-                                        child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
+                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
                     } else {
                       showToast(context, "Enter a correct e-mail address", color: red);
                     }

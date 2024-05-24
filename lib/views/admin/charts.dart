@@ -86,6 +86,19 @@ class _ChartsState extends State<Charts> with TickerProviderStateMixin {
                         _dataMap["Clients"] = _users.where((UserModel element) => element.userType.contains("CLIENT")).length.toDouble();
                         _dataMap["Suppliers"] = _users.where((UserModel element) => element.userType.contains("SUPPLIER")).length.toDouble();
 
+                        if (_dataMap.values.every((double element) => element == 0)) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Expanded(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true)),
+                                Text("No Users Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          );
+                        }
+
                         return PieChart(
                           dataMap: _dataMap,
                           animationDuration: 800.ms,
@@ -118,7 +131,7 @@ class _ChartsState extends State<Charts> with TickerProviderStateMixin {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Expanded(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true)),
-                              Text("No Offers Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                              Text("No Users Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                             ],
                           ),
                         );
@@ -136,6 +149,19 @@ class _ChartsState extends State<Charts> with TickerProviderStateMixin {
                         for (final category in snapshot.data!.first.docs) {
                           _categories[CategoryModel.fromJson(category.data())] = (snapshot.data!.last as List<ProductModel>).where((ProductModel element) => element.categoryID == category.categoryID).toList();
                           _categoriesMap[category.categoryName] = _categories[category]!.length.toDouble();
+                        }
+
+                        if (_categoriesMap.values.every((double element) => element == 0)) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Expanded(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true)),
+                                Text("No Categories Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                              ],
+                            ),
+                          );
                         }
 
                         return PieChart(

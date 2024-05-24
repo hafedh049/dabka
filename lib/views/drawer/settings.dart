@@ -1,5 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:dabka/utils/callbacks.dart';
+import 'package:dabka/views/client/holder/holder.dart';
 import 'package:dabka/views/drawer/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -144,6 +149,50 @@ class _SettingsState extends State<Settings> {
                     ],
                   );
                 },
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          GestureDetector(
+            onTap: () async {
+              showToast(context, "Bye");
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false);
+            },
+            child: Card(
+              shadowColor: dark,
+              elevation: 6,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: <Widget>[
+                    Card(
+                      shadowColor: dark,
+                      elevation: 4,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                        width: 50,
+                        height: 50,
+                        child: const Icon(FontAwesome.door_closed_solid, size: 25, color: purple),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text("Sign Out", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    Card(
+                      shadowColor: dark,
+                      elevation: 4,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                        width: 50,
+                        height: 50,
+                        child: const Icon(FontAwesome.chevron_right_solid, size: 25, color: dark),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
