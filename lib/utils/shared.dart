@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 Box? settingsBox;
 
 const Color dark = Color(0xFF000000);
-const Color purple = Color.fromARGB(255, 180, 122, 199);
+const Color purple = Color.fromARGB(255, 255, 130, 228);
 const Color grey = Color.fromARGB(255, 182, 182, 182);
 const Color transparent = Colors.transparent;
 const Color white = Colors.white;

@@ -1,8 +1,11 @@
 import 'package:dabka/views/auth/sign_in.dart';
+import 'package:dabka/views/client/holder/booking.dart';
+import 'package:dabka/views/client/holder/offers.dart';
 import 'package:dabka/views/drawer/drawer.dart';
 import 'package:dabka/views/client/holder/chats.dart';
 import 'package:dabka/views/client/holder/home.dart';
 import 'package:dabka/views/client/holder/true_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
@@ -43,12 +46,12 @@ class _HolderState extends State<Holder> {
     <String, dynamic>{
       "title": "العروض",
       "icon": FontAwesome.heart,
-      "page": const SizedBox(),
+      "page": const OffersList(),
     },
     <String, dynamic>{
       "title": "الحجوزات",
       "icon": FontAwesome.wolf_pack_battalion_brand,
-      "page": () => const SignIn(passed: true),
+      "page": () => FirebaseAuth.instance.currentUser == null ? const SignIn() : const BookingList(),
     },
   ];
 
@@ -72,7 +75,7 @@ class _HolderState extends State<Holder> {
         leading: IconButton(onPressed: () => _drawerKey.currentState!.openDrawer(), icon: const Icon(FontAwesome.bars_solid, size: 20, color: purple)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(8),
         child: PageView.builder(
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
@@ -85,7 +88,7 @@ class _HolderState extends State<Holder> {
         key: _menuKey,
         builder: (BuildContext context, void Function(void Function()) _) {
           return Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             child: Card(
               elevation: 6,
               shadowColor: dark,
@@ -106,12 +109,12 @@ class _HolderState extends State<Holder> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(e["icon"], size: 10, color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6)),
+                                Icon(e["icon"], size: 15, color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6)),
                                 const SizedBox(height: 5),
                                 AnimatedDefaultTextStyle(
                                   duration: 300.ms,
                                   style: GoogleFonts.abel(
-                                    fontSize: 9,
+                                    fontSize: 12,
                                     color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6),
                                     fontWeight: _currentPage == e["title"] ? FontWeight.bold : FontWeight.w500,
                                   ),

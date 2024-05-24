@@ -21,6 +21,7 @@ class CategoriesList extends StatefulWidget {
 
 class _CategoriesListState extends State<CategoriesList> {
   final TextEditingController _searchController = TextEditingController();
+  List<CategoryModel> categories = <CategoryModel>[];
 
   @override
   void dispose() {
@@ -30,7 +31,6 @@ class _CategoriesListState extends State<CategoriesList> {
 
   @override
   Widget build(BuildContext context) {
-    List<CategoryModel> categories = <CategoryModel>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

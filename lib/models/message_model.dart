@@ -1,10 +1,9 @@
 class MessageModel {
   final String id;
+  final String roomID;
   final String message;
   final DateTime createdAt;
   final String senderId;
-  final String receiverId;
-  final bool isMe;
   final String type;
 
   MessageModel({
@@ -12,20 +11,18 @@ class MessageModel {
     required this.message,
     required this.createdAt,
     required this.senderId,
-    required this.receiverId,
-    required this.isMe,
     required this.type,
+    required this.roomID,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
       id: json['id'],
       message: json['message'],
-      createdAt: DateTime.parse(json['createdAt']),
+      createdAt: json['createdAt'].toDate(),
       senderId: json['senderId'],
-      receiverId: json['receiverId'],
-      isMe: json['isMe'],
       type: json['type'],
+      roomID: json['roomID'],
     );
   }
 
@@ -35,8 +32,7 @@ class MessageModel {
       'message': message,
       'createdAt': createdAt.toIso8601String(),
       'senderId': senderId,
-      'receiverId': receiverId,
-      'isMe': isMe,
+      'roomID': roomID,
       'type': type,
     };
   }

@@ -45,6 +45,8 @@ dependencies:
   uuid: ^4.4.0
   flutter_rating_bar: ^4.0.1
   scrolling_text: ^0.0.4
+  another_xlider: ^3.0.2
+  animated_toggle_switch: ^0.8.2
 
 dev_dependencies:
   flutter_test:

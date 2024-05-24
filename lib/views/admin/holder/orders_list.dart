@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/order_model.dart';
 import 'package:dabka/models/product_model.dart';
@@ -108,45 +110,12 @@ class _OrdersListState extends State<OrdersList> {
         const SizedBox(height: 10),
         Expanded(
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("orders").snapshots(),
+            stream: FirebaseFirestore.instance.collection("orders").where("state", isEqualTo: "IN PROGRESS").orderBy("timestamp", descending: true).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                 _orders = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => OrderModel.fromJson(e.data())).toList();
                 return ListView.separated(
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
-                    onLongPress: () {
-                      showBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) => Container(
-                          color: white,
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text("Are you sure ?", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 20),
-                              Row(
-                                children: <Widget>[
-                                  const Spacer(),
-                                  TextButton(
-                                    onPressed: () {},
-                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
-                                    child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
                     onTap: () {
                       showBottomSheet(
                         context: context,

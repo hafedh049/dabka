@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/chat_head_model.dart';
 import 'package:date_format/date_format.dart';
@@ -118,7 +120,7 @@ class _ChatListState extends State<ChatsList> {
                   separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
                   itemCount: _chats.length,
                 );
-              } else if (snapshot.hasData == snapshot.data!.docs.isEmpty) {
+              } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
                 return Center(child: Image.asset("assets/images/empty_chat.png", color: purple));
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Wait();

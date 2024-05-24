@@ -1,4 +1,5 @@
 class ChatHead {
+  final String id;
   final DateTime timestamp;
   final String remoteName;
   final String remoteID;
@@ -7,6 +8,7 @@ class ChatHead {
   final bool yourMessage;
 
   ChatHead({
+    required this.id,
     required this.timestamp,
     required this.remoteName,
     required this.remoteID,
@@ -18,6 +20,7 @@ class ChatHead {
   ChatHead.fromJson(Map<String, dynamic> json)
       : timestamp = json['timestamp'].toDate(),
         remoteName = json['remoteName'],
+        id = json['id'],
         remoteID = json['remoteID'],
         remoteImage = json['remoteImage'],
         lastMessage = json['lastMessage'],
@@ -26,6 +29,7 @@ class ChatHead {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'timestamp': timestamp,
         'remoteName': remoteName,
+        'id': id,
         'remoteID': remoteID,
         'remoteImage': remoteImage,
         'lastMessage': lastMessage,

@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dabka/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -7,7 +9,7 @@ import '../shared.dart';
 
 class HomeSellers extends StatelessWidget {
   const HomeSellers({super.key, required this.sellers});
-  final List<Map<String, dynamic>> sellers;
+  final List<UserModel> sellers;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class HomeSellers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Align(alignment: Alignment.centerRight, child: Text("البائعين", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
+        Align(alignment: Alignment.centerRight, child: Text("Sellers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
         const SizedBox(height: 10),
         sellers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
@@ -31,19 +33,14 @@ class HomeSellers extends StatelessWidget {
                         height: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(image: AssetImage(sellers[index]["image"]), fit: BoxFit.cover),
+                          image: DecorationImage(image: CachedNetworkImageProvider(sellers[index].userAvatar), fit: BoxFit.cover),
                         ),
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        sellers[index]["seller_name"],
+                        sellers[index].username,
                         style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold),
                         overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: white),
-                        child: Text("${sellers[index]["rating"]} ★", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
                       const SizedBox(height: 20),
                       Container(
@@ -55,7 +52,7 @@ class HomeSellers extends StatelessWidget {
                           children: <Widget>[
                             const Icon(FontAwesome.user_plus_solid, size: 10, color: white),
                             const SizedBox(width: 5),
-                            Text("★ متابعة ★", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
+                            Text("★ Follow ★", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),

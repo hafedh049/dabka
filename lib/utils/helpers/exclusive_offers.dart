@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dabka/models/offer_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +10,7 @@ import '../shared.dart';
 
 class ExclusiveOffers extends StatelessWidget {
   const ExclusiveOffers({super.key, required this.exclusiveOffers});
-  final List<Map<String, dynamic>> exclusiveOffers;
+  final List<OfferModel> exclusiveOffers;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class ExclusiveOffers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Align(alignment: Alignment.centerRight, child: Text("عروض حصرية", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
+        Align(alignment: Alignment.centerRight, child: Text("Exclusive Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold))),
         const SizedBox(height: 10),
         ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 80)),
         const SizedBox(height: 10),
@@ -35,7 +37,7 @@ class ExclusiveOffers extends StatelessWidget {
                           height: 160,
                           alignment: Alignment.bottomCenter,
                           decoration: BoxDecoration(
-                            image: DecorationImage(image: AssetImage(exclusiveOffers[index]["image"]), fit: BoxFit.cover),
+                            image: DecorationImage(image: CachedNetworkImageProvider(exclusiveOffers[index].offerImage), fit: BoxFit.cover),
                           ),
                           child: Image.asset("assets/images/exclusive_offer.png", width: 150, height: 75, scale: 1.5),
                         ),
@@ -49,17 +51,17 @@ class ExclusiveOffers extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 const Spacer(),
-                                Text(exclusiveOffers[index]["owner_name"], style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                Text(exclusiveOffers[index].username, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 10),
                                 Container(
                                   color: pink,
                                   padding: const EdgeInsets.all(2),
-                                  child: Text(exclusiveOffers[index]["discount"], style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+                                  child: Text(exclusiveOffers[index].offerDiscount.toStringAsFixed(0), style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 10),
                                 ShaderMask(
                                   shaderCallback: (Rect bounds) => const LinearGradient(colors: <Color>[blue, pink]).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                                  child: Text("التحقق من العروض", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                  child: Text("CHECK OFFERS", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                                 ),
                               ],
                             ),

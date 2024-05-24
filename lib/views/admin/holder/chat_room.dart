@@ -1,134 +1,169 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dabka/models/chat_head_model.dart';
-import 'package:date_format/date_format.dart';
+import 'package:dabka/utils/helpers/error.dart';
+import 'package:dabka/utils/helpers/wait.dart';
+import 'package:dabka/utils/shared.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../utils/callbacks.dart';
-import '../../../utils/helpers/error.dart';
-import '../../../utils/helpers/wait.dart';
-import '../../../utils/shared.dart';
+import '../../../models/chat_head_model.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({super.key, required this.chatHead});
   final ChatHead chatHead;
+
   @override
-  State<ChatRoom> createState() => _ChatListState();
+  State<ChatRoom> createState() => _ChatRoomState();
 }
 
-class _ChatListState extends State<ChatRoom> {
-  List<ChatHead> _chats = <ChatHead>[];
+class _ChatRoomState extends State<ChatRoom> {
+  final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  void _sendMessage() {
+    if (_messageController.text.trim().isEmpty) return;
+
+    FirebaseFirestore.instance.collection('messages').add(
+      {
+        'roomID': widget.chatHead.id,
+        'userID': FirebaseAuth.instance.currentUser!.uid,
+        'message': _messageController.text.trim(),
+        'timestamp': Timestamp.now(),
+      },
+    );
+
+    _messageController.clear();
+    _scrollToBottom();
+  }
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Text("Old Chats", style: GoogleFonts.abel(color: dark, fontSize: 16, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 20),
-        Expanded(
-          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection('chat_heads').orderBy('timestamp', descending: true).snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-              if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                _chats = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => ChatHead.fromJson(e.data())).toList();
-                return ListView.separated(
-                  itemBuilder: (BuildContext context, int index) => GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatRoom(chatHead: _chats[index]))),
-                    onLongPress: () {
-                      showBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) => Container(
-                          color: white,
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text("Are you sure you want to delete this chat ?", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 20),
-                              Row(
-                                children: <Widget>[
-                                  const Spacer(),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await FirebaseFirestore.instance.collection("chat_heads").doc(snapshot.data!.docs[index].id).delete();
-                                      showToast(context, "Chat deleted successfully");
-                                      Navigator.pop(context);
-                                    },
-                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                    child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
-                                    child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      shadowColor: dark,
-                      elevation: 4,
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: white,
-                                image: DecorationImage(image: AssetImage(_chats[index].remoteImage), fit: BoxFit.contain),
-                                border: Border.all(width: 2, color: purple),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text("${_chats[index].yourMessage ? 'You: ' : ''}${_chats[index].remoteName}", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 5),
-                                Row(
-                                  children: <Widget>[
-                                    Flexible(child: Text(_chats[index].lastMessage, style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 10, fontWeight: FontWeight.w500))),
-                                    const SizedBox(width: 5),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3), color: purple),
-                                      child: Text(formatDate(_chats[index].timestamp, const <String>[HH, ":", nn, ":", am]), style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.w500)),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
-                  itemCount: _chats.length,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.chatHead.remoteName, style: GoogleFonts.abel(color: white)),
+        backgroundColor: white,
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: FirebaseFirestore.instance.collection('messages').where('roomID', isEqualTo: widget.chatHead.id).orderBy('timestamp', descending: true).snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Wait();
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return ErrorScreen(error: snapshot.error.toString());
+                } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+                  return Center(child: Image.asset("assets/images/empty_chat.png", color: purple));
+                }
+                final messages = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> doc) => doc.data()).toList();
+
+                return ListView.builder(
+                  controller: _scrollController,
+                  reverse: true,
+                  itemCount: messages.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final message = messages[index];
+                    final isMe = message['senderID'] == FirebaseAuth.instance.currentUser!.uid;
+                    final messageWidget = _buildMessage(message, isMe);
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: messageWidget,
+                    );
+                  },
                 );
-              } else if (snapshot.hasData == snapshot.data!.docs.isEmpty) {
-                return Center(child: Image.asset("assets/images/empty_chat.png", color: purple));
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Wait();
-              } else {
-                return ErrorScreen(error: snapshot.error.toString());
-              }
-            },
+              },
+            ),
           ),
+          _buildMessageInput(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessage(Map<String, dynamic> message, bool isMe) {
+    final messageText = message['message'] as String;
+    final messageTime = (message['timestamp'] as Timestamp).toDate();
+    // final formattedTime = DateFormat('hh:mm a').format(messageTime);
+
+    return Row(
+      mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: <Widget>[
+        if (!isMe)
+          CircleAvatar(
+            backgroundImage: AssetImage(widget.chatHead.remoteImage),
+            radius: 15,
+          ),
+        const SizedBox(width: 8),
+        Column(
+          crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(10),
+              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+              decoration: BoxDecoration(
+                color: isMe ? Colors.purple : Colors.grey[300],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                messageText,
+                style: GoogleFonts.abel(color: isMe ? Colors.white : Colors.black),
+              ),
+            ),
+            const SizedBox(height: 4),
+            /*Text(
+              formattedTime,
+              style: GoogleFonts.abel(color: Colors.grey, fontSize: 10),
+            ),*/
+          ],
         ),
+        if (isMe) const SizedBox(width: 8),
+        if (isMe)
+          CircleAvatar(
+            backgroundImage: AssetImage(widget.chatHead.remoteImage),
+            radius: 15,
+          ),
       ],
+    );
+  }
+
+  Widget _buildMessageInput() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: TextField(
+              controller: _messageController,
+              decoration: InputDecoration(
+                hintText: 'Type a message',
+                hintStyle: GoogleFonts.abel(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.grey[200],
+              ),
+              onSubmitted: (_) => _sendMessage(),
+            ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            icon: const Icon(Icons.send, color: Colors.purple),
+            onPressed: _sendMessage,
+          ),
+        ],
+      ),
     );
   }
 }

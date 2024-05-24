@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/true_view_model.dart';
 import 'package:dabka/views/supplier/holder/add_view.dart';
 import 'package:dabka/views/supplier/holder/view_space.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -24,45 +25,11 @@ class ViewsList extends StatefulWidget {
 }
 
 class _ViewsListState extends State<ViewsList> {
-  //List<List<TrueViewModel>> _views = <List<TrueViewModel>>[];
-
-  //List<List<VideoPlayerController>> _videosControllers = <List<VideoPlayerController>>[];
-
   List<TrueViewModel> _views = <TrueViewModel>[];
   List<VideoPlayerController> _videosControllers = <VideoPlayerController>[];
 
-  /*List<List<TrueViewModel>> _splitTrueViews(List<TrueViewModel> inputList) {
-    final List<List<TrueViewModel>> result = <List<TrueViewModel>>[];
-    for (int index = 0; index < inputList.length; index += 2) {
-      if (index + 1 < inputList.length) {
-        result.add([inputList[index], inputList[index + 1]]);
-      } else {
-        result.add([inputList[index]]);
-      }
-    }
-    return result;
-  }*/
-
-  /*List<List<VideoPlayerController>> _splitVideoControllers(List<VideoPlayerController> inputList) {
-    final List<List<VideoPlayerController>> result = <List<VideoPlayerController>>[];
-    for (int index = 0; index < inputList.length; index += 2) {
-      if (index + 1 < inputList.length) {
-        result.add([inputList[index], inputList[index + 1]]);
-      } else {
-        result.add([inputList[index]]);
-      }
-    }
-    return result;
-  }*/
-
   @override
   void dispose() {
-    /*for (final List<VideoPlayerController> controller in _videosControllers) {
-      controller[0].dispose();
-      if (controller.length > 1) {
-        controller[1].dispose();
-      }
-    }*/
     for (final VideoPlayerController controller in _videosControllers) {
       controller.dispose();
     }
@@ -109,7 +76,7 @@ class _ViewsListState extends State<ViewsList> {
         const SizedBox(height: 10),
         Expanded(
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection("true_views").snapshots(),
+            stream: FirebaseFirestore.instance.collection("true_views").where("userID", isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                 _views = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => TrueViewModel.fromJson(e.data())).toList(); // _splitTrueViews(snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => TrueViewModel.fromJson(e.data())).toList());
