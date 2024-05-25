@@ -24,6 +24,7 @@ class Main extends StatelessWidget {
       locale: Locale(settingsBox!.get('language')),
       fallbackLocale: const Locale('ar', 'AR'),
       translations: Translation(),
+      builder: (BuildContext context, Widget? child) => Directionality(textDirection: TextDirection.ltr, child: child!),
       home: settingsBox!.get("first_time") ? const Onboarding() : const Holder(),
       debugShowCheckedModeBanner: false,
     );
