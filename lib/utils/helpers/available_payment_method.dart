@@ -1,5 +1,6 @@
 import 'package:dabka/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -21,7 +22,7 @@ class _AvailablePaymentMethodState extends State<AvailablePaymentMethod> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Available payment methods", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text("Available payment methods".tr, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           Card(
             shadowColor: dark,
