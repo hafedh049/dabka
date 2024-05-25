@@ -22,19 +22,6 @@ class _HolderState extends State<Holder> {
 
   final PageController _pageController = PageController();
 
-  final List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[
-    <String, dynamic>{
-      "title": "Products List".tr,
-      "icon": FontAwesome.product_hunt_brand,
-      "page": const ProductsList(),
-    },
-    <String, dynamic>{
-      "title": "Views List".tr,
-      "icon": FontAwesome.users_viewfinder_solid,
-      "page": const ViewsList(),
-    },
-  ];
-
   int _currentPage = 0;
 
   @override
@@ -45,13 +32,26 @@ class _HolderState extends State<Holder> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> pages = <Map<String, dynamic>>[
+      <String, dynamic>{
+        "title": "Products List".tr,
+        "icon": FontAwesome.product_hunt_brand,
+        "page": const ProductsList(),
+      },
+      <String, dynamic>{
+        "title": "Views List".tr,
+        "icon": FontAwesome.users_viewfinder_solid,
+        "page": const ViewsList(),
+      },
+    ];
+
     return Scaffold(
       key: _drawerKey,
       drawer: const DDrawer(),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text(appTitle, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
+        title: Text("DabKa".tr, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
         leading: IconButton(onPressed: () => _drawerKey.currentState!.openDrawer(), icon: const Icon(FontAwesome.bars_solid, size: 20, color: purple)),
       ),
       body: Padding(
@@ -60,8 +60,8 @@ class _HolderState extends State<Holder> {
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
           onPageChanged: (int page) => _menuKey.currentState!.setState(() => _currentPage = page),
-          itemBuilder: (BuildContext context, int index) => _pages[index]["page"],
-          itemCount: _pages.length,
+          itemBuilder: (BuildContext context, int index) => pages[index]["page"],
+          itemCount: pages.length,
         ),
       ),
       bottomNavigationBar: StatefulBuilder(
@@ -76,31 +76,31 @@ class _HolderState extends State<Holder> {
                 padding: const EdgeInsets.all(8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: _pages
+                  children: pages
                       .map(
                         (Map<String, dynamic> e) => InkWell(
                           hoverColor: transparent,
                           splashColor: transparent,
                           highlightColor: transparent,
-                          onTap: () => _pageController.jumpToPage(_pages.indexOf(e)),
+                          onTap: () => _pageController.jumpToPage(pages.indexOf(e)),
                           child: AnimatedContainer(
                             duration: 300.ms,
-                            padding: EdgeInsets.symmetric(horizontal: _currentPage == _pages.indexOf(e) ? 10 : 0),
+                            padding: EdgeInsets.symmetric(horizontal: _currentPage == pages.indexOf(e) ? 10 : 0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Icon(e["icon"], size: 20, color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6)),
+                                Icon(e["icon"], size: 20, color: _currentPage == pages.indexOf(e) ? purple : dark.withOpacity(.6)),
                                 const SizedBox(height: 5),
                                 AnimatedDefaultTextStyle(
                                   duration: 300.ms,
                                   style: GoogleFonts.abel(
                                     fontSize: 14,
-                                    color: _currentPage == _pages.indexOf(e) ? purple : dark.withOpacity(.6),
+                                    color: _currentPage == pages.indexOf(e) ? purple : dark.withOpacity(.6),
                                     fontWeight: _currentPage == e["title"] ? FontWeight.bold : FontWeight.w500,
                                   ),
                                   child: Text(e["title"]),
                                 ),
-                                if (_currentPage == _pages.indexOf(e)) ...<Widget>[
+                                if (_currentPage == pages.indexOf(e)) ...<Widget>[
                                   const SizedBox(height: 5),
                                   Container(color: purple, height: 2, width: 10),
                                 ],

@@ -16,6 +16,7 @@ class SelectLanguage extends StatefulWidget {
 }
 
 class _SelectLanguageState extends State<SelectLanguage> {
+  final List<String> _locales = const <String>["en", "fr", "ar"];
   final List<Language> _list = <Language>[
     Language('English'.tr),
     Language('Français'.tr),
@@ -36,12 +37,15 @@ class _SelectLanguageState extends State<SelectLanguage> {
         Card(
           elevation: 6,
           shadowColor: dark,
-          child: CustomDropdown<Language>.search(
+          child: CustomDropdown<Language>(
             hintText: "Choose your language".tr,
             items: _list,
             excludeSelected: false,
             initialItem: _list.first,
-            onChanged: (Language value) {},
+            onChanged: (Language value) async {
+              await settingsBox!.put("language", _locales[_list.indexOf(value)]);
+              await Get.updateLocale(Locale(_locales[_list.indexOf(value)]));
+            },
           ),
         ),
         const SizedBox(height: 20),

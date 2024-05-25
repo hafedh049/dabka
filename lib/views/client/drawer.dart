@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../client/category_grid.dart';
+import 'category_grid.dart';
 
 class DDrawer extends StatefulWidget {
   const DDrawer({super.key});
@@ -19,10 +19,9 @@ class DDrawer extends StatefulWidget {
 }
 
 class _DDrawerState extends State<DDrawer> {
-  late final List<Map<String, dynamic>> _tiles;
   @override
-  void initState() {
-    _tiles = <Map<String, dynamic>>[
+  Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> tiles = <Map<String, dynamic>>[
       <String, dynamic>{
         "icon": FontAwesome.house_chimney_solid,
         "tile": "Home".tr,
@@ -62,11 +61,6 @@ class _DDrawerState extends State<DDrawer> {
         "page": const AboutUs(),
       },
     ];
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Drawer(
       width: 273,
       child: Padding(
@@ -85,7 +79,7 @@ class _DDrawerState extends State<DDrawer> {
                 ),
               ),
               const SizedBox(height: 20),
-              for (final Map<String, dynamic> tile in _tiles) ...<Widget>[
+              for (final Map<String, dynamic> tile in tiles) ...<Widget>[
                 tile["tile"] == "DIVIDER"
                     ? const Divider(indent: 25, endIndent: 25, color: grey, height: .3, thickness: .3)
                     : InkWell(

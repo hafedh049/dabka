@@ -16,7 +16,7 @@ Future<bool> init() async {
       <String, dynamic>{
         "first_time": true,
         "theme": "light",
-        "language": "en",
+        "language": "ar",
       },
     );
   }

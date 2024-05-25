@@ -78,7 +78,10 @@ class _WhatIsYourGenderState extends State<WhatIsYourGender> {
         ),
         const SizedBox(height: 20),
         TextButton(
-          onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route _) => false),
+          onPressed: () {
+            settingsBox!.put("first_time", false);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route _) => false);
+          },
           style: ButtonStyle(
             backgroundColor: const WidgetStatePropertyAll<Color>(purple),
             padding: const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 24)),

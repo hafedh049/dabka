@@ -59,11 +59,10 @@ class _OnboardingState extends State<Onboarding> {
                           children: <Widget>[
                             const Spacer(),
                             TextButton(
-                              onPressed: () => Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(builder: (BuildContext context) => const Holder()),
-                                (Route _) => false,
-                              ),
+                              onPressed: () {
+                                settingsBox!.put("first_time", false);
+                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route _) => false);
+                              },
                               style: const ButtonStyle(
                                 backgroundColor: WidgetStatePropertyAll<Color>(white),
                                 shadowColor: WidgetStatePropertyAll<Color>(dark),

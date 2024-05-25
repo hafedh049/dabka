@@ -104,6 +104,18 @@ class _OffersListState extends State<OffersList> with TickerProviderStateMixin {
                                       Container(
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                        child: Text("CATEGORY NAME".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Flexible(child: Text(_offers[index].category.toUpperCase(), style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: <Widget>[
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
                                         child: Text("OFFER NAME".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
