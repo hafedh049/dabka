@@ -3,6 +3,7 @@ import 'package:dabka/models/category_model.dart';
 import 'package:dabka/views/client/category_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -22,7 +23,7 @@ class _CategoriesListState extends State<CategoriesList> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("Categories", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Text("Categories".tr, style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         widget.categories.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))

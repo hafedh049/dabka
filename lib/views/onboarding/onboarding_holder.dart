@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/shared.dart';
@@ -69,7 +70,7 @@ class _OnboardingState extends State<Onboarding> {
                                 elevation: WidgetStatePropertyAll<double>(2),
                                 padding: WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.all(2)),
                               ),
-                              child: Text("تخطى", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.bold)),
+                              child: Text("Skip".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),

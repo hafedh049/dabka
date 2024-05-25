@@ -43,9 +43,9 @@ class _AvailablePaymentMethodState extends State<AvailablePaymentMethod> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Cash", style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.bold)),
+                          Text("Cash".tr, style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.bold)),
                           const SizedBox(width: 5),
-                          Text("You can pay in cash to the vendor", style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.w500)),
+                          Text("You can pay in cash to the vendor".tr, style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.w500)),
                         ],
                       ),
                     ],

@@ -1,6 +1,7 @@
 import 'package:dabka/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../shared.dart';
@@ -23,7 +24,7 @@ class _RequestReservationState extends State<RequestReservation> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(height: 10),
-          Text("Select how you want to request reservation", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text("Select how you want to request reservation".tr, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) _) {
@@ -52,7 +53,7 @@ class _RequestReservationState extends State<RequestReservation> {
                               children: <Widget>[
                                 Text(widget.product.productBuyPrice.toStringAsFixed(1), style: GoogleFonts.aDLaMDisplay(color: dark, fontSize: 10, fontWeight: FontWeight.bold)),
                                 const SizedBox(width: 5),
-                                Text("TND", style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.bold)),
+                                Text("TND".tr, style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.bold)),
                               ],
                             ),
                             const SizedBox(width: 10),
@@ -62,7 +63,7 @@ class _RequestReservationState extends State<RequestReservation> {
                               shadowColor: purple,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                                child: Text("Buy", style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.bold)),
+                                child: Text("Buy".tr, style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],
@@ -91,7 +92,7 @@ class _RequestReservationState extends State<RequestReservation> {
                               children: <Widget>[
                                 Text(widget.product.productSellPrice.toStringAsFixed(1), style: GoogleFonts.aDLaMDisplay(color: dark, fontSize: 10, fontWeight: FontWeight.bold)),
                                 const SizedBox(width: 5),
-                                Text("TND", style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.bold)),
+                                Text("TND".tr, style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.bold)),
                               ],
                             ),
                             const SizedBox(width: 10),
@@ -101,7 +102,7 @@ class _RequestReservationState extends State<RequestReservation> {
                               shadowColor: purple,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                                child: Text("Rent", style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.bold)),
+                                child: Text("Rent".tr, style: GoogleFonts.abel(color: white, fontSize: 8, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ],

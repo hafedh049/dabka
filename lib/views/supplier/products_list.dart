@@ -6,9 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/views/supplier/add_product.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
@@ -60,7 +60,7 @@ class _ProductsListState extends State<ProductsList> {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text("Products List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+            Text("Products List".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
             const Spacer(),
             IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddProduct())),
@@ -87,7 +87,7 @@ class _ProductsListState extends State<ProductsList> {
                         controller: _searchController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Search",
+                          hintText: "Search".tr,
                           contentPadding: const EdgeInsets.all(16),
                           hintStyle: GoogleFonts.itim(color: grey, fontSize: 16, fontWeight: FontWeight.w500),
                         ),
@@ -160,7 +160,7 @@ class _ProductsListState extends State<ProductsList> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Text("Are you sure ?", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                  Text("Are you sure ?".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
                                   const SizedBox(height: 20),
                                   Row(
                                     children: <Widget>[
@@ -168,17 +168,17 @@ class _ProductsListState extends State<ProductsList> {
                                       TextButton(
                                         onPressed: () async {
                                           await FirebaseFirestore.instance.collection("products").doc(snapshot.data!.docs[index].id).delete();
-                                          showToast(context, "Product deleted successfully");
+                                          showToast(context, "Product deleted successfully".tr);
                                           Navigator.pop(context);
                                         },
                                         style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                        child: Text("OK", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
+                                        child: Text("OK".tr, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
                                       TextButton(
                                         onPressed: () => Navigator.pop(context),
                                         style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
-                                        child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                        child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                     ],
                                   ),
@@ -209,7 +209,7 @@ class _ProductsListState extends State<ProductsList> {
                                           child: MultiImagePickerView(
                                             controller: _images.values.elementAt(index),
                                             addMoreButton: const SizedBox(),
-                                            initialWidget: DefaultInitialWidget(centerWidget: Text("Tap to Show", style: GoogleFonts.abel(fontSize: 18, color: purple, fontWeight: FontWeight.bold))),
+                                            initialWidget: DefaultInitialWidget(centerWidget: Text("Tap to Show".tr, style: GoogleFonts.abel(fontSize: 18, color: purple, fontWeight: FontWeight.bold))),
                                           ),
                                         ),
                                       );
@@ -302,7 +302,7 @@ class _ProductsListState extends State<ProductsList> {
                                       child: Container(
                                         padding: const EdgeInsets.all(8),
                                         child: Text(
-                                          'Videos ${_videos[_products[index]]!.hasNoImages ? "(EMPTY)" : "(${_videos[_products[index]]!.images.length})"}',
+                                          '${"Videos".tr} ${_videos[_products[index]]!.hasNoImages ? "(${'EMPTY'.tr})" : "(${_videos[_products[index]]!.images.length})"}',
                                           style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: purple),
                                           textAlign: TextAlign.center,
                                         ),
@@ -316,7 +316,7 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT ID", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
+                                      child: Text("PRODUCT ID".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_products[index].productID, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -328,7 +328,7 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT NAME", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
+                                      child: Text("PRODUCT NAME".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_products[index].productName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -340,7 +340,7 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT TYPE", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
+                                      child: Text("PRODUCT TYPE".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_products[index].productType, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -352,7 +352,7 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT DESCRIPTION", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
+                                      child: Text("PRODUCT DESCRIPTION".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_products[index].productDescription, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -364,7 +364,7 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT BUYING PRICE", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
+                                      child: Text("PRODUCT BUYING PRICE".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text("${_products[index].productBuyPrice.toStringAsFixed(2)} TND", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -376,7 +376,7 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT SELLING PRICE", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
+                                      child: Text("PRODUCT SELLING PRICE".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text("${_products[index].productSellPrice.toStringAsFixed(2)} TND", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
@@ -388,7 +388,7 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT RATING", style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
+                                      child: Text("PRODUCT RATING".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
                                     RatingBar.builder(
@@ -399,7 +399,7 @@ class _ProductsListState extends State<ProductsList> {
                                       itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                                       itemSize: 20,
                                       itemBuilder: (BuildContext context, _) => const Icon(Icons.star, color: Colors.amber),
-                                      onRatingUpdate: (rating) {},
+                                      onRatingUpdate: (double rating) {},
                                     ),
                                   ],
                                 ),
@@ -420,7 +420,7 @@ class _ProductsListState extends State<ProductsList> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
-                      Text("No Products Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                      Text("No Products Yet!".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                     ],
                   ),
                 );

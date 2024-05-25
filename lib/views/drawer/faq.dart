@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -14,8 +15,8 @@ class FAQ extends StatefulWidget {
 class _FAQState extends State<FAQ> {
   final List<Map<String, dynamic>> _list = <Map<String, dynamic>>[
     <String, dynamic>{
-      "question": "This is a dummy question ?",
-      "answer": "This is a dummy answer.",
+      "question": "This is a dummy question ?".tr,
+      "answer": "This is a dummy answer.".tr,
     },
   ];
 
@@ -25,7 +26,7 @@ class _FAQState extends State<FAQ> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text("About Us", style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
+        title: Text("About Us".tr, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple)),
         elevation: 6,
         shadowColor: dark,

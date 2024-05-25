@@ -1,13 +1,14 @@
 import 'package:dabka/views/auth/sign_in.dart';
 import 'package:dabka/views/client/booking.dart';
 import 'package:dabka/views/client/offers.dart';
-import 'package:dabka/views/client/drawer.dart';
+import 'package:dabka/views/drawer/drawer.dart';
 import 'package:dabka/views/client/chats.dart';
 import 'package:dabka/views/client/home.dart';
 import 'package:dabka/views/client/true_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -29,27 +30,27 @@ class _HolderState extends State<Holder> {
 
   final List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[
     <String, dynamic>{
-      "title": "الرئيسية",
+      "title": "Home".tr,
       "icon": FontAwesome.house_solid,
       "page": const Home(),
     },
     <String, dynamic>{
-      "title": "المقاطع",
+      "title": "True Views".tr,
       "icon": FontAwesome.image,
       "page": const TrueView(),
     },
     <String, dynamic>{
-      "title": "المحادثات",
+      "title": "Chats".tr,
       "icon": FontAwesome.message,
       "page": const Chats(),
     },
     <String, dynamic>{
-      "title": "العروض",
+      "title": "Offers".tr,
       "icon": FontAwesome.heart,
       "page": const OffersList(),
     },
     <String, dynamic>{
-      "title": "الحجوزات",
+      "title": "Bookings".tr,
       "icon": FontAwesome.wolf_pack_battalion_brand,
       "page": FirebaseAuth.instance.currentUser == null ? () => const SignIn(passed: true) : const BookingList(),
     },

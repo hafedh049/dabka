@@ -1,5 +1,6 @@
 import 'package:dabka/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../shared.dart';
@@ -20,7 +21,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Description", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text("Description".tr, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           Card(
             shadowColor: dark,

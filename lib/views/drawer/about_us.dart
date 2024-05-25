@@ -1,11 +1,12 @@
-import 'package:dabka/views/client/app_feedback.dart';
-import 'package:dabka/views/client/privacy_policy.dart';
+import 'package:dabka/views/drawer/app_feedback.dart';
+import 'package:dabka/views/drawer/privacy_policy.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../utils/shared.dart';
+import '../../utils/shared.dart';
 import 'faq.dart';
 
 class AboutUs extends StatefulWidget {
@@ -16,34 +17,34 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
-  final List<Map<String, dynamic>> _list = const <Map<String, dynamic>>[
+  final List<Map<String, dynamic>> _list = <Map<String, dynamic>>[
     <String, dynamic>{
-      "tile": "FAQ",
-      "page": FAQ(),
+      "tile": "FAQ".tr,
+      "page": const FAQ(),
     },
     <String, dynamic>{
-      "tile": "App Feedback",
-      "page": AppFeedback(),
+      "tile": "App Feedback".tr,
+      "page": const AppFeedback(),
     },
     <String, dynamic>{
-      "tile": "Privacy Policy",
-      "page": PrivacyPolicy(),
+      "tile": "Privacy Policy".tr,
+      "page": const PrivacyPolicy(),
     },
     <String, dynamic>{
-      "tile": "Terms & Conditions",
+      "tile": "Terms & Conditions".tr,
       "page": null,
     },
   ];
 
   final List<Map<String, dynamic>> _socials = <Map<String, dynamic>>[
     <String, dynamic>{
-      "tile": "Facebook",
+      "tile": "Facebook".tr,
       "link": "https://www.facebook.com",
       "icon": FontAwesome.facebook_f_brand,
       "color": blue,
     },
     <String, dynamic>{
-      "tile": "Instagram",
+      "tile": "Instagram".tr,
       "link": "https://www.instagram.com",
       "icon": FontAwesome.square_instagram_brand,
       "color": Colors.amber,
@@ -56,7 +57,7 @@ class _AboutUsState extends State<AboutUs> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text("About Us", style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
+        title: Text("About Us".tr, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple)),
         elevation: 6,
         shadowColor: dark,

@@ -1,5 +1,6 @@
-import 'package:dabka/views/client/contact_support.dart';
+import 'package:dabka/views/drawer/contact_support.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -13,21 +14,21 @@ class PrivacyPolicy extends StatefulWidget {
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
-  final List<Map<String, dynamic>> _list = const <Map<String, dynamic>>[
+  final List<Map<String, dynamic>> _list = <Map<String, dynamic>>[
     <String, dynamic>{
-      "tile": "How can I contact the support?",
-      "page": ContactSupport(),
+      "tile": "How can I contact the support?".tr,
+      "page": const ContactSupport(),
     },
     <String, dynamic>{
-      "tile": "Use of your information",
+      "tile": "Use of your information".tr,
       "page": null,
     },
     <String, dynamic>{
-      "tile": "Your E-mail address",
+      "tile": "Your E-mail address".tr,
       "page": null,
     },
     <String, dynamic>{
-      "tile": "Payment information",
+      "tile": "Payment information".tr,
       "page": null,
     },
     <String, dynamic>{
@@ -35,7 +36,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       "page": null,
     },
     <String, dynamic>{
-      "tile": "Contact us",
+      "tile": "Contact Us",
       "page": null,
     },
     <String, dynamic>{
@@ -50,7 +51,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text("About Us", style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
+        title: Text("About Us".tr, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple)),
         elevation: 6,
         shadowColor: dark,

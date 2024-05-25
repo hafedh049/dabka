@@ -1,5 +1,6 @@
 import 'package:dabka/utils/callbacks.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -19,7 +20,7 @@ class _AppFeedbackState extends State<AppFeedback> {
 
   Future<void> _sendFeedback() async {
     if (_feedbackController.text.trim().isEmpty) {
-      showToast(context, "Review or comment is empty");
+      showToast(context, "Review or comment is empty".tr);
     }
   }
 
@@ -35,7 +36,7 @@ class _AppFeedbackState extends State<AppFeedback> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text("App Feedback", style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
+        title: Text("App Feedback".tr, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple)),
         elevation: 6,
         shadowColor: dark,
@@ -54,7 +55,7 @@ class _AppFeedbackState extends State<AppFeedback> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: <Widget>[
-                      Text("How would you rate Dabka", style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.w500, color: dark)),
+                      Text("How would you rate Dabka".tr, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.w500, color: dark)),
                       const SizedBox(height: 10),
                       StatefulBuilder(
                         builder: (BuildContext context, void Function(void Function()) _) {
@@ -77,10 +78,10 @@ class _AppFeedbackState extends State<AppFeedback> {
               ),
             ),
             const SizedBox(height: 10),
-            Text("Send us your feedback", style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.w500, color: dark)),
+            Text("Send us your feedback".tr, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.w500, color: dark)),
             const SizedBox(height: 5),
             Text(
-              "We always care about our customers opinions. So leave us a comment about your experience with the app, or share with us any issues you might have.",
+              "We always care about our customers opinions. So leave us a comment about your experience with the app, or share with us any issues you might have.".tr,
               style: GoogleFonts.abel(fontSize: 10, fontWeight: FontWeight.w500, color: dark),
             ),
             const SizedBox(height: 20),
@@ -98,11 +99,11 @@ class _AppFeedbackState extends State<AppFeedback> {
                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                    hintText: "Type your feedback here.",
+                    hintText: "Type your feedback here.".tr,
                     alignLabelWithHint: true,
                     helperMaxLines: 7,
                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500),
-                    labelText: "Feedback",
+                    labelText: "Feedback".tr,
                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                 );
@@ -117,7 +118,7 @@ class _AppFeedbackState extends State<AppFeedback> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                child: Text("Send Feedback", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                child: Text("Send Feedback".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
               ),
             ),
           ],

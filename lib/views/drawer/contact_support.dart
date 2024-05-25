@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -22,7 +23,7 @@ class _ContactSupportState extends State<ContactSupport> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text("Privacy Policy", style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
+        title: Text("Privacy Policy".tr, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: purple)),
         elevation: 6,
         shadowColor: dark,
@@ -35,7 +36,8 @@ class _ContactSupportState extends State<ContactSupport> {
             Text(
               """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mi risus, lobortis maximus neque eget, maximus eleifend nulla. Aliquam ornare, lorem eget ornare feugiat, justo neque mollis magna, non luctus sem turpis at eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Integer ac accumsan lacus, id suscipit orci. Nullam sit amet porttitor est, ultrices luctus turpis. Morbi cursus mi neque, vitae rutrum velit gravida vel. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam nec gravida leo.
 Ut dapibus, metus ut vulputate ultricies, nunc erat ultricies odio, id efficitur tortor magna vel urna. Nullam nec leo quis dolor feugiat aliquet. Maecenas ac hendrerit turpis, a euismod arcu. Mauris rutrum enim in pretium fermentum. Cras justo metus, eleifend eget arcu et, aliquam consectetur leo. Aenean porta libero at tortor varius volutpat. Cras id est ac elit dictum dignissim et id massa. Nulla dignissim est quam, at ultrices magna pellentesque sit amet. Nunc lobortis tortor massa, at porttitor dolor luctus et. Ut tincidunt imperdiet nulla ac pellentesque. Pellentesque in porta nunc. Aenean consequat massa et velit porta finibus.
-Duis nec felis nibh. Quisque et luctus eros, ac gravida nunc. Sed dictum nec nisi dapibus consequat. Vestibulum condimentum consectetur eleifend. Sed eget neque fermentum, aliquet mi eget, mollis lectus. In porttitor rhoncus enim, vel condimentum libero finibus nec. Cras at fermentum arcu.""",
+Duis nec felis nibh. Quisque et luctus eros, ac gravida nunc. Sed dictum nec nisi dapibus consequat. Vestibulum condimentum consectetur eleifend. Sed eget neque fermentum, aliquet mi eget, mollis lectus. In porttitor rhoncus enim, vel condimentum libero finibus nec. Cras at fermentum arcu."""
+                  .tr,
               style: GoogleFonts.abel(fontSize: 10, fontWeight: FontWeight.w500, color: dark),
             ),
             const SizedBox(height: 20),
@@ -60,7 +62,7 @@ Duis nec felis nibh. Quisque et luctus eros, ac gravida nunc. Sed dictum nec nis
                           },
                         ),
                         const SizedBox(width: 5),
-                        Text("Agree on the Privacy Policy.", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500)),
+                        Text("Agree on the Privacy Policy.".tr, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500)),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -72,7 +74,7 @@ Duis nec felis nibh. Quisque et luctus eros, ac gravida nunc. Sed dictum nec nis
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                         decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                        child: Text("Continue", style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.bold)),
+                        child: Text("Continue".tr, style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],

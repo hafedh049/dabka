@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/category_model.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -58,7 +59,7 @@ class _CategoryGridState extends State<CategoryGrid> {
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
         centerTitle: true,
         backgroundColor: white,
-        title: Text("Categories", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+        title: Text("Categories".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
         elevation: 5,
         shadowColor: dark,
       ),

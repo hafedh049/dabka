@@ -5,7 +5,7 @@ import 'package:dabka/views/auth/sign_in.dart';
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:uuid/uuid.dart';
@@ -98,7 +98,7 @@ class _ChatsState extends State<Chats> {
   void _scrollToBottom() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: 300.ms,
+      duration: 300.milliseconds,
       curve: Curves.easeOut,
     );
   }
@@ -116,11 +116,11 @@ class _ChatsState extends State<Chats> {
     final dayBeforeYesterday = today.subtract(2.days);
 
     if (date.year == today.year && date.month == today.month && date.day == today.day) {
-      return 'Today, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
+      return '${'Today, at'.tr} ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
     } else if (date.year == today.year && date.month == today.month && date.day == yesterday.day) {
-      return 'Yesterday, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
+      return '${'Yesterday, at'.tr} ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
     } else if (date.year == today.year && date.month == today.month && date.day == dayBeforeYesterday.day) {
-      return '2 days ago, at ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
+      return '${'2 days ago, at'.tr} ${formatDate(date, const <String>[hh, ':', nn, ':', ss, ' ', am])}';
     } else {
       return formatDate(date, const <String>[dd, '/', mm, '/', yyyy, ' ', hh, ':', nn, ':', ss, ' ', am]);
     }
@@ -171,7 +171,7 @@ class _ChatsState extends State<Chats> {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                child: Text("Sign in", style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.w500)),
+                child: Text("Sign in".tr, style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.w500)),
               ),
             ),
           )
@@ -206,7 +206,7 @@ class _ChatsState extends State<Chats> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                         LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
-                                        Text("No Chats Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                        Text("No Chats Yet!".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                                       ],
                                     ),
                                   ),
@@ -240,7 +240,7 @@ class _ChatsState extends State<Chats> {
                                       child: TextField(
                                         controller: _messageController,
                                         decoration: InputDecoration(
-                                          hintText: 'Type a message',
+                                          hintText: 'Type a message'.tr,
                                           hintStyle: GoogleFonts.abel(color: grey),
                                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
                                         ),

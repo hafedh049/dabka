@@ -8,8 +8,8 @@ import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
@@ -63,7 +63,7 @@ class _ProductReviewState extends State<ProductReview> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(height: 10),
-          Text("Reviews", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text("Reviews".tr, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           SizedBox(
             height: 250,
@@ -84,7 +84,7 @@ class _ProductReviewState extends State<ProductReview> {
                             padding: const EdgeInsets.all(8),
                             child: Row(
                               children: <Widget>[
-                                Text("Over all rate", style: GoogleFonts.abel(color: dark.withOpacity(.8), fontSize: 12, fontWeight: FontWeight.bold)),
+                                Text("Over all rate".tr, style: GoogleFonts.abel(color: dark.withOpacity(.8), fontSize: 12, fontWeight: FontWeight.bold)),
                                 const SizedBox(width: 10),
                                 Card(
                                   color: white,
@@ -118,7 +118,7 @@ class _ProductReviewState extends State<ProductReview> {
                                           mainAxisSize: MainAxisSize.min,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text("Leave a review", style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
+                                            Text("Leave a review".tr, style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
                                             const SizedBox(height: 10),
                                             SizedBox(
                                               height: 40,
@@ -134,9 +134,9 @@ class _ProductReviewState extends State<ProductReview> {
                                                       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                                       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                                       focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                                      hintText: "What is your name",
+                                                      hintText: "What is your name".tr,
                                                       hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                                      labelText: "Your name",
+                                                      labelText: "Your name".tr,
                                                       labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                                       prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.user, color: grey, size: 15)),
                                                     ),
@@ -159,9 +159,9 @@ class _ProductReviewState extends State<ProductReview> {
                                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                                    hintText: "Write something",
+                                                    hintText: "Write something".tr,
                                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                                    labelText: "Description",
+                                                    labelText: "Description".tr,
                                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
                                                   ),
@@ -191,9 +191,9 @@ class _ProductReviewState extends State<ProductReview> {
                                                 TextButton(
                                                   onPressed: () async {
                                                     if (_applierNameController.text.trim().isEmpty) {
-                                                      showToast(context, "Please provide your name");
+                                                      showToast(context, "Please provide your name".tr);
                                                     } else if (_descriptionController.text.trim().isEmpty) {
-                                                      showToast(context, "Write your review");
+                                                      showToast(context, "Write your review".tr);
                                                     } else {
                                                       final String reviewID = const Uuid().v8();
                                                       await FirebaseFirestore.instance.collection('reviews').doc(reviewID).set(
@@ -211,18 +211,18 @@ class _ProductReviewState extends State<ProductReview> {
                                                       _descriptionController.clear();
                                                       _rating = 0;
 
-                                                      showToast(context, "Review submitted");
+                                                      showToast(context, "Review submitted".tr);
                                                       Navigator.pop(context);
                                                     }
                                                   },
                                                   style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                                  child: Text("Submit", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                                                  child: Text("Submit".tr, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
                                                 ),
                                                 const SizedBox(width: 10),
                                                 TextButton(
                                                   onPressed: () => Navigator.pop(context),
                                                   style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(blue)),
-                                                  child: Text("Cancel", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                                                  child: Text("Cancel".tr, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
                                                 ),
                                               ],
                                             ),
@@ -236,7 +236,7 @@ class _ProductReviewState extends State<ProductReview> {
                                     elevation: 4,
                                     child: Container(
                                       padding: const EdgeInsets.all(4),
-                                      child: Text("Write review", style: GoogleFonts.abel(color: dark.withOpacity(.8), fontSize: 12, fontWeight: FontWeight.w500)),
+                                      child: Text("Write review".tr, style: GoogleFonts.abel(color: dark.withOpacity(.8), fontSize: 12, fontWeight: FontWeight.w500)),
                                     ),
                                   ),
                                 ),
@@ -249,7 +249,7 @@ class _ProductReviewState extends State<ProductReview> {
                               ? Column(
                                   children: <Widget>[
                                     Expanded(child: LottieBuilder.asset("assets/lotties/empty.json")),
-                                    Text("No reviews yet", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500)),
+                                    Text("No reviews yet".tr, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500)),
                                   ],
                                 )
                               : PageView.builder(

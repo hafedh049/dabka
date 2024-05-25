@@ -10,6 +10,7 @@ import 'package:dabka/views/supplier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:scrolling_text/scrolling_text.dart';
@@ -190,7 +191,7 @@ class _ViewSpaceState extends State<ViewSpace> {
                                       ),
                                     ),
                                     const SizedBox(height: 5),
-                                    Text("Price : ${widget.views[index].price.toStringAsFixed(3)} TND", style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.bold, color: white)),
+                                    Text("${'Price'.tr} : ${widget.views[index].price.toStringAsFixed(3)} " "TND".tr, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.bold, color: white)),
                                   ],
                                 ),
                               ),
@@ -255,7 +256,7 @@ class _ViewSpaceState extends State<ViewSpace> {
                                   children: <Widget>[
                                     Text(_user!.username, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
                                     const SizedBox(height: 5),
-                                    Text("${_user!.followers} Followers", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                                    Text("${_user!.followers} ${'Followers'.tr}", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
                                   ],
                                 ),
                               ),
@@ -269,7 +270,7 @@ class _ViewSpaceState extends State<ViewSpace> {
                                       borderRadius: BorderRadius.circular(3),
                                       gradient: LinearGradient(colors: <Color>[white.withOpacity(.8), pink.withOpacity(.8)]),
                                     ),
-                                    child: Text("Follow", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                                    child: Text("Follow".tr, style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
                                   ),
                                 ),
                             ],

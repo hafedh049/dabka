@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -42,7 +43,7 @@ class _HomeFilterState extends State<HomeFilter> {
                         controller: _searchController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "بحث",
+                          hintText: "Search".tr,
                           contentPadding: const EdgeInsets.all(16),
                           hintStyle: GoogleFonts.itim(color: grey, fontSize: 16, fontWeight: FontWeight.w500),
                         ),

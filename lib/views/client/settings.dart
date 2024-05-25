@@ -6,6 +6,7 @@ import 'package:dabka/views/client/holder.dart';
 import 'package:dabka/views/client/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -20,9 +21,9 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final Map<String, String> _languages = <String, String>{
-    "en": "English",
-    "fr": "Français",
-    "ar": "العربية",
+    "en": "English".tr,
+    "fr": "Français".tr,
+    "ar": "العربية".tr,
   };
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _SettingsState extends State<Settings> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: white,
-        title: Text("Settings", style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
+        title: Text("Settings".tr, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 20, color: purple)),
       ),
       body: Column(
@@ -57,7 +58,7 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text("Check your profile", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text("Check your profile".tr, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       Card(
                         shadowColor: dark,
@@ -86,7 +87,7 @@ class _SettingsState extends State<Settings> {
                 builder: (BuildContext context, void Function(void Function()) _) {
                   return Row(
                     children: <Widget>[
-                      Text("Language (${_languages[settingsBox!.get('language')]})", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text("${'Language'.tr} (${_languages[settingsBox!.get('language')]})", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       SizedBox(
                         height: 30,
@@ -125,7 +126,7 @@ class _SettingsState extends State<Settings> {
                 builder: (BuildContext context, void Function(void Function()) _) {
                   return Row(
                     children: <Widget>[
-                      Text("Theme (${settingsBox!.get('theme').toUpperCase()})", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text("${'Theme'.tr} (${settingsBox!.get('theme').toUpperCase()})", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       SizedBox(
                         height: 30,
@@ -158,7 +159,7 @@ class _SettingsState extends State<Settings> {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () async {
-                showToast(context, "Bye");
+                showToast(context, "Bye".tr);
                 await FirebaseAuth.instance.signOut();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false);
               },
@@ -181,7 +182,7 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text("Sign Out", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text("Sign Out".tr, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       Card(
                         shadowColor: dark,

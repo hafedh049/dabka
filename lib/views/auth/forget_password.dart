@@ -5,6 +5,7 @@ import 'package:dabka/utils/shared.dart';
 import 'package:dabka/views/auth/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl_phone_number_field/intl_phone_number_field.dart';
@@ -37,7 +38,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           leading: widget.passed ? IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)) : null,
           centerTitle: true,
           backgroundColor: white,
-          title: Text("Reset you password", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+          title: Text("Reset you password".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
           elevation: 5,
           shadowColor: dark,
         ),
@@ -51,7 +52,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               const SizedBox(height: 40),
               Center(
                 child: Text(
-                  "Please enter your phone number to get an sms",
+                  "Please enter your phone number to get an sms".tr,
                   style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 ),
@@ -61,7 +62,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 height: 40,
                 controller: _phoneController,
                 formatter: MaskedInputFormatter('## ### ###'),
-                initCountry: CountryCodeModel(name: "Tunisia", dial_code: "+216", code: "TN"),
+                initCountry: CountryCodeModel(name: "Tunisia".tr, dial_code: "+216", code: "TN"),
                 betweenPadding: 10,
                 onInputChanged: (IntPhoneNumber phone) {},
                 dialogConfig: DialogConfig(
@@ -78,9 +79,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   searchBoxHintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   flatFlag: true,
                   itemFlagSize: 20,
-                  title: "Select the country",
+                  title: "Select the country".tr,
                   searchBoxRadius: 5,
-                  searchHintText: "Search",
+                  searchHintText: "Search".tr,
                 ),
                 countryConfig: CountryConfig(
                   decoration: BoxDecoration(border: Border.all(width: .3, color: grey), borderRadius: BorderRadius.circular(8)),
@@ -93,10 +94,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   enabledColor: grey,
                   errorColor: grey,
                   labelStyle: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                  labelText: "Phone Number",
+                  labelText: "Phone Number".tr,
                   floatingLabelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   radius: 8,
-                  hintText: "Phone Number",
+                  hintText: "Phone Number".tr,
                   borderWidth: .3,
                   backgroundColor: transparent,
                   decoration: null,
@@ -107,13 +108,13 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                 ),
               ),
-              Center(child: Text("OR", style: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500))),
+              Center(child: Text("OR".tr, style: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500))),
               const SizedBox(height: 10),
               const Divider(indent: 50, endIndent: 50, color: grey, height: .2, thickness: .2),
               const SizedBox(height: 20),
               Center(
                 child: Text(
-                  "Please enter your phone number to get an sms",
+                  "Please enter your E-mail".tr,
                   style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 ),
@@ -135,7 +136,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                         hintText: "abc@xyz.com",
                         hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                        labelText: "E-mail",
+                        labelText: "E-mail".tr,
                         labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                         prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
                       ),
@@ -151,17 +152,17 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   highlightColor: transparent,
                   onTap: () async {
                     if (_emailController.text.contains(RegExp(r'^[\w\-\.]+@([\w\-]+\.)+[\w-]{2,4}$'))) {
-                      showToast(context, "We will send an e-mail to your registered e-mail address");
+                      showToast(context, "We will send an e-mail to your registered e-mail address".tr);
                       await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text);
                       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn()), (Route route) => false);
                     } else {
-                      showToast(context, "Enter a correct e-mail address", color: red);
+                      showToast(context, "Enter a correct e-mail address".tr, color: red);
                     }
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 48),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                    child: Text("SEND", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                    child: Text("SEND".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),

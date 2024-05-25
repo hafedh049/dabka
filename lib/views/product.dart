@@ -9,6 +9,7 @@ import 'package:dabka/utils/helpers/select_request_reservation.dart';
 import 'package:dabka/utils/shared.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:uuid/uuid.dart';
@@ -113,7 +114,7 @@ class _ProductState extends State<Product> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 const Icon(FontAwesome.share_nodes_solid, size: 15, color: dark),
-                                Text("Share", style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.w500)),
+                                Text("Share".tr, style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.w500)),
                               ],
                             ),
                           ),
@@ -128,7 +129,7 @@ class _ProductState extends State<Product> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Icon(FontAwesome.circle_play_solid, size: 15, color: widget.product.productShorts.isEmpty ? dark.withOpacity(.4) : dark),
-                                Text("Video", style: GoogleFonts.abel(color: widget.product.productShorts.isEmpty ? dark.withOpacity(.4) : dark, fontSize: 10, fontWeight: FontWeight.w500)),
+                                Text("Video".tr, style: GoogleFonts.abel(color: widget.product.productShorts.isEmpty ? dark.withOpacity(.4) : dark, fontSize: 10, fontWeight: FontWeight.w500)),
                               ],
                             ),
                           ),
@@ -230,7 +231,7 @@ class _ProductState extends State<Product> {
                   children: <Widget>[
                     const Icon(Bootstrap.chat_square_quote, size: 15, color: purple),
                     const SizedBox(width: 10),
-                    Text("Seller Chat", style: GoogleFonts.abel(color: purple, fontSize: 12, fontWeight: FontWeight.bold)),
+                    Text("Seller Chat".tr, style: GoogleFonts.abel(color: purple, fontSize: 12, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -248,9 +249,9 @@ class _ProductState extends State<Product> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Are you sure ?", style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("Are you sure ?".tr, style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
                           const SizedBox(height: 20),
-                          Text("Total Cart (${widget.product.productBuyPrice.toStringAsFixed(2)} DT)", style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("${'Total Cart'.tr} (${widget.product.productBuyPrice.toStringAsFixed(2)} DT)", style: GoogleFonts.abel(color: purple, fontSize: 18, fontWeight: FontWeight.w500)),
                           const SizedBox(height: 20),
                           Row(
                             children: <Widget>[
@@ -272,17 +273,17 @@ class _ProductState extends State<Product> {
                                           products: <ProductModel>[widget.product],
                                         ).toJson(),
                                       );
-                                  showToast(context, 'Product Requested Successfully');
+                                  showToast(context, 'Product Requested Successfully'.tr);
                                   Navigator.pop(context);
                                 },
                                 style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                child: Text("Confirm", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                                child: Text("Confirm".tr, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
                               ),
                               const SizedBox(width: 10),
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
                                 style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(blue)),
-                                child: Text("Cancel", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                                child: Text("Cancel".tr, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
                               ),
                             ],
                           ),
@@ -300,7 +301,7 @@ class _ProductState extends State<Product> {
                     children: <Widget>[
                       const Icon(FontAwesome.cart_shopping_solid, size: 15, color: white),
                       const SizedBox(width: 10),
-                      Text("Request Reservation", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
+                      Text("Request Reservation".tr, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),

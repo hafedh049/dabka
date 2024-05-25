@@ -6,6 +6,7 @@ import 'package:dabka/views/auth/forget_password.dart';
 import 'package:dabka/views/client/holder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl_phone_number_field/intl_phone_number_field.dart';
@@ -46,7 +47,7 @@ class _SignInState extends State<SignIn> {
           leading: widget.passed ? IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)) : null,
           centerTitle: true,
           backgroundColor: white,
-          title: Text("Sign-In", style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold)),
+          title: Text("Sign-In".tr, style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold)),
           elevation: 5,
           shadowColor: dark,
         ),
@@ -62,7 +63,7 @@ class _SignInState extends State<SignIn> {
                 height: 40,
                 controller: _phoneController,
                 formatter: MaskedInputFormatter('## ### ###'),
-                initCountry: CountryCodeModel(name: "Tunisia", dial_code: "+216", code: "TN"),
+                initCountry: CountryCodeModel(name: "Tunisia".tr, dial_code: "+216", code: "TN"),
                 betweenPadding: 10,
                 onInputChanged: (IntPhoneNumber phone) {},
                 dialogConfig: DialogConfig(
@@ -79,9 +80,9 @@ class _SignInState extends State<SignIn> {
                   searchBoxHintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   flatFlag: true,
                   itemFlagSize: 20,
-                  title: "Select the country",
+                  title: "Select the country".tr,
                   searchBoxRadius: 5,
-                  searchHintText: "Search",
+                  searchHintText: "Search".tr,
                 ),
                 countryConfig: CountryConfig(
                   decoration: BoxDecoration(border: Border.all(width: .3, color: grey), borderRadius: BorderRadius.circular(8)),
@@ -94,10 +95,10 @@ class _SignInState extends State<SignIn> {
                   enabledColor: grey,
                   errorColor: grey,
                   labelStyle: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                  labelText: "Phone Number",
+                  labelText: "Phone Number".tr,
                   floatingLabelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                   radius: 8,
-                  hintText: "Phone Number",
+                  hintText: "Phone Number".tr,
                   borderWidth: .3,
                   backgroundColor: transparent,
                   decoration: null,
@@ -124,7 +125,7 @@ class _SignInState extends State<SignIn> {
                         focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                         hintText: "abc@xyz.com",
                         hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                        labelText: "E-mail",
+                        labelText: "E-mail".tr,
                         labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                         prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
                       ),
@@ -150,7 +151,7 @@ class _SignInState extends State<SignIn> {
                         focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                         hintText: "**********",
                         hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                        labelText: "Password",
+                        labelText: "Password".tr,
                         labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                         prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.lock_solid, color: grey, size: 15)),
                         suffixIcon: IconButton(
@@ -168,7 +169,7 @@ class _SignInState extends State<SignIn> {
                 splashColor: transparent,
                 highlightColor: transparent,
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const ForgetPassword())),
-                child: Text("Did you forget you password ?", style: GoogleFonts.abel(color: purple, fontSize: 12, fontWeight: FontWeight.bold)),
+                child: Text("Did you forget you password ?".tr, style: GoogleFonts.abel(color: purple, fontSize: 12, fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 20),
               Center(
@@ -182,16 +183,16 @@ class _SignInState extends State<SignIn> {
                         highlightColor: transparent,
                         onTap: () async {
                           if (!_emailController.text.contains(RegExp(r'^[\w\-\.]+@([\w\-]+\.)+[\w-]{2,4}$'))) {
-                            showToast(context, "Enter a correct e-mail address", color: red);
+                            showToast(context, "Enter a correct e-mail address".tr, color: red);
                           } else if (_passwordController.text.isEmpty) {
-                            showToast(context, "Enter a correct password", color: red);
+                            showToast(context, "Enter a correct password".tr, color: red);
                           } else {
                             try {
                               _(() => _ignoreStupidity = true);
-                              showToast(context, "Please wait...");
+                              showToast(context, "Please wait...".tr);
                               await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false);
-                              showToast(context, "Welcome back");
+                              showToast(context, "Welcome back".tr);
                               _(() => _ignoreStupidity = false);
                             } catch (e) {
                               showToast(context, e.toString(), color: red);
@@ -202,7 +203,7 @@ class _SignInState extends State<SignIn> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 48),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                          child: Text("Sign-in", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                          child: Text("Sign-in".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                         ),
                       ),
                     );
@@ -219,12 +220,12 @@ class _SignInState extends State<SignIn> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 48),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: purple)),
-                    child: Text("Create account", style: GoogleFonts.abel(color: purple, fontSize: 14, fontWeight: FontWeight.bold)),
+                    child: Text("Create account".tr, style: GoogleFonts.abel(color: purple, fontSize: 14, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
-              Center(child: Text("OR", style: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500))),
+              Center(child: Text("OR".tr, style: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500))),
               const SizedBox(height: 10),
               const Divider(indent: 50, endIndent: 50, color: grey, height: .2, thickness: .2),
               const SizedBox(height: 10),

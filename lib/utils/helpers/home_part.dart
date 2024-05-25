@@ -3,6 +3,7 @@ import 'package:dabka/models/category_model.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/views/product.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
@@ -77,7 +78,7 @@ class HomePart extends StatelessWidget {
                                 Container(
                                   padding: const EdgeInsets.all(4),
                                   alignment: Alignment.center,
-                                  child: Text("${products[index].productBuyPrice.toStringAsFixed(3).replaceAll(".", ",")} TND", style: GoogleFonts.abel(color: pink, fontSize: 12, fontWeight: FontWeight.bold)),
+                                  child: Text("${products[index].productBuyPrice.toStringAsFixed(3).replaceAll(".", ",")} " "TND".tr, style: GoogleFonts.abel(color: pink, fontSize: 12, fontWeight: FontWeight.bold)),
                                 ),
                               ],
                             ),

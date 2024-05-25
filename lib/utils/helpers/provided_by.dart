@@ -5,6 +5,7 @@ import 'package:dabka/models/product_model.dart';
 import 'package:dabka/models/user_model.dart';
 import 'package:dabka/views/supplier.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -26,7 +27,7 @@ class _ProvidedByState extends State<ProvidedBy> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Provided By", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text("Provided By".tr, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             future: FirebaseFirestore.instance.collection('users').doc(widget.product.supplierID).get(),
@@ -95,7 +96,7 @@ class _ProvidedByState extends State<ProvidedBy> {
                                         children: <Widget>[
                                           const Icon(FontAwesome.circle_user, size: 15, color: white),
                                           const SizedBox(width: 5),
-                                          Text("Follow", style: GoogleFonts.abel(color: white, fontSize: 10, fontWeight: FontWeight.w500)),
+                                          Text("Follow".tr, style: GoogleFonts.abel(color: white, fontSize: 10, fontWeight: FontWeight.w500)),
                                         ],
                                       ),
                                     ),

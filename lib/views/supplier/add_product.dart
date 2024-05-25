@@ -10,8 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
@@ -124,7 +124,7 @@ class _AddProductState extends State<AddProduct> {
         backgroundColor: white,
         appBar: AppBar(
           leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
-          title: Text('Add Product', style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: dark)),
+          title: Text('Add Product'.tr, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: dark)),
           backgroundColor: white,
           elevation: 6,
           shadowColor: dark,
@@ -172,7 +172,7 @@ class _AddProductState extends State<AddProduct> {
                                     children: <Widget>[
                                       const Icon(FontAwesome.circle_plus_solid, size: 20, color: purple),
                                       const SizedBox(height: 10),
-                                      Text('Add Product Images', style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: purple)),
+                                      Text('Add Product Images'.tr, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: purple)),
                                       const SizedBox(height: 10),
                                       if (!_imageController.hasNoImages)
                                         FlutterImageStack.providers(
@@ -220,7 +220,7 @@ class _AddProductState extends State<AddProduct> {
                                             const Icon(FontAwesome.image_portrait_solid, size: 25, color: Color.fromARGB(255, 137, 0, 161)),
                                             const SizedBox(height: 5),
                                             Text(
-                                              'Add Videos',
+                                              'Add Videos'.tr,
                                               style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 137, 0, 161)),
                                               textAlign: TextAlign.center,
                                             ),
@@ -290,7 +290,7 @@ class _AddProductState extends State<AddProduct> {
                                       const Icon(FontAwesome.circle_plus_solid, size: 20, color: purple),
                                       const SizedBox(height: 10),
                                       Text(
-                                        'Add Product Shorts${_videoController.hasNoImages ? "" : "\n(${_videoController.images.length})"}',
+                                        '${"Add Product Shorts".tr}${_videoController.hasNoImages ? "" : "\n(${_videoController.images.length})"}',
                                         style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: purple),
                                         textAlign: TextAlign.center,
                                       ),
@@ -315,7 +315,7 @@ class _AddProductState extends State<AddProduct> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Text("Product Name", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              Text("Product Name".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 40,
@@ -329,9 +329,9 @@ class _AddProductState extends State<AddProduct> {
                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Product Name",
+                                    hintText: "Product Name".tr,
                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "What is the product called?",
+                                    labelText: "What is the product called?".tr,
                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.note_sticky, color: grey, size: 15)),
                                   ),
@@ -339,7 +339,7 @@ class _AddProductState extends State<AddProduct> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("Product Buying Price", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              Text("Product Buying Price".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 40,
@@ -353,9 +353,9 @@ class _AddProductState extends State<AddProduct> {
                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Buy Price",
+                                    hintText: "Buy Price".tr,
                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "How does it cost to buy it",
+                                    labelText: "How does it cost to buy it".tr,
                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.dollar_sign_solid, color: grey, size: 15)),
                                   ),
@@ -364,7 +364,7 @@ class _AddProductState extends State<AddProduct> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("Product Selling Price", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              Text("Product Selling Price".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 40,
@@ -378,9 +378,9 @@ class _AddProductState extends State<AddProduct> {
                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Sell Price",
+                                    hintText: "Sell Price".tr,
                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "How does it cost to sell",
+                                    labelText: "How does it cost to sell".tr,
                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.dollar_sign_solid, color: grey, size: 15)),
                                   ),
@@ -389,7 +389,7 @@ class _AddProductState extends State<AddProduct> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("Product Type", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              Text("Product Type".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 40,
@@ -403,16 +403,16 @@ class _AddProductState extends State<AddProduct> {
                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Type",
+                                    hintText: "Type".tr,
                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "What is you product type ?",
+                                    labelText: "What is you product type ?".tr,
                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.list_solid, color: grey, size: 15)),
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("Product Description", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              Text("Product Description".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
                                 // height: 40,
@@ -428,9 +428,9 @@ class _AddProductState extends State<AddProduct> {
                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Description",
+                                    hintText: "Description".tr,
                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "Describe your product",
+                                    labelText: "Describe your product".tr,
                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.text_slash_solid, color: grey, size: 15)),
                                   ),
@@ -448,32 +448,32 @@ class _AddProductState extends State<AddProduct> {
                                         highlightColor: transparent,
                                         onTap: () async {
                                           if (_imageController.hasNoImages) {
-                                            showToast(context, "Please pick up some images for the product", color: red);
+                                            showToast(context, "Please pick up some images for the product".tr, color: red);
                                           } else if (_productNameController.text.trim().isEmpty) {
-                                            showToast(context, "Product name is required", color: red);
+                                            showToast(context, "Product name is required".tr, color: red);
                                           } else if (_productBuyPriceController.text.isEmpty || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.split('').where((String element) => element == ".").length > 1) {
-                                            showToast(context, "Enter a correct buying price", color: red);
+                                            showToast(context, "Enter a correct buying price".tr, color: red);
                                           } else if (_productSellPriceController.text.isEmpty || _productSellPriceController.text.startsWith('.') || _productSellPriceController.text.startsWith('.') || _productSellPriceController.text.split('').where((String element) => element == ".").length > 1) {
-                                            showToast(context, "Enter a correct selling price", color: red);
+                                            showToast(context, "Enter a correct selling price".tr, color: red);
                                           } else if (_productTypeController.text.trim().isEmpty) {
-                                            showToast(context, "Product type should not be empty", color: red);
+                                            showToast(context, "Product type should not be empty".tr, color: red);
                                           } else if (_productDescriptionController.text.trim().isEmpty) {
-                                            showToast(context, "Product description is mandatory", color: red);
+                                            showToast(context, "Product description is mandatory".tr, color: red);
                                           } else {
                                             try {
                                               _(() => _ignoreStupidity = true);
-                                              showToast(context, "Please wait...");
+                                              showToast(context, "Please wait...".tr);
 
                                               final List<MediaModel> imagePaths = <MediaModel>[];
                                               final List<MediaModel> videoPaths = <MediaModel>[];
 
                                               final String productID = const Uuid().v8();
-                                              showToast(context, "Uploading Images...");
+                                              showToast(context, "Uploading Images...".tr);
 
                                               for (final ImageFile image in _imageController.images) {
                                                 await FirebaseStorage.instance.ref().child("/images/${const Uuid().v8()}${image.name}").putFile(File(image.path!)).then(
                                                   (TaskSnapshot task) async {
-                                                    showToast(context, "Uploading Image N °${imagePaths.length + 1}");
+                                                    showToast(context, "${'Uploading Image N °'.tr}${imagePaths.length + 1}");
                                                     imagePaths.add(
                                                       MediaModel(
                                                         ext: image.extension,
@@ -482,21 +482,21 @@ class _AddProductState extends State<AddProduct> {
                                                         type: "IMAGE",
                                                       ),
                                                     );
-                                                    showToast(context, "Image N °${imagePaths.length} Uploaded");
+                                                    showToast(context, "${'Image N °'.tr}${imagePaths.length} ${'Uploaded'.tr}");
                                                   },
                                                 );
                                               }
 
-                                              showToast(context, "Images Uploaded");
+                                              showToast(context, "Images Uploaded".tr);
 
                                               if (_videoController.images.isNotEmpty) {
-                                                showToast(context, "Uploading Videos...");
+                                                showToast(context, "Uploading Videos...".tr);
                                               }
 
                                               for (final ImageFile video in _videoController.images) {
                                                 await FirebaseStorage.instance.ref().child("/videos/${const Uuid().v8()}${video.name}").putFile(File(video.path!)).then(
                                                   (TaskSnapshot task) async {
-                                                    showToast(context, "Uploading Video N °${videoPaths.length + 1}");
+                                                    showToast(context, "${'Uploading Video N °'.tr}${videoPaths.length + 1}");
                                                     videoPaths.add(
                                                       MediaModel(
                                                         ext: video.extension,
@@ -505,13 +505,13 @@ class _AddProductState extends State<AddProduct> {
                                                         type: "VIDEO",
                                                       ),
                                                     );
-                                                    showToast(context, "Video N °${videoPaths.length} Uploaded");
+                                                    showToast(context, "${'Video N °'.tr}${videoPaths.length} ${'Uploaded'.tr}");
                                                   },
                                                 );
                                               }
 
                                               if (_videoController.images.isNotEmpty) {
-                                                showToast(context, "Videos Uploaded");
+                                                showToast(context, "Videos Uploaded".tr);
                                               }
 
                                               await FirebaseFirestore.instance.collection("products").doc(productID).set(
@@ -542,7 +542,7 @@ class _AddProductState extends State<AddProduct> {
                                               _imagesKey.currentState!.setState(() {});
                                               _imageController.clearImages();
 
-                                              showToast(context, "Product Created Successfully");
+                                              showToast(context, "Product Created Successfully".tr);
                                               _(() => _ignoreStupidity = false);
                                             } catch (e) {
                                               debugPrint(e.toString());
@@ -554,7 +554,7 @@ class _AddProductState extends State<AddProduct> {
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                                          child: Text("Create Product", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          child: Text("Create Product".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                                         ),
                                       ),
                                     );

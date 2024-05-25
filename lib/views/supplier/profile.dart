@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart' as fis;
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,7 +71,7 @@ class _ProfileState extends State<Profile> {
           leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
           centerTitle: true,
           backgroundColor: white,
-          title: Text("Update your profile", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+          title: Text("Update your profile".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
           elevation: 5,
           shadowColor: dark,
         ),
@@ -85,89 +86,91 @@ class _ProfileState extends State<Profile> {
                     children: <Widget>[
                       const SizedBox(height: 20),
                       Center(
-                        child: StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
-                          return InkWell(
-                            hoverColor: transparent,
-                            splashColor: transparent,
-                            highlightColor: transparent,
-                            onTap: () async {
-                              final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                              if (image != null) {
-                                _(() => _avatar = File(image.path));
-                                showToast(context, "Picture updates successfully");
-                              }
-                            },
-                            onLongPress: () {
-                              if (_avatar != null) {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) => Container(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Text("Are you sure you want to remove you picture ?", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
-                                        Row(
-                                          children: <Widget>[
-                                            const Spacer(),
-                                            TextButton(
-                                              onPressed: () async {
-                                                _(() => _avatar = null);
-                                                showToast(context, "Picture removed");
-                                                Navigator.pop(context);
-                                              },
-                                              style: ButtonStyle(
-                                                shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                                backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                        child: StatefulBuilder(
+                          builder: (BuildContext context, void Function(void Function()) _) {
+                            return InkWell(
+                              hoverColor: transparent,
+                              splashColor: transparent,
+                              highlightColor: transparent,
+                              onTap: () async {
+                                final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                if (image != null) {
+                                  _(() => _avatar = File(image.path));
+                                  showToast(context, "Picture updates successfully".tr);
+                                }
+                              },
+                              onLongPress: () {
+                                if (_avatar != null) {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) => Container(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Text("Are you sure you want to remove you picture ?".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                          Row(
+                                            children: <Widget>[
+                                              const Spacer(),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  _(() => _avatar = null);
+                                                  showToast(context, "Picture removed".tr);
+                                                  Navigator.pop(context);
+                                                },
+                                                style: ButtonStyle(
+                                                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+                                                  backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                                                ),
+                                                child: Text("CONFIRM".tr, style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
                                               ),
-                                              child: Text("CONFIRM", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(context),
-                                              style: ButtonStyle(
-                                                shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                                backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                                              const SizedBox(width: 10),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(context),
+                                                style: ButtonStyle(
+                                                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+                                                  backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                                                ),
+                                                child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                                               ),
-                                              child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
+                                  );
+                                }
+                              },
+                              child: Card(
+                                elevation: 4,
+                                borderOnForeground: true,
+                                color: white,
+                                shadowColor: dark,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: fis.FlutterImageStack.providers(
+                                    providers: <ImageProvider>[
+                                      const AssetImage("assets/images/logo.png"),
+                                      if (_avatar != null) FileImage(_avatar!) else const AssetImage("assets/images/nobody.png"),
+                                    ],
+                                    totalCount: 2,
+                                    itemBorderColor: purple,
+                                    itemCount: 2,
+                                    showTotalCount: true,
+                                    itemRadius: 100,
                                   ),
-                                );
-                              }
-                            },
-                            child: Card(
-                              elevation: 4,
-                              borderOnForeground: true,
-                              color: white,
-                              shadowColor: dark,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                child: fis.FlutterImageStack.providers(
-                                  providers: <ImageProvider>[
-                                    const AssetImage("assets/images/logo.png"),
-                                    if (_avatar != null) FileImage(_avatar!) else const AssetImage("assets/images/nobody.png"),
-                                  ],
-                                  totalCount: 2,
-                                  itemBorderColor: purple,
-                                  itemCount: 2,
-                                  showTotalCount: true,
-                                  itemRadius: 100,
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Center(
                         child: Text(
-                          "Please enter your phone number",
+                          "Please enter your phone number".tr,
                           style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
                           textAlign: TextAlign.center,
                         ),
@@ -189,7 +192,7 @@ class _ProfileState extends State<Profile> {
                                 focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                 hintText: "johny_english",
                                 hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                labelText: "Username",
+                                labelText: "Username".tr,
                                 labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                 prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
                               ),
@@ -202,7 +205,7 @@ class _ProfileState extends State<Profile> {
                         height: 40,
                         controller: _phoneController,
                         formatter: MaskedInputFormatter('## ### ###'),
-                        initCountry: CountryCodeModel(name: "Tunisia", dial_code: "+216", code: "TN"),
+                        initCountry: CountryCodeModel(name: "Tunisia".tr, dial_code: "+216", code: "TN"),
                         betweenPadding: 10,
                         onInputChanged: (IntPhoneNumber phone) {},
                         dialogConfig: DialogConfig(
@@ -219,9 +222,9 @@ class _ProfileState extends State<Profile> {
                           searchBoxHintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                           flatFlag: true,
                           itemFlagSize: 20,
-                          title: "Pick a country",
+                          title: "Pick a country".tr,
                           searchBoxRadius: 5,
-                          searchHintText: "Search",
+                          searchHintText: "Search".tr,
                         ),
                         countryConfig: CountryConfig(
                           decoration: BoxDecoration(border: Border.all(width: .3, color: grey), borderRadius: BorderRadius.circular(8)),
@@ -234,10 +237,10 @@ class _ProfileState extends State<Profile> {
                           enabledColor: grey,
                           errorColor: grey,
                           labelStyle: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                          labelText: "Phone Number",
+                          labelText: "Phone Number".tr,
                           floatingLabelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                           radius: 8,
-                          hintText: "Phone Number",
+                          hintText: "Phone Number".tr,
                           borderWidth: .3,
                           backgroundColor: transparent,
                           decoration: null,
@@ -264,7 +267,7 @@ class _ProfileState extends State<Profile> {
                                 focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                 hintText: "abc@xyz.com",
                                 hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                labelText: "E-mail",
+                                labelText: "E-mail".tr,
                                 labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                 prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
                               ),
@@ -290,7 +293,7 @@ class _ProfileState extends State<Profile> {
                                 focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                 hintText: "**********",
                                 hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                labelText: "Password",
+                                labelText: "Password".tr,
                                 labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                 prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.lock_solid, color: grey, size: 15)),
                                 suffixIcon: IconButton(
@@ -308,7 +311,7 @@ class _ProfileState extends State<Profile> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("What is you gender", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                            Text("What is you gender".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                             const SizedBox(height: 20),
                             StatefulBuilder(
                               builder: (BuildContext context, void Function(void Function()) _) {
@@ -329,11 +332,11 @@ class _ProfileState extends State<Profile> {
                                           border: Border.all(color: _gender == "M" ? pink : grey, width: _gender == "M" ? 2 : 1),
                                         ),
                                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                        child: Text("Male", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                        child: Text("Male".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text("OR", style: GoogleFonts.abel(fontSize: 12, color: grey, fontWeight: FontWeight.w500)),
+                                    Text("OR".tr, style: GoogleFonts.abel(fontSize: 12, color: grey, fontWeight: FontWeight.w500)),
                                     const SizedBox(width: 10),
                                     InkWell(
                                       splashColor: transparent,
@@ -348,7 +351,7 @@ class _ProfileState extends State<Profile> {
                                           border: Border.all(color: _gender == "F" ? pink : grey, width: _gender == "F" ? 2 : 1),
                                         ),
                                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                        child: Text("Female", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                        child: Text("Female".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                     ),
                                   ],

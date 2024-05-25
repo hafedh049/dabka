@@ -12,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
@@ -111,7 +111,7 @@ class _AddTrueViewState extends State<AddTrueView> {
         backgroundColor: white,
         appBar: AppBar(
           leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
-          title: Text('Add True View', style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: dark)),
+          title: Text('Add True View'.tr, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: dark)),
           backgroundColor: white,
           elevation: 6,
           shadowColor: dark,
@@ -156,14 +156,14 @@ class _AddTrueViewState extends State<AddTrueView> {
                                             const Icon(FontAwesome.image_portrait_solid, size: 25, color: Color.fromARGB(255, 137, 0, 161)),
                                             const SizedBox(height: 5),
                                             Text(
-                                              'Add Videos',
+                                              'Add Videos'.tr,
                                               style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 137, 0, 161)),
                                               textAlign: TextAlign.center,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      builder: (context, imageFile) => GestureDetector(
+                                      builder: (BuildContext context, ImageFile imageFile) => GestureDetector(
                                         onTap: () async {
                                           await _videoPlayerControllers[imageFile]!.play();
                                           showModalBottomSheet(
@@ -226,7 +226,7 @@ class _AddTrueViewState extends State<AddTrueView> {
                                       const Icon(FontAwesome.circle_plus_solid, size: 20, color: purple),
                                       const SizedBox(height: 10),
                                       Text(
-                                        'Add Product Shorts${_videoController.hasNoImages ? "" : "\n(${_videoController.images.length})"}',
+                                        '${"Add Product Shorts".tr}${_videoController.hasNoImages ? "" : "\n(${_videoController.images.length})"}',
                                         style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: purple),
                                         textAlign: TextAlign.center,
                                       ),
@@ -264,13 +264,13 @@ class _AddTrueViewState extends State<AddTrueView> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisSize: MainAxisSize.min,
                                                   children: <Widget>[
-                                                    Text("Product Name", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                                                    Text("Product Name".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                                                     const SizedBox(height: 10),
                                                     Card(
                                                       elevation: 6,
                                                       shadowColor: dark,
                                                       child: CustomDropdown<ProductModel>.search(
-                                                        hintText: "Pick a product",
+                                                        hintText: "Pick a product".tr,
                                                         items: _products,
                                                         excludeSelected: false,
                                                         initialItem: _products.firstOrNull,
@@ -282,7 +282,7 @@ class _AddTrueViewState extends State<AddTrueView> {
                                 },
                               ),
                               const SizedBox(height: 20),
-                              Text("Package Name", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              Text("Package Name".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 40,
@@ -296,9 +296,9 @@ class _AddTrueViewState extends State<AddTrueView> {
                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Package Name",
+                                    hintText: "Package Name".tr,
                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "What is its package",
+                                    labelText: "What is its package".tr,
                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.note_sticky, color: grey, size: 15)),
                                   ),
@@ -306,7 +306,7 @@ class _AddTrueViewState extends State<AddTrueView> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("Price", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              Text("Price".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 40,
@@ -320,9 +320,9 @@ class _AddTrueViewState extends State<AddTrueView> {
                                     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Price",
+                                    hintText: "Price".tr,
                                     hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "How does it cost to do it",
+                                    labelText: "How does it cost to do it".tr,
                                     labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.dollar_sign_solid, color: grey, size: 15)),
                                   ),
@@ -342,29 +342,29 @@ class _AddTrueViewState extends State<AddTrueView> {
                                         highlightColor: transparent,
                                         onTap: () async {
                                           if (_videoController.hasNoImages) {
-                                            showToast(context, "Please pick up the true view", color: red);
+                                            showToast(context, "Please pick up the true view".tr, color: red);
                                           } else if (_selectedProduct == null) {
-                                            showToast(context, "Select the product you want to market", color: red);
+                                            showToast(context, "Select the product you want to market".tr, color: red);
                                           } else if (_packageNameController.text.trim().isEmpty) {
-                                            showToast(context, "Package name is required", color: red);
+                                            showToast(context, "Package name is required".tr, color: red);
                                           } else if (_productBuyPriceController.text.isEmpty || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.split('').where((String element) => element == ".").length > 1) {
-                                            showToast(context, "Enter a correct buying price", color: red);
+                                            showToast(context, "Enter a correct buying price".tr, color: red);
                                           } else {
                                             try {
                                               _(() => _ignoreStupidity = true);
-                                              showToast(context, "Please wait...");
+                                              showToast(context, "Please wait...".tr);
 
                                               final List<MediaModel> videoPaths = <MediaModel>[];
 
                                               final String reelID = const Uuid().v8();
 
                                               if (_videoController.images.isNotEmpty) {
-                                                showToast(context, "Uploading Videos...");
+                                                showToast(context, "Uploading Videos...".tr);
                                               }
 
                                               for (final ImageFile video in _videoController.images) {
                                                 final TaskSnapshot task = await FirebaseStorage.instance.ref().child("/videos/${const Uuid().v8()}${video.name}").putFile(File(video.path!));
-                                                showToast(context, "Uploading Video N °${videoPaths.length + 1}");
+                                                showToast(context, "${'Uploading Video N °'.tr}${videoPaths.length + 1}");
                                                 videoPaths.add(
                                                   MediaModel(
                                                     ext: video.extension,
@@ -373,11 +373,11 @@ class _AddTrueViewState extends State<AddTrueView> {
                                                     type: "VIDEO",
                                                   ),
                                                 );
-                                                showToast(context, "Video N °${videoPaths.length} Uploaded");
+                                                showToast(context, "${'Video N °'.tr}${videoPaths.length} ${'Uploaded'.tr}");
                                               }
 
                                               if (_videoController.images.isNotEmpty) {
-                                                showToast(context, "Videos Uploaded");
+                                                showToast(context, "Videos Uploaded".tr);
                                               }
 
                                               await FirebaseFirestore.instance.collection("true_views").doc(reelID).set(
@@ -402,7 +402,7 @@ class _AddTrueViewState extends State<AddTrueView> {
                                               _videosKey.currentState!.setState(() {});
                                               _videoController.clearImages();
 
-                                              showToast(context, "True View Created Successfully");
+                                              showToast(context, "True View Created Successfully".tr);
                                               _(() => _ignoreStupidity = false);
                                             } catch (e) {
                                               debugPrint(e.toString());
@@ -414,7 +414,7 @@ class _AddTrueViewState extends State<AddTrueView> {
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                                          child: Text("ADD TRUE VIEW", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          child: Text("ADD TRUE VIEW".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                                         ),
                                       ),
                                     );

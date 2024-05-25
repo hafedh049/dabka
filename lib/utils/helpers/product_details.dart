@@ -1,5 +1,6 @@
 import 'package:dabka/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -21,7 +22,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text("Details", style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text("Details".tr, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           Card(
             shadowColor: dark,
@@ -42,7 +43,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Type", style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.bold)),
+                          Text("Type".tr, style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.bold)),
                           const SizedBox(width: 5),
                           Text(widget.product.productType, style: GoogleFonts.abel(color: grey, fontSize: 8, fontWeight: FontWeight.w500)),
                         ],

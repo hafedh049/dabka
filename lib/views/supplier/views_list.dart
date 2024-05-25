@@ -6,6 +6,7 @@ import 'package:dabka/views/supplier/add_view.dart';
 import 'package:dabka/views/supplier/view_space.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:lottie/lottie.dart';
@@ -44,7 +45,7 @@ class _ViewsListState extends State<ViewsList> {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text("True Views List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+            Text("True Views List".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
             const Spacer(),
             IconButton(
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AddTrueView())),
@@ -141,7 +142,7 @@ class _ViewsListState extends State<ViewsList> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
-                      Text("No True Views Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                      Text("No True Views Yet!".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                     ],
                   ),
                 );

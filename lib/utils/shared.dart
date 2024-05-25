@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 Box? settingsBox;
@@ -14,4 +15,4 @@ const Color red = Colors.red;
 const Color blue = Color.fromARGB(255, 107, 161, 255);
 const Color gold = Color.fromARGB(255, 253, 243, 152);
 
-const String appTitle = "DabKa";
+String appTitle = "DabKa".tr;

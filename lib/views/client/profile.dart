@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart' as fis;
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,7 +71,7 @@ class _ProfileState extends State<Profile> {
           leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
           centerTitle: true,
           backgroundColor: white,
-          title: Text("Update your profile", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+          title: Text("Update your profile".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
           elevation: 5,
           shadowColor: dark,
         ),
@@ -94,7 +95,7 @@ class _ProfileState extends State<Profile> {
                               final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
                               if (image != null) {
                                 _(() => _avatar = File(image.path));
-                                showToast(context, "Picture updates successfully");
+                                showToast(context, "Picture updates successfully".tr);
                               }
                             },
                             onLongPress: () {
@@ -107,21 +108,21 @@ class _ProfileState extends State<Profile> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Text("Are you sure you want to remove you picture ?", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                        Text("Are you sure you want to remove you picture ?".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                                         Row(
                                           children: <Widget>[
                                             const Spacer(),
                                             TextButton(
                                               onPressed: () async {
                                                 _(() => _avatar = null);
-                                                showToast(context, "Picture removed");
+                                                showToast(context, "Picture removed".tr);
                                                 Navigator.pop(context);
                                               },
                                               style: ButtonStyle(
                                                 shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
                                                 backgroundColor: const WidgetStatePropertyAll<Color>(purple),
                                               ),
-                                              child: Text("CONFIRM", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
+                                              child: Text("CONFIRM".tr, style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
                                             ),
                                             const SizedBox(width: 10),
                                             TextButton(
@@ -130,7 +131,7 @@ class _ProfileState extends State<Profile> {
                                                 shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
                                                 backgroundColor: const WidgetStatePropertyAll<Color>(purple),
                                               ),
-                                              child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                                              child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                                             ),
                                           ],
                                         )

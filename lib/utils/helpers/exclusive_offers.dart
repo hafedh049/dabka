@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dabka/models/offer_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
@@ -18,7 +19,7 @@ class ExclusiveOffers extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text("Exclusive Offers", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Text("Exclusive Offers".tr, style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 100, width: double.infinity)),
         const SizedBox(height: 10),
@@ -75,7 +76,7 @@ class ExclusiveOffers extends StatelessWidget {
                                 const SizedBox(height: 10),
                                 ShaderMask(
                                   shaderCallback: (Rect bounds) => const LinearGradient(colors: <Color>[blue, green]).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                                  child: Text("CHECK OFFERS", style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.bold)),
+                                  child: Text("CHECK OFFERS".tr, style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                                 ),
                               ],
                             ),

@@ -5,6 +5,7 @@ import 'package:dabka/utils/helpers/home_part.dart';
 import 'package:dabka/utils/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -19,9 +20,9 @@ class Supplier extends StatefulWidget {
 
 class _SupplierState extends State<Supplier> {
   final List<Map<String, dynamic>> _methods = <Map<String, dynamic>>[
-    <String, dynamic>{"icon": "assets/images/wallet.png", "method": "Wallet"},
-    <String, dynamic>{"icon": "assets/images/card.png", "method": "Credit"},
-    <String, dynamic>{"icon": "assets/images/ticket.png", "method": "Cash"},
+    <String, dynamic>{"icon": "assets/images/wallet.png", "method": "Wallet".tr},
+    <String, dynamic>{"icon": "assets/images/card.png", "method": "Credit".tr},
+    <String, dynamic>{"icon": "assets/images/ticket.png", "method": "Cash".tr},
   ];
 
   CategoryModel? _category;
@@ -47,7 +48,7 @@ class _SupplierState extends State<Supplier> {
       appBar: AppBar(
         backgroundColor: white,
         centerTitle: true,
-        title: Text("Supplier Profile", style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        title: Text("Supplier Profile".tr, style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
       ),
       body: ListView(
@@ -106,7 +107,7 @@ class _SupplierState extends State<Supplier> {
                           children: <Widget>[
                             const Icon(Bootstrap.chat_square_text, color: white, size: 20),
                             const SizedBox(width: 10),
-                            Text("Chat", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                            Text("Chat".tr, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
                           ],
                         ),
                       ),
@@ -122,7 +123,7 @@ class _SupplierState extends State<Supplier> {
                     const SizedBox(height: 10),
                     Text(widget.supplier.followers.toString(), style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 5),
-                    Text("Followers", style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 14, fontWeight: FontWeight.w500)),
+                    Text("Followers".tr, style: GoogleFonts.abel(color: dark.withOpacity(.6), fontSize: 14, fontWeight: FontWeight.w500)),
                   ],
                 ),
               ],
@@ -173,7 +174,7 @@ class _SupplierState extends State<Supplier> {
                         child: AnimatedDefaultTextStyle(
                           style: GoogleFonts.abel(color: blue, fontSize: 12, fontWeight: FontWeight.bold),
                           duration: 300.ms,
-                          child: const Text("All Products"),
+                          child: Text("All Products".tr),
                         ),
                       ),
                       const SizedBox(height: 10),

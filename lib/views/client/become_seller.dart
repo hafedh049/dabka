@@ -7,6 +7,7 @@ import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/views/supplier/holder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl_phone_number_field/intl_phone_number_field.dart';
@@ -39,7 +40,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
 
   Future<void> _joinUs() async {
     if (_storeNameController.text.trim().isEmpty) {
-      showToast(context, "Store name can't be empty");
+      showToast(context, "Store name can't be empty".tr);
     } else {
       await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update(
         <String, dynamic>{
@@ -75,7 +76,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                     appBar: AppBar(
                       centerTitle: true,
                       backgroundColor: white,
-                      title: Text("Become a Seller", style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
+                      title: Text("Become a Seller".tr, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark)),
                       leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
                       elevation: 6,
                       shadowColor: dark,
@@ -102,9 +103,9 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                Text("Join Our Team", style: GoogleFonts.abel(fontSize: 15, fontWeight: FontWeight.bold, color: dark)),
+                                Text("Join Our Team".tr, style: GoogleFonts.abel(fontSize: 15, fontWeight: FontWeight.bold, color: dark)),
                                 const SizedBox(height: 5),
-                                Text("Let our journey begin", style: GoogleFonts.abel(fontSize: 10, fontWeight: FontWeight.bold, color: dark.withOpacity(.6))),
+                                Text("Let our journey begin".tr, style: GoogleFonts.abel(fontSize: 10, fontWeight: FontWeight.bold, color: dark.withOpacity(.6))),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 40,
@@ -121,9 +122,9 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                           focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                          hintText: "Store Name",
+                                          hintText: "Store Name".tr,
                                           hintStyle: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500),
-                                          labelText: "Store Name",
+                                          labelText: "Store Name".tr,
                                           labelStyle: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500),
                                           prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.shop_solid, color: grey, size: 15)),
                                           suffixIcon: _storeNameController.text.isEmpty
@@ -153,9 +154,9 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                                           focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                          hintText: "Your Name",
+                                          hintText: "Your Name".tr,
                                           hintStyle: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500),
-                                          labelText: "Your Name",
+                                          labelText: "Your Name".tr,
                                           labelStyle: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500),
                                           prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.user_solid, color: grey, size: 15)),
                                           suffixIcon: _usernameController.text.isEmpty
@@ -174,7 +175,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                   height: 40,
                                   controller: _phoneNumberController,
                                   formatter: MaskedInputFormatter('## ### ###'),
-                                  initCountry: CountryCodeModel(name: "Tunisia", dial_code: "+216", code: "TN"),
+                                  initCountry: CountryCodeModel(name: "Tunisia".tr, dial_code: "+216", code: "TN"),
                                   betweenPadding: 10,
                                   dialogConfig: DialogConfig(
                                     backgroundColor: white,
@@ -190,9 +191,9 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                     searchBoxHintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                                     flatFlag: true,
                                     itemFlagSize: 20,
-                                    title: "Choose a country",
+                                    title: "Choose a country".tr,
                                     searchBoxRadius: 5,
-                                    searchHintText: "Search",
+                                    searchHintText: "Search".tr,
                                   ),
                                   countryConfig: CountryConfig(
                                     decoration: BoxDecoration(border: Border.all(width: .3, color: grey), borderRadius: BorderRadius.circular(8)),
@@ -205,10 +206,10 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                     enabledColor: grey,
                                     errorColor: grey,
                                     labelStyle: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.w500),
-                                    labelText: "Phone Number",
+                                    labelText: "Phone Number".tr,
                                     floatingLabelStyle: GoogleFonts.abel(color: grey, fontSize: 12, fontWeight: FontWeight.w500),
                                     radius: 8,
-                                    hintText: "Phone Number",
+                                    hintText: "Phone Number".tr,
                                     borderWidth: .3,
                                     backgroundColor: transparent,
                                     decoration: null,
@@ -229,7 +230,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                         selectedItem.categoryName,
                                         style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.w500),
                                       ),
-                                      hintText: "Pick Category",
+                                      hintText: "Pick Category".tr,
                                       closedHeaderPadding: const EdgeInsets.all(10),
                                       items: _categories,
                                       excludeSelected: false,
@@ -247,7 +248,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                                    child: Text("Join Us", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                    child: Text("Join Us".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                                   ),
                                 ),
                               ],
@@ -259,7 +260,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
-                                  Text("Sorry you can't be a seller or a supplier if there is not categories please contact the admin", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                  Text("Sorry you can't be a seller or a supplier if there is not categories please contact the admin".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                                 ],
                               ),
                             );

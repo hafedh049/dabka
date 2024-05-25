@@ -1,9 +1,10 @@
 import 'package:dabka/utils/shared.dart';
 import 'package:dabka/views/client/holder.dart';
-import 'package:dabka/views/client/about_us.dart';
+import 'package:dabka/views/drawer/about_us.dart';
 import 'package:dabka/views/client/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -22,19 +23,19 @@ class _DDrawerState extends State<DDrawer> {
     _tiles = <Map<String, dynamic>>[
       <String, dynamic>{
         "icon": FontAwesome.gear_solid,
-        "tile": "Settings",
+        "tile": "Settings".tr,
         "page": const Settings(),
       },
       <String, dynamic>{"tile": "DIVIDER"},
       if (FirebaseAuth.instance.currentUser != null)
         <String, dynamic>{
           "icon": FontAwesome.shop_solid,
-          "tile": "Return as a normal client",
+          "tile": "Return as a normal client".tr,
           "page": () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false),
         },
       <String, dynamic>{
         "icon": Bootstrap.hexagon_half,
-        "tile": "About Us",
+        "tile": "About Us".tr,
         "page": const AboutUs(),
       },
     ];

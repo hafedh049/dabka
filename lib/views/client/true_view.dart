@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/true_view_model.dart';
 import 'package:dabka/views/supplier/view_space.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
@@ -41,7 +42,7 @@ class _TrueViewState extends State<TrueView> {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Text("True Views List", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+            Text("True Views List".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
           ],
         ),
         const SizedBox(height: 10),
@@ -133,7 +134,7 @@ class _TrueViewState extends State<TrueView> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       LottieBuilder.asset("assets/lotties/empty.json", reverse: true),
-                      Text("No True Views Yet!", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                      Text("No True Views Yet!".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                     ],
                   ),
                 );

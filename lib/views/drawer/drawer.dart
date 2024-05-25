@@ -1,14 +1,15 @@
 import 'package:dabka/utils/shared.dart';
 import 'package:dabka/views/client/home.dart';
-import 'package:dabka/views/client/about_us.dart';
+import 'package:dabka/views/drawer/about_us.dart';
 import 'package:dabka/views/client/become_seller.dart';
 import 'package:dabka/views/client/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import 'category_grid.dart';
+import '../client/category_grid.dart';
 
 class DDrawer extends StatefulWidget {
   const DDrawer({super.key});
@@ -24,13 +25,13 @@ class _DDrawerState extends State<DDrawer> {
     _tiles = <Map<String, dynamic>>[
       <String, dynamic>{
         "icon": FontAwesome.house_chimney_solid,
-        "tile": "Home",
+        "tile": "Home".tr,
         "page": Scaffold(
           appBar: AppBar(
             leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
             centerTitle: true,
             backgroundColor: white,
-            title: Text("Home", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+            title: Text("Home".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
             elevation: 5,
             shadowColor: dark,
           ),
@@ -39,25 +40,25 @@ class _DDrawerState extends State<DDrawer> {
       },
       <String, dynamic>{
         "icon": Bootstrap.grid,
-        "tile": "Categories",
+        "tile": "Categories".tr,
         "page": const CategoryGrid(),
       },
       <String, dynamic>{"tile": "DIVIDER"},
       <String, dynamic>{
         "icon": FontAwesome.gear_solid,
-        "tile": "Settings",
+        "tile": "Settings".tr,
         "page": const Settings(),
       },
       <String, dynamic>{"tile": "DIVIDER"},
       if (FirebaseAuth.instance.currentUser != null)
         <String, dynamic>{
           "icon": FontAwesome.shop_solid,
-          "tile": "Become a seller",
+          "tile": "Become a seller".tr,
           "page": const BecomeSeller(),
         },
       <String, dynamic>{
         "icon": Bootstrap.hexagon_half,
-        "tile": "About Us",
+        "tile": "About Us".tr,
         "page": const AboutUs(),
       },
     ];

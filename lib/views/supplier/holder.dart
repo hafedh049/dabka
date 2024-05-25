@@ -3,6 +3,7 @@ import 'package:dabka/views/supplier/products_list.dart';
 import 'package:dabka/views/supplier/views_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -21,16 +22,16 @@ class _HolderState extends State<Holder> {
 
   final PageController _pageController = PageController();
 
-  final List<Map<String, dynamic>> _pages = const <Map<String, dynamic>>[
+  final List<Map<String, dynamic>> _pages = <Map<String, dynamic>>[
     <String, dynamic>{
-      "title": "Products List",
+      "title": "Products List".tr,
       "icon": FontAwesome.product_hunt_brand,
-      "page": ProductsList(),
+      "page": const ProductsList(),
     },
     <String, dynamic>{
-      "title": "Views List",
+      "title": "Views List".tr,
       "icon": FontAwesome.users_viewfinder_solid,
-      "page": ViewsList(),
+      "page": const ViewsList(),
     },
   ];
 

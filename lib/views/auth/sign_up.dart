@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_image_stack/flutter_image_stack.dart' as fis;
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
@@ -56,7 +57,7 @@ class _SignUpState extends State<SignUp> {
           leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
           centerTitle: true,
           backgroundColor: white,
-          title: Text("Open an account now", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
+          title: Text("Open an account now".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
           elevation: 5,
           shadowColor: dark,
         ),
@@ -77,7 +78,7 @@ class _SignUpState extends State<SignUp> {
                         final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
                         if (image != null) {
                           _(() => _avatar = File(image.path));
-                          showToast(context, "Picture updates successfully");
+                          showToast(context, "Picture updates successfully".tr);
                         }
                       },
                       onLongPress: () {
@@ -90,21 +91,21 @@ class _SignUpState extends State<SignUp> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  Text("Are you sure you want to remove you picture ?", style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                  Text("Are you sure you want to remove you picture ?".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
                                   Row(
                                     children: <Widget>[
                                       const Spacer(),
                                       TextButton(
                                         onPressed: () async {
                                           _(() => _avatar = null);
-                                          showToast(context, "Picture removed");
+                                          showToast(context, "Picture removed".tr);
                                           Navigator.pop(context);
                                         },
                                         style: ButtonStyle(
                                           shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
                                           backgroundColor: const WidgetStatePropertyAll<Color>(purple),
                                         ),
-                                        child: Text("CONFIRM", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
+                                        child: Text("CONFIRM".tr, style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
                                       ),
                                       const SizedBox(width: 10),
                                       TextButton(
@@ -113,7 +114,7 @@ class _SignUpState extends State<SignUp> {
                                           shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
                                           backgroundColor: const WidgetStatePropertyAll<Color>(purple),
                                         ),
-                                        child: Text("CANCEL", style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                                        child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                                       ),
                                     ],
                                   )
@@ -150,7 +151,7 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(height: 20),
                 Center(
                   child: Text(
-                    "Please enter your phone number",
+                    "Please enter your phone number".tr,
                     style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                   ),
@@ -172,7 +173,7 @@ class _SignUpState extends State<SignUp> {
                           focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                           hintText: "johny_english",
                           hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                          labelText: "Username",
+                          labelText: "Username".tr,
                           labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                           prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
                         ),
@@ -185,7 +186,7 @@ class _SignUpState extends State<SignUp> {
                   height: 40,
                   controller: _phoneController,
                   formatter: MaskedInputFormatter('## ### ###'),
-                  initCountry: CountryCodeModel(name: "Tunisia", dial_code: "+216", code: "TN"),
+                  initCountry: CountryCodeModel(name: "Tunisia".tr, dial_code: "+216", code: "TN"),
                   betweenPadding: 10,
                   onInputChanged: (IntPhoneNumber phone) {},
                   dialogConfig: DialogConfig(
@@ -202,9 +203,9 @@ class _SignUpState extends State<SignUp> {
                     searchBoxHintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                     flatFlag: true,
                     itemFlagSize: 20,
-                    title: "Pick a country",
+                    title: "Pick a country".tr,
                     searchBoxRadius: 5,
-                    searchHintText: "Search",
+                    searchHintText: "Search".tr,
                   ),
                   countryConfig: CountryConfig(
                     decoration: BoxDecoration(border: Border.all(width: .3, color: grey), borderRadius: BorderRadius.circular(8)),
@@ -217,10 +218,10 @@ class _SignUpState extends State<SignUp> {
                     enabledColor: grey,
                     errorColor: grey,
                     labelStyle: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                    labelText: "Phone Number",
+                    labelText: "Phone Number".tr,
                     floatingLabelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                     radius: 8,
-                    hintText: "Phone Number",
+                    hintText: "Phone Number".tr,
                     borderWidth: .3,
                     backgroundColor: transparent,
                     decoration: null,
@@ -247,7 +248,7 @@ class _SignUpState extends State<SignUp> {
                           focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                           hintText: "abc@xyz.com",
                           hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                          labelText: "E-mail",
+                          labelText: "E-mail".tr,
                           labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                           prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.envelope_solid, color: grey, size: 15)),
                         ),
@@ -273,7 +274,7 @@ class _SignUpState extends State<SignUp> {
                           focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
                           hintText: "**********",
                           hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                          labelText: "Password",
+                          labelText: "Password".tr,
                           labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
                           prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.lock_solid, color: grey, size: 15)),
                           suffixIcon: IconButton(
@@ -291,7 +292,7 @@ class _SignUpState extends State<SignUp> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("What is you gender", style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold)),
+                      Text("What is you gender".tr, style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 20),
                       StatefulBuilder(
                         builder: (BuildContext context, void Function(void Function()) _) {
@@ -312,7 +313,7 @@ class _SignUpState extends State<SignUp> {
                                     border: Border.all(color: _gender == "M" ? pink : grey, width: _gender == "M" ? 2 : 1),
                                   ),
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                  child: Text("Male", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                  child: Text("Male".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -331,7 +332,7 @@ class _SignUpState extends State<SignUp> {
                                     border: Border.all(color: _gender == "F" ? pink : grey, width: _gender == "F" ? 2 : 1),
                                   ),
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                  child: Text("Female", style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                  child: Text("Female".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
                                 ),
                               ),
                             ],
@@ -352,31 +353,31 @@ class _SignUpState extends State<SignUp> {
                         highlightColor: transparent,
                         onTap: () async {
                           if (_usernameController.text.trim().isEmpty) {
-                            showToast(context, "Username is required", color: red);
+                            showToast(context, "Username is required".tr, color: red);
                           } else if (_phoneController.text.trim().isEmpty) {
-                            showToast(context, "Enter you phone number", color: red);
+                            showToast(context, "Enter you phone number".tr, color: red);
                           } else if (!_emailController.text.contains(RegExp(r'^[\w\-\.]+@([\w\-]+\.)+[\w-]{2,4}$'))) {
-                            showToast(context, "Verify the e-mail", color: red);
+                            showToast(context, "Verify the e-mail".tr, color: red);
                           } else if (_passwordController.text.trim().isEmpty || _passwordController.text.trim().length <= 4) {
-                            showToast(context, "password should be longer than 4 characters", color: red);
+                            showToast(context, "Password should be longer than 4 characters".tr, color: red);
                           } else {
                             try {
                               String imageUrl = "";
 
                               _(() => _ignoreStupidity = true);
 
-                              showToast(context, "Please wait...");
+                              showToast(context, "Please wait...".tr);
 
                               final String userID = const Uuid().v8();
 
                               if (_avatar != null) {
-                                showToast(context, "Uploading Avatar Image...");
+                                showToast(context, "Uploading Avatar Image...".tr);
                                 await FirebaseStorage.instance.ref().child("/images/$userID").putFile(_avatar!).then(
                                   (TaskSnapshot task) async {
                                     imageUrl = await task.ref.getDownloadURL();
                                   },
                                 );
-                                showToast(context, "Images Uploaded");
+                                showToast(context, "Images Uploaded".tr);
                               }
 
                               await FirebaseFirestore.instance.collection("users").doc(userID).set(
@@ -396,7 +397,7 @@ class _SignUpState extends State<SignUp> {
                                     ).toJson(),
                                   );
 
-                              showToast(context, "User Created Successfully");
+                              showToast(context, "User Created Successfully".tr);
 
                               Navigator.pop(context);
 
@@ -411,7 +412,7 @@ class _SignUpState extends State<SignUp> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 48),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                          child: Text("CREATE ACCOUNT", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                          child: Text("CREATE ACCOUNT".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                         ),
                       ),
                     );

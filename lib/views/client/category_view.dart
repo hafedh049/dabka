@@ -5,6 +5,7 @@ import 'package:dabka/models/user_model.dart';
 import 'package:dabka/utils/helpers/home_part.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -90,7 +91,7 @@ class _CategoryViewState extends State<CategoryView> {
   double _min = 11, _max = 100;
 
   final TextEditingController _searchController = TextEditingController();
-  final List<String> _filters = <String>["A-Z", "Lower Price", "Rating"];
+  final List<String> _filters = <String>["A-Z".tr, "Lower Price".tr, "Rating".tr];
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -116,7 +117,7 @@ class _CategoryViewState extends State<CategoryView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text("Sort By", style: GoogleFonts.abel(fontSize: 12, color: purple, fontWeight: FontWeight.w500)),
+                        Text("Sort By".tr, style: GoogleFonts.abel(fontSize: 12, color: purple, fontWeight: FontWeight.w500)),
                         const SizedBox(height: 20),
                         Center(
                           child: StatefulBuilder(
@@ -156,7 +157,7 @@ class _CategoryViewState extends State<CategoryView> {
                         const SizedBox(height: 20),
                         const Divider(height: .3, thickness: .3, color: grey),
                         const SizedBox(height: 20),
-                        Text("Price Range", style: GoogleFonts.abel(fontSize: 12, color: purple, fontWeight: FontWeight.w500)),
+                        Text("Price Range".tr, style: GoogleFonts.abel(fontSize: 12, color: purple, fontWeight: FontWeight.w500)),
                         const SizedBox(height: 20),
                         StatefulBuilder(
                           builder: (BuildContext context, void Function(void Function()) _) {
@@ -197,7 +198,7 @@ class _CategoryViewState extends State<CategoryView> {
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                            child: Text("Done", style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.bold)),
+                            child: Text("Done".tr, style: GoogleFonts.abel(color: white, fontSize: 16, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ],
@@ -210,7 +211,7 @@ class _CategoryViewState extends State<CategoryView> {
                 children: <Widget>[
                   const Icon(Bootstrap.filter, size: 15, color: dark),
                   const SizedBox(width: 5),
-                  Text("Filters", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                  Text("Filters".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
                 ],
               ),
             ),
@@ -250,7 +251,7 @@ class _CategoryViewState extends State<CategoryView> {
                                           controller: _searchController,
                                           decoration: InputDecoration(
                                             border: InputBorder.none,
-                                            hintText: "Search for products",
+                                            hintText: "Search for products".tr,
                                             contentPadding: const EdgeInsets.all(16),
                                             hintStyle: GoogleFonts.itim(color: grey, fontSize: 16, fontWeight: FontWeight.w500),
                                           ),
