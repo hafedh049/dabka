@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/user_model.dart';
 import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/utils/shared.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -15,7 +16,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_field/intl_phone_number_field.dart';
-import 'package:uuid/uuid.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -134,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                           padding: const EdgeInsets.all(8),
                           child: fis.FlutterImageStack.providers(
                             providers: <ImageProvider>[
-                              const AssetImage("assets/images/logo.png"),
+                              const AssetImage("assets/images/fobody.png"),
                               if (_avatar != null) FileImage(_avatar!) else const AssetImage("assets/images/nobody.png"),
                             ],
                             totalCount: 2,
@@ -368,11 +368,11 @@ class _SignUpState extends State<SignUp> {
 
                               showToast(context, "Please wait...".tr);
 
-                              final String userID = const Uuid().v8();
+                              final UserCredential credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
 
                               if (_avatar != null) {
                                 showToast(context, "Uploading Avatar Image...".tr);
-                                await FirebaseStorage.instance.ref().child("/images/$userID").putFile(_avatar!).then(
+                                await FirebaseStorage.instance.ref().child("/images/${credential.user!.uid}").putFile(_avatar!).then(
                                   (TaskSnapshot task) async {
                                     imageUrl = await task.ref.getDownloadURL();
                                   },
@@ -380,9 +380,9 @@ class _SignUpState extends State<SignUp> {
                                 showToast(context, "Images Uploaded".tr);
                               }
 
-                              await FirebaseFirestore.instance.collection("users").doc(userID).set(
+                              await FirebaseFirestore.instance.collection("users").doc(credential.user!.uid).set(
                                     UserModel(
-                                      userID: userID,
+                                      userID: credential.user!.uid,
                                       email: _emailController.text.trim(),
                                       password: _passwordController.text.trim(),
                                       phoneNumber: _phoneController.text.trim(),
