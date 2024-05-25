@@ -1,4 +1,4 @@
-Map<String, String> en = <String, String>{
+Map<String, String> ar = <String, String>{
   "Available payment methods": "Available payment methods",
   "Cash": "Cash",
   "You can pay in cash to the vendor": "You can pay in cash to the vendor",

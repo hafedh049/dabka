@@ -1,3 +1,4 @@
+import 'package:dabka/translations/translation.dart';
 import 'package:dabka/utils/callbacks.dart';
 import 'package:dabka/utils/helpers/error.dart';
 import 'package:dabka/utils/helpers/wait.dart';
@@ -21,6 +22,9 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      locale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
+      translations: Translation(),
       home: FutureBuilder<bool>(
         future: init(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
