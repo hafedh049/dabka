@@ -4,6 +4,7 @@ import 'package:dabka/views/client/about_us.dart';
 import 'package:dabka/views/client/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -67,7 +68,7 @@ class _DDrawerState extends State<DDrawer> {
                         splashColor: transparent,
                         highlightColor: transparent,
                         hoverColor: transparent,
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => tile["page"])),
+                        onTap: () => tile['page'] is Callback ? tile['page']() : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => tile["page"])),
                         child: Row(
                           children: <Widget>[
                             Icon(tile["icon"], size: 20, color: dark.withOpacity(.5)),
