@@ -23,54 +23,61 @@ class HomeSellers extends StatelessWidget {
         sellers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
             : SizedBox(
-                height: 300,
+                height: 250,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Supplier(supplier: sellers[index]))),
-                    child: SizedBox(
-                      width: 150,
-                      height: 250,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: sellers[index].userAvatar.isEmpty
-                                  ? const DecorationImage(
-                                      image: AssetImage('assets/images/nobody.png'),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : DecorationImage(
-                                      image: CachedNetworkImageProvider(sellers[index].userAvatar),
-                                      fit: BoxFit.cover,
-                                    ),
+                    child: Card(
+                      color: white,
+                      shadowColor: dark,
+                      elevation: 8,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        alignment: Alignment.center,
+                        width: 150,
+                        height: 250,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: sellers[index].userAvatar.isEmpty
+                                    ? const DecorationImage(
+                                        image: AssetImage('assets/images/nobody.png'),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : DecorationImage(
+                                        image: CachedNetworkImageProvider(sellers[index].userAvatar),
+                                        fit: BoxFit.cover,
+                                      ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            sellers[index].username,
-                            style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 20),
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                const Icon(FontAwesome.user_plus_solid, size: 10, color: white),
-                                const SizedBox(width: 5),
-                                Text("★ Follow ★", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
-                              ],
+                            const SizedBox(height: 20),
+                            Text(
+                              sellers[index].username,
+                              style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 20),
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: blue),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const Icon(FontAwesome.user_plus_solid, size: 10, color: white),
+                                  const SizedBox(width: 5),
+                                  Text("★ Follow ★", style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

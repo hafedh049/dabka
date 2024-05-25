@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/category_model.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -24,15 +22,12 @@ class CategoryGrid extends StatefulWidget {
 }
 
 class _CategoryGridState extends State<CategoryGrid> {
-  List<String> _images = <String>[];
   Map<CategoryModel, List<ProductModel>> _products = <CategoryModel, List<ProductModel>>{};
 
   List<Widget> _components = <Widget>[];
 
   Future<bool> _load() async {
     try {
-      _images = jsonDecode(await rootBundle.loadString("assets/jsons/ads.json")).cast<String>();
-
       final QuerySnapshot<Map<String, dynamic>> categoryQuery = await FirebaseFirestore.instance.collection("categories").get();
 
       _products = <CategoryModel, List<ProductModel>>{for (final QueryDocumentSnapshot<Map<String, dynamic>> item in categoryQuery.docs) CategoryModel.fromJson(item.data()): <ProductModel>[]};
@@ -45,7 +40,7 @@ class _CategoryGridState extends State<CategoryGrid> {
       }
 
       _components = <Widget>[
-        HomeAdsCarousel(images: _images),
+        const HomeAdsCarousel(),
         CategoriesList(categories: _products.keys.toList()),
         for (final MapEntry<CategoryModel, List<ProductModel>> item in _products.entries) HomePart(categoryModel: item.key, products: item.value),
       ];

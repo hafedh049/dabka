@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/category_model.dart';
@@ -7,7 +6,6 @@ import 'package:dabka/models/offer_model.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../utils/helpers/categories_list.dart';
 import '../../utils/helpers/error.dart';
@@ -26,7 +24,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<String> _images = <String>[];
   List<OfferModel> _exclusiveOffers = <OfferModel>[];
   Map<CategoryModel, List<ProductModel>> _products = <CategoryModel, List<ProductModel>>{};
   List<UserModel> _sellers = <UserModel>[];
@@ -35,8 +32,6 @@ class _HomeState extends State<Home> {
 
   Future<bool> _load() async {
     try {
-      _images = jsonDecode(await rootBundle.loadString("assets/jsons/ads.json")).cast<String>();
-
       final QuerySnapshot<Map<String, dynamic>> categoryQuery = await FirebaseFirestore.instance.collection("categories").get();
 
       _products = <CategoryModel, List<ProductModel>>{for (final QueryDocumentSnapshot<Map<String, dynamic>> item in categoryQuery.docs) CategoryModel.fromJson(item.data()): <ProductModel>[]};
@@ -58,7 +53,7 @@ class _HomeState extends State<Home> {
 
       _components = <Widget>[
         const HomeFilter(),
-        HomeAdsCarousel(images: _images),
+        const HomeAdsCarousel(),
         CategoriesList(categories: _products.keys.toList()),
         ExclusiveOffers(exclusiveOffers: _exclusiveOffers),
         for (final MapEntry<CategoryModel, List<ProductModel>> item in _products.entries) HomePart(categoryModel: item.key, products: item.value),

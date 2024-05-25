@@ -38,6 +38,6 @@ void showToast(BuildContext context, String message, {Color color = purple}) {
     padding: const EdgeInsets.all(6),
     title: Text("Notification", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: color)),
     description: Text(message, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.w500, color: dark)),
-    autoCloseDuration: 2.5.seconds,
+    autoCloseDuration: 2.seconds,
   );
 }
