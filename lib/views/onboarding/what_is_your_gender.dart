@@ -54,7 +54,7 @@ class _WhatIsYourGenderState extends State<WhatIsYourGender> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Text("OR", style: GoogleFonts.abel(fontSize: 12, color: grey, fontWeight: FontWeight.w500)),
+                Text("OR".tr, style: GoogleFonts.abel(fontSize: 12, color: grey, fontWeight: FontWeight.w500)),
                 const SizedBox(width: 10),
                 InkWell(
                   splashColor: transparent,

@@ -253,7 +253,7 @@ class _ProductsListState extends State<ProductsList> {
                                                 padding: const EdgeInsets.all(8),
                                                 child: MultiImagePickerView(
                                                   controller: _videos[_products[index]]!,
-                                                  initialWidget: DefaultInitialWidget(centerWidget: Text('Tap to open', style: GoogleFonts.abel(fontSize: 18, fontWeight: FontWeight.bold, color: purple))),
+                                                  initialWidget: DefaultInitialWidget(centerWidget: Text('Tap to open'.tr, style: GoogleFonts.abel(fontSize: 18, fontWeight: FontWeight.bold, color: purple))),
                                                   builder: (BuildContext context, ImageFile imageFile) => GestureDetector(
                                                     onTap: () async {
                                                       await _videoPlayerControllers[imageFile]!.play();
@@ -332,18 +332,6 @@ class _ProductsListState extends State<ProductsList> {
                                     ),
                                     const SizedBox(width: 10),
                                     Flexible(child: Text(_products[index].productName, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT TYPE".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(child: Text(_products[index].productType, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
                                   ],
                                 ),
                                 const SizedBox(height: 10),

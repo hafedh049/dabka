@@ -15,7 +15,6 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:uuid/uuid.dart';
 
 import '../utils/helpers/product_description.dart';
-import '../utils/helpers/product_details.dart';
 import '../utils/helpers/product_review.dart';
 import '../utils/helpers/provided_by.dart';
 
@@ -205,7 +204,6 @@ class _ProductState extends State<Product> {
             children: <Widget>[
               RequestReservation(product: widget.product),
               AvailablePaymentMethod(product: widget.product),
-              ProductDetails(product: widget.product),
               ProductDescription(product: widget.product),
               ProductReview(product: widget.product),
               ProvidedBy(product: widget.product),

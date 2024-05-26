@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/true_view_model.dart';
 import 'package:dabka/views/supplier/add_view.dart';
@@ -116,9 +118,9 @@ class _ViewsListState extends State<ViewsList> {
                                   ],
                                 ),
                                 const Spacer(),
-                                Text(_views[index].package, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                                Text("EXCLUSIVE PACKAGE", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 10),
-                                Text("${_views[index].price.toStringAsFixed(2).replaceAll(".", ",")} DT", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                                Text("${(Random().nextDouble() * Random().nextInt(1000)).toStringAsFixed(2).replaceAll(".", ",")} DT", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
                                 const SizedBox(height: 10),
                                 Row(
                                   children: <Widget>[

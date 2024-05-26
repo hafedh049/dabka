@@ -11,7 +11,6 @@ import 'package:dabka/utils/shared.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -41,9 +40,6 @@ class _AddTrueViewState extends State<AddTrueView> {
 
   final Map<ImageFile, VideoPlayerController> _videoPlayerControllers = <ImageFile, VideoPlayerController>{};
 
-  final TextEditingController _packageNameController = TextEditingController();
-  final TextEditingController _productBuyPriceController = TextEditingController(text: "0.0");
-
   final List<ProductModel> _products = <ProductModel>[];
 
   ProductModel? _selectedProduct;
@@ -55,9 +51,6 @@ class _AddTrueViewState extends State<AddTrueView> {
       picker: (bool allowMultiple) async {
         List<XFile> pickedVideos = await ImagePicker().pickMultipleMedia(
           limit: 3,
-          maxHeight: 200,
-          maxWidth: 200,
-          imageQuality: 40,
           requestFullMetadata: false,
         );
         return pickedVideos
@@ -92,8 +85,6 @@ class _AddTrueViewState extends State<AddTrueView> {
 
   @override
   void dispose() {
-    _productBuyPriceController.dispose();
-
     _videoController.dispose();
 
     for (final VideoPlayerController controller in _videoPlayerControllers.values) {
@@ -260,77 +251,41 @@ class _AddTrueViewState extends State<AddTrueView> {
                                           ? const Center(child: CircularProgressIndicator(color: purple))
                                           : snapshot.hasData && _products.isEmpty
                                               ? const SizedBox()
-                                              : Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Text("Product Name".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
-                                                    const SizedBox(height: 10),
-                                                    Card(
-                                                      elevation: 6,
-                                                      shadowColor: dark,
-                                                      child: CustomDropdown<ProductModel>.search(
-                                                        hintText: "Pick a product".tr,
-                                                        items: _products,
-                                                        excludeSelected: false,
-                                                        initialItem: _products.firstOrNull,
-                                                        onChanged: (ProductModel value) => _selectedProduct = value,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
+                                              : snapshot.hasData && _products.length == 1
+                                                  ? Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text("Product Name".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                                                        const SizedBox(height: 10),
+                                                        Card(
+                                                          elevation: 6,
+                                                          shadowColor: dark,
+                                                          child: Text(_products.first.productName, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  : Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text("Product Name".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                                                        const SizedBox(height: 10),
+                                                        Card(
+                                                          elevation: 6,
+                                                          shadowColor: dark,
+                                                          child: CustomDropdown<ProductModel>.search(
+                                                            hintText: "Pick a product".tr,
+                                                            items: _products,
+                                                            excludeSelected: false,
+                                                            initialItem: _products[_products.indexOf(_selectedProduct!)],
+                                                            onChanged: (ProductModel value) => _selectedProduct = value,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
                                 },
                               ),
-                              const SizedBox(height: 20),
-                              Text("Package Name".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height: 40,
-                                child: TextField(
-                                  controller: _packageNameController,
-                                  style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.all(6),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Package Name".tr,
-                                    hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "What is its package".tr,
-                                    labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.note_sticky, color: grey, size: 15)),
-                                  ),
-                                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Zء-ي ]'))],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text("Price".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height: 40,
-                                child: TextField(
-                                  controller: _productBuyPriceController,
-                                  style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.all(6),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Price".tr,
-                                    hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "How does it cost to do it".tr,
-                                    labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.dollar_sign_solid, color: grey, size: 15)),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[\d\.]'))],
-                                ),
-                              ),
-                              const SizedBox(height: 20),
                               Center(
                                 child: StatefulBuilder(
                                   builder: (BuildContext context, void Function(void Function()) _) {
@@ -345,10 +300,6 @@ class _AddTrueViewState extends State<AddTrueView> {
                                             showToast(context, "Please pick up the true view".tr, color: red);
                                           } else if (_selectedProduct == null) {
                                             showToast(context, "Select the product you want to market".tr, color: red);
-                                          } else if (_packageNameController.text.trim().isEmpty) {
-                                            showToast(context, "Package name is required".tr, color: red);
-                                          } else if (_productBuyPriceController.text.isEmpty || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.split('').where((String element) => element == ".").length > 1) {
-                                            showToast(context, "Enter a correct buying price".tr, color: red);
                                           } else {
                                             try {
                                               _(() => _ignoreStupidity = true);
@@ -384,8 +335,6 @@ class _AddTrueViewState extends State<AddTrueView> {
                                                     TrueViewModel(
                                                       categoryID: user.categoryID,
                                                       category: user.categoryName,
-                                                      package: _packageNameController.text.trim(),
-                                                      price: double.parse(_productBuyPriceController.text.trim()),
                                                       reelUrl: videoPaths.first,
                                                       reelDuration: _videoPlayerControllers.values.first.value.duration.inSeconds,
                                                       reelID: reelID,
@@ -395,9 +344,6 @@ class _AddTrueViewState extends State<AddTrueView> {
                                                       productID: _selectedProduct!.productID,
                                                     ).toJson(),
                                                   );
-
-                                              _packageNameController.clear();
-                                              _productBuyPriceController.clear();
 
                                               _videosKey.currentState!.setState(() {});
                                               _videoController.clearImages();

@@ -2,7 +2,7 @@ import 'package:dabka/utils/shared.dart';
 import 'package:dabka/views/client/home.dart';
 import 'package:dabka/views/drawer/about_us.dart';
 import 'package:dabka/views/client/become_seller.dart';
-import 'package:dabka/views/client/settings.dart';
+import 'package:dabka/views/drawer/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

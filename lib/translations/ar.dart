@@ -233,4 +233,14 @@ final Map<String, String> ar = <String, String>{
   "Supplier Profile": "ملف المزوّد",
   "Chat": "المحادثة",
   "All Products": "كل المنتجات",
+  "حجامات": "حجامات",
+  "روب": "روب",
+  "قاعات": "قاعات",
+  "مصور": "مصور",
+  "ديكور": "ديكور",
+  "رحلات": "رحلات",
+  "Selecting you gender helps us to filter out the categories for you": "يساعدنا تحديد جنسك على تصفية الفئات لك",
+  "Choose you language": "اختر لغتك",
+  "Money": "فلوس",
+  'Tap to open': 'حل القٌالوري'
 };

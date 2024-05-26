@@ -22,7 +22,7 @@ class _SupplierState extends State<Supplier> {
   final List<Map<String, dynamic>> _methods = <Map<String, dynamic>>[
     <String, dynamic>{"icon": "assets/images/wallet.png", "method": "Wallet".tr},
     <String, dynamic>{"icon": "assets/images/card.png", "method": "Credit".tr},
-    <String, dynamic>{"icon": "assets/images/ticket.png", "method": "Cash".tr},
+    <String, dynamic>{"icon": "assets/images/ticket.png", "method": "Money".tr},
   ];
 
   CategoryModel? _category;

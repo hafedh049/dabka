@@ -21,7 +21,7 @@ class HomePart extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(categoryModel.categoryName, style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(categoryModel.categoryName.tr, style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 100, width: double.infinity)),
         const SizedBox(height: 10),
@@ -72,8 +72,6 @@ class HomePart extends StatelessWidget {
                               children: <Widget>[
                                 const Spacer(),
                                 Text(products[index].productName, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 10),
-                                Text(products[index].productType, style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.w500)),
                                 const SizedBox(height: 10),
                                 Container(
                                   padding: const EdgeInsets.all(4),

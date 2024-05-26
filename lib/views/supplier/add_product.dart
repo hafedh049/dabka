@@ -41,9 +41,6 @@ class _AddProductState extends State<AddProduct> {
     maxImages: 10,
     picker: (bool allowMultiple) async {
       final List<XFile> pickedImages = await ImagePicker().pickMultiImage(
-        maxHeight: 200,
-        maxWidth: 200,
-        imageQuality: 70,
         requestFullMetadata: false,
         limit: 3,
       );
@@ -67,7 +64,6 @@ class _AddProductState extends State<AddProduct> {
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productBuyPriceController = TextEditingController(text: "0.0");
   final TextEditingController _productSellPriceController = TextEditingController(text: "0.0");
-  final TextEditingController _productTypeController = TextEditingController();
   final TextEditingController _productDescriptionController = TextEditingController();
 
   @override
@@ -77,9 +73,6 @@ class _AddProductState extends State<AddProduct> {
       picker: (bool allowMultiple) async {
         List<XFile> pickedVideos = await ImagePicker().pickMultipleMedia(
           limit: 3,
-          maxHeight: 200,
-          maxWidth: 200,
-          imageQuality: 70,
           requestFullMetadata: false,
         );
         return pickedVideos
@@ -104,7 +97,6 @@ class _AddProductState extends State<AddProduct> {
     _productNameController.dispose();
     _productBuyPriceController.dispose();
     _productSellPriceController.dispose();
-    _productTypeController.dispose();
     _productDescriptionController.dispose();
 
     _imageController.dispose();
@@ -389,29 +381,6 @@ class _AddProductState extends State<AddProduct> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("Product Type".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height: 40,
-                                child: TextField(
-                                  controller: _productTypeController,
-                                  style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.all(6),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Type".tr,
-                                    hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "What is you product type ?".tr,
-                                    labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.list_solid, color: grey, size: 15)),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 10),
                               Text("Product Description".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
@@ -455,8 +424,6 @@ class _AddProductState extends State<AddProduct> {
                                             showToast(context, "Enter a correct buying price".tr, color: red);
                                           } else if (_productSellPriceController.text.isEmpty || _productSellPriceController.text.startsWith('.') || _productSellPriceController.text.startsWith('.') || _productSellPriceController.text.split('').where((String element) => element == ".").length > 1) {
                                             showToast(context, "Enter a correct selling price".tr, color: red);
-                                          } else if (_productTypeController.text.trim().isEmpty) {
-                                            showToast(context, "Product type should not be empty".tr, color: red);
                                           } else if (_productDescriptionController.text.trim().isEmpty) {
                                             showToast(context, "Product description is mandatory".tr, color: red);
                                           } else {
@@ -521,7 +488,6 @@ class _AddProductState extends State<AddProduct> {
                                                       supplierID: user.userID,
                                                       productID: productID,
                                                       productName: _productNameController.text.trim(),
-                                                      productType: _productTypeController.text.trim(),
                                                       productDescription: _productDescriptionController.text.trim(),
                                                       productBuyPrice: double.parse(_productBuyPriceController.text),
                                                       productSellPrice: double.parse(_productSellPriceController.text),
@@ -534,7 +500,6 @@ class _AddProductState extends State<AddProduct> {
                                               _productNameController.clear();
                                               _productBuyPriceController.clear();
                                               _productSellPriceController.clear();
-                                              _productTypeController.clear();
                                               _productDescriptionController.clear();
 
                                               _videosKey.currentState!.setState(() {});

@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
@@ -185,13 +187,13 @@ class _ViewSpaceState extends State<ViewSpace> {
                                       width: MediaQuery.sizeOf(context).width * .7,
                                       height: 20,
                                       child: ScrollingText(
-                                        text: widget.views[index].package,
+                                        text: "EXCLUSIVE PACKAGE FOR THIS PRODUCT ON CATEGORY : ${widget.views[index].category}",
                                         onFinish: () {},
                                         textStyle: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white),
                                       ),
                                     ),
                                     const SizedBox(height: 5),
-                                    Text("${'Price'.tr} : ${widget.views[index].price.toStringAsFixed(3)} " "TND".tr, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.bold, color: white)),
+                                    Text("${'Price'.tr} : ${(Random().nextInt(1000) * Random().nextDouble()).toStringAsFixed(3)} " "TND".tr, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.bold, color: white)),
                                   ],
                                 ),
                               ),

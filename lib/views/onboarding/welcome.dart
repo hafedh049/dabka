@@ -27,7 +27,7 @@ class Welcome extends StatelessWidget {
             padding: const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 24)),
             shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
           ),
-          child: Text("Get Started", style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
+          child: Text("Next".tr, style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
         ),
       ],
     );

@@ -47,10 +47,6 @@ class _ChatsState extends State<Chats> {
   void _sendMessage() async {
     if (_messageController.text.trim().isEmpty) return;
 
-    if (_messages.isNotEmpty) {
-      _firstTime = false;
-    }
-
     final String message = _messageController.text.trim();
     _messageController.clear();
 
@@ -89,6 +85,10 @@ class _ChatsState extends State<Chats> {
     );
 
     _scrollToBottom();
+
+    if (_messages.isNotEmpty) {
+      _firstTime = false;
+    }
 
     if (_firstTime) {
       _firstTimeKey.currentState!.setState(() {});
@@ -219,11 +219,8 @@ class _ChatsState extends State<Chats> {
                                     separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 10),
                                     itemBuilder: (BuildContext context, int index) {
                                       final MessageModel message = _messages[index];
-                                      final messageWidget = _buildMessage(message);
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 4),
-                                        child: messageWidget,
-                                      );
+                                      final Widget messageWidget = _buildMessage(message);
+                                      return Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: messageWidget);
                                     },
                                   ),
                                 ),

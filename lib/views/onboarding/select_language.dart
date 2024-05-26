@@ -17,13 +17,14 @@ class SelectLanguage extends StatefulWidget {
 
 class _SelectLanguageState extends State<SelectLanguage> {
   final List<String> _locales = const <String>["en", "fr", "ar"];
-  final List<Language> _list = <Language>[
-    Language('English'.tr),
-    Language('Français'.tr),
-    Language('العربية'.tr),
-  ];
+
   @override
   Widget build(BuildContext context) {
+    final List<Language> list = <Language>[
+      Language('English'.tr),
+      Language('Français'.tr),
+      Language('العربية'.tr),
+    ];
     return Column(
       children: <Widget>[
         Text("Choose you language".tr, style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
@@ -39,12 +40,12 @@ class _SelectLanguageState extends State<SelectLanguage> {
           shadowColor: dark,
           child: CustomDropdown<Language>(
             hintText: "Choose your language".tr,
-            items: _list,
+            items: list,
             excludeSelected: false,
-            initialItem: _list.first,
+            initialItem: list[_locales.indexOf(settingsBox!.get("language"))],
             onChanged: (Language value) async {
-              await settingsBox!.put("language", _locales[_list.indexOf(value)]);
-              await Get.updateLocale(Locale(_locales[_list.indexOf(value)]));
+              await settingsBox!.put("language", _locales[list.indexOf(value)]);
+              await Get.updateLocale(Locale(_locales[list.indexOf(value)]));
             },
           ),
         ),

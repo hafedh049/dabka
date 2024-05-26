@@ -233,4 +233,13 @@ Map<String, String> en = <String, String>{
   "Supplier Profile": "Supplier Profile",
   "Chat": "Chat",
   "All Products": "All Products",
+  "حجامات": "Cupping",
+  "روب": "Robes",
+  "قاعات": "Halls",
+  "مصور": "Photographer",
+  "ديكور": "Decoration",
+  "Choose you language": "Choose you language",
+  "رحلات": "Trips",
+  "Money": "Money",
+  'Tap to open': 'Tap to open',
 };

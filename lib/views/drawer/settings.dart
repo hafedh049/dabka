@@ -20,13 +20,13 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  final Map<String, String> _languages = <String, String>{
-    "en": "English".tr,
-    "fr": "Français".tr,
-    "ar": "العربية".tr,
-  };
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> languages = <String, String>{
+      "en": "English".tr,
+      "fr": "Français".tr,
+      "ar": "العربية".tr,
+    };
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -87,7 +87,7 @@ class _SettingsState extends State<Settings> {
                 builder: (BuildContext context, void Function(void Function()) _) {
                   return Row(
                     children: <Widget>[
-                      Text("${'Language'.tr} (${_languages[settingsBox!.get('language')]})", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      Text("${'Language'.tr} (${languages[settingsBox!.get('language')]})", style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       SizedBox(
                         height: 30,
@@ -100,7 +100,7 @@ class _SettingsState extends State<Settings> {
                             setState(() {});
                           },
                           iconList: <Container>[
-                            for (final String key in _languages.keys)
+                            for (final String key in languages.keys)
                               Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,

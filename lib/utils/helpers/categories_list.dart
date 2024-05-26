@@ -56,7 +56,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                   padding: const EdgeInsets.all(4),
                                 ),
                                 const SizedBox(height: 10),
-                                Text(category.categoryName, style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.w900), textAlign: TextAlign.center),
+                                Text(category.categoryName.tr, style: GoogleFonts.abel(color: dark, fontSize: 10, fontWeight: FontWeight.w900), textAlign: TextAlign.center),
                               ],
                             ),
                           ),

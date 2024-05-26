@@ -233,4 +233,13 @@ final Map<String, String> fr = <String, String>{
   "Supplier Profile": "Profil du fournisseur",
   "Chat": "Discussion",
   "All Products": "Tous les produits",
+  "حجامات": "Ventouses",
+  "روب": "Peignoir",
+  "قاعات": "Salles",
+  "مصور": "Photographe",
+  "ديكور": "Décoration",
+  "رحلات": "Voyages",
+  "Choose you language": "Choisissez votre langue",
+  "Money": "Argent",
+  'Tap to open': 'Cliquer pour ouvrir',
 };

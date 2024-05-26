@@ -5,6 +5,7 @@ import 'package:dabka/models/category_model.dart';
 import 'package:dabka/models/offer_model.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -121,7 +122,7 @@ class _HomeState extends State<Home> {
                       CategoriesList(categories: _products.keys.where((CategoryModel element) => element.categoryName.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
                       ExclusiveOffers(exclusiveOffers: _exclusiveOffers.where((OfferModel element) => element.offerName.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
                       for (final MapEntry<CategoryModel, List<ProductModel>> item in _products.entries) HomePart(categoryModel: item.key, products: item.value.where((ProductModel element) => element.productName.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
-                      HomeSellers(sellers: _sellers.where((UserModel element) => element.username.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
+                      HomeSellers(sellers: _sellers.where((UserModel element) => (FirebaseAuth.instance.currentUser == null ? true : element.userID != element.userID) && element.username.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
                     ];
                     return ListView.separated(
                       itemBuilder: (BuildContext context, int index) => _components[index],

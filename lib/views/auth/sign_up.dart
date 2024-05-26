@@ -24,13 +24,14 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController _phoneController = TextEditingController();
-
   File? _avatar;
 
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final GlobalKey<State<StatefulWidget>> _avatarKey = GlobalKey<State<StatefulWidget>>();
 
   bool _obscureText = true;
 
@@ -69,84 +70,86 @@ class _SignUpState extends State<SignUp> {
               children: <Widget>[
                 const SizedBox(height: 20),
                 Center(
-                  child: StatefulBuilder(builder: (BuildContext context, void Function(void Function()) _) {
-                    return InkWell(
-                      hoverColor: transparent,
-                      splashColor: transparent,
-                      highlightColor: transparent,
-                      onTap: () async {
-                        final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                        if (image != null) {
-                          _(() => _avatar = File(image.path));
-                          showToast(context, "Picture updates successfully".tr);
-                        }
-                      },
-                      onLongPress: () {
-                        if (_avatar != null) {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) => Container(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text("Are you sure you want to remove you picture ?".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
-                                  Row(
-                                    children: <Widget>[
-                                      const Spacer(),
-                                      TextButton(
-                                        onPressed: () async {
-                                          _(() => _avatar = null);
-                                          showToast(context, "Picture removed".tr);
-                                          Navigator.pop(context);
-                                        },
-                                        style: ButtonStyle(
-                                          shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                          backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                  child: StatefulBuilder(
+                    key: _avatarKey,
+                    builder: (BuildContext context, void Function(void Function()) _) {
+                      return InkWell(
+                        hoverColor: transparent,
+                        splashColor: transparent,
+                        highlightColor: transparent,
+                        onTap: () async {
+                          final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                          if (image != null) {
+                            _(() => _avatar = File(image.path));
+                            showToast(context, "Picture updates successfully".tr);
+                          }
+                        },
+                        onLongPress: () {
+                          if (_avatar != null) {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) => Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text("Are you sure you want to remove you picture ?".tr, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.w500)),
+                                    Row(
+                                      children: <Widget>[
+                                        const Spacer(),
+                                        TextButton(
+                                          onPressed: () async {
+                                            _(() => _avatar = null);
+                                            showToast(context, "Picture removed".tr);
+                                            Navigator.pop(context);
+                                          },
+                                          style: ButtonStyle(
+                                            shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+                                            backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                                          ),
+                                          child: Text("CONFIRM".tr, style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
                                         ),
-                                        child: Text("CONFIRM".tr, style: GoogleFonts.abel(fontSize: 16, color: white, fontWeight: FontWeight.w500)),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        style: ButtonStyle(
-                                          shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                          backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                                        const SizedBox(width: 10),
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          style: ButtonStyle(
+                                            shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+                                            backgroundColor: const WidgetStatePropertyAll<Color>(purple),
+                                          ),
+                                          child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                                         ),
-                                        child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
+                            );
+                          }
+                        },
+                        child: Card(
+                          elevation: 4,
+                          borderOnForeground: true,
+                          color: white,
+                          shadowColor: dark,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: fis.FlutterImageStack.providers(
+                              providers: <ImageProvider>[
+                                if (_avatar != null) FileImage(_avatar!) else AssetImage("assets/images/${_gender == 'M' ? 'n' : 'f'}obody.png"),
+                              ],
+                              totalCount: 2,
+                              itemBorderColor: purple,
+                              itemCount: 2,
+                              showTotalCount: true,
+                              itemRadius: 120,
                             ),
-                          );
-                        }
-                      },
-                      child: Card(
-                        elevation: 4,
-                        borderOnForeground: true,
-                        color: white,
-                        shadowColor: dark,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          child: fis.FlutterImageStack.providers(
-                            providers: <ImageProvider>[
-                              const AssetImage("assets/images/fobody.png"),
-                              if (_avatar != null) FileImage(_avatar!) else const AssetImage("assets/images/nobody.png"),
-                            ],
-                            totalCount: 2,
-                            itemBorderColor: purple,
-                            itemCount: 2,
-                            showTotalCount: true,
-                            itemRadius: 100,
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Center(
@@ -304,7 +307,14 @@ class _SignUpState extends State<SignUp> {
                                 splashColor: transparent,
                                 hoverColor: transparent,
                                 highlightColor: transparent,
-                                onTap: () => _gender == "M" ? null : _(() => _gender = "M"),
+                                onTap: () {
+                                  if (_gender != "M") {
+                                    _(() => _gender = "M");
+                                    if (_avatar == null) {
+                                      _avatarKey.currentState!.setState(() {});
+                                    }
+                                  }
+                                },
                                 child: AnimatedContainer(
                                   duration: 300.ms,
                                   decoration: BoxDecoration(
@@ -323,7 +333,14 @@ class _SignUpState extends State<SignUp> {
                                 splashColor: transparent,
                                 hoverColor: transparent,
                                 highlightColor: transparent,
-                                onTap: () => _gender == "F" ? null : _(() => _gender = "F"),
+                                onTap: () {
+                                  if (_gender != "F") {
+                                    _(() => _gender = "F");
+                                    if (_avatar == null) {
+                                      _avatarKey.currentState!.setState(() {});
+                                    }
+                                  }
+                                },
                                 child: AnimatedContainer(
                                   duration: 300.ms,
                                   decoration: BoxDecoration(
