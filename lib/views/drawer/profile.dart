@@ -24,15 +24,16 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final TextEditingController _phoneController = TextEditingController();
-
   File? _avatar;
 
   UserModel? userModel;
 
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final GlobalKey<State<StatefulWidget>> _avatarKey = GlobalKey<State<StatefulWidget>>();
 
   bool _obscureText = true;
 
@@ -87,6 +88,7 @@ class _ProfileState extends State<Profile> {
                       const SizedBox(height: 20),
                       Center(
                         child: StatefulBuilder(
+                          key: _avatarKey,
                           builder: (BuildContext context, void Function(void Function()) _) {
                             return InkWell(
                               hoverColor: transparent,
@@ -152,8 +154,7 @@ class _ProfileState extends State<Profile> {
                                   padding: const EdgeInsets.all(8),
                                   child: fis.FlutterImageStack.providers(
                                     providers: <ImageProvider>[
-                                      const AssetImage("assets/images/logo.png"),
-                                      if (_avatar != null) FileImage(_avatar!) else const AssetImage("assets/images/nobody.png"),
+                                      if (_avatar != null) FileImage(_avatar!) else AssetImage("assets/images/${_gender == 'M' ? 'n' : 'f'}obody.png"),
                                     ],
                                     totalCount: 2,
                                     itemBorderColor: purple,
@@ -205,7 +206,7 @@ class _ProfileState extends State<Profile> {
                         height: 40,
                         controller: _phoneController,
                         formatter: MaskedInputFormatter('## ### ###'),
-                        initCountry: CountryCodeModel(name: "Tunisia".tr, dial_code: "+216", code: "TN"),
+                        initCountry: CountryCodeModel(name: "Tunisia", dial_code: "+216", code: "TN"),
                         betweenPadding: 10,
                         onInputChanged: (IntPhoneNumber phone) {},
                         dialogConfig: DialogConfig(
@@ -323,7 +324,14 @@ class _ProfileState extends State<Profile> {
                                       splashColor: transparent,
                                       hoverColor: transparent,
                                       highlightColor: transparent,
-                                      onTap: () => _gender == "M" ? null : _(() => _gender = "M"),
+                                      onTap: () {
+                                        if (_gender != "M") {
+                                          _(() => _gender = "M");
+                                          if (_avatar == null) {
+                                            _avatarKey.currentState!.setState(() {});
+                                          }
+                                        }
+                                      },
                                       child: AnimatedContainer(
                                         duration: 300.ms,
                                         decoration: BoxDecoration(
@@ -336,13 +344,20 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text("OR".tr, style: GoogleFonts.abel(fontSize: 12, color: grey, fontWeight: FontWeight.w500)),
+                                    Text("OR", style: GoogleFonts.abel(fontSize: 12, color: grey, fontWeight: FontWeight.w500)),
                                     const SizedBox(width: 10),
                                     InkWell(
                                       splashColor: transparent,
                                       hoverColor: transparent,
                                       highlightColor: transparent,
-                                      onTap: () => _gender == "F" ? null : _(() => _gender = "F"),
+                                      onTap: () {
+                                        if (_gender != "F") {
+                                          _(() => _gender = "F");
+                                          if (_avatar == null) {
+                                            _avatarKey.currentState!.setState(() {});
+                                          }
+                                        }
+                                      },
                                       child: AnimatedContainer(
                                         duration: 300.ms,
                                         decoration: BoxDecoration(
@@ -372,23 +387,23 @@ class _ProfileState extends State<Profile> {
                               highlightColor: transparent,
                               onTap: () async {
                                 if (_usernameController.text.trim().isEmpty) {
-                                  showToast(context, "Username is required", color: red);
+                                  showToast(context, "Username is required".tr, color: red);
                                 } else {
                                   try {
                                     String imageUrl = _avatar == null ? '' : userModel!.userAvatar;
 
                                     _(() => _ignoreStupidity = true);
 
-                                    showToast(context, "Please wait...");
+                                    showToast(context, "Please wait...".tr);
 
                                     if (_avatar != null) {
-                                      showToast(context, "Uploading Avatar Image...");
+                                      showToast(context, "Uploading Avatar Image...".tr);
                                       await FirebaseStorage.instance.ref().child("/images/${userModel!.userID}").putFile(_avatar!).then(
                                         (TaskSnapshot task) async {
                                           imageUrl = await task.ref.getDownloadURL();
                                         },
                                       );
-                                      showToast(context, "Images Uploaded");
+                                      showToast(context, "Images Uploaded".tr);
                                     }
 
                                     await FirebaseFirestore.instance.collection("users").doc(userModel!.userID).update(
@@ -399,7 +414,7 @@ class _ProfileState extends State<Profile> {
                                       },
                                     );
 
-                                    showToast(context, "User Updated Successfully");
+                                    showToast(context, "User Updated Successfully".tr);
 
                                     Navigator.pop(context);
 
@@ -414,7 +429,7 @@ class _ProfileState extends State<Profile> {
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 48),
                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                                child: Text("UPDATE", style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                child: Text("UPDATE".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                               ),
                             ),
                           );

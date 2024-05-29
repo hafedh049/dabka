@@ -13,7 +13,7 @@ class Welcome extends StatelessWidget {
     return Column(
       children: <Widget>[
         Text(
-          "You wedding is better with this application".tr,
+          "Your wedding is better with this application".tr,
           style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),

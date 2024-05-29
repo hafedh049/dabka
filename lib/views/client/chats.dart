@@ -29,6 +29,7 @@ class _ChatsState extends State<Chats> {
   List<MessageModel> _messages = <MessageModel>[];
 
   UserModel? _user;
+
   String _roomID = '';
 
   bool _firstTime = true;

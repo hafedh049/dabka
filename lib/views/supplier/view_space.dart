@@ -70,9 +70,8 @@ class _ViewSpaceState extends State<ViewSpace> {
     super.dispose();
   }
 
-  UserModel? _user;
-  DocumentSnapshot<Map<String, dynamic>>? _userDoc;
   final List<ProductModel> _products = <ProductModel>[];
+  final List<UserModel> _users = <UserModel>[];
 
   Future<bool> _load() async {
     try {
@@ -92,10 +91,11 @@ class _ViewSpaceState extends State<ViewSpace> {
         );
       }
       _trueViewController = PageController(initialPage: widget.currentIndex);
-      _userDoc = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
-      _user = UserModel.fromJson(_userDoc!.data()!);
+      _users.clear();
       _products.clear();
       for (final TrueViewModel view in widget.views) {
+        final DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore.instance.collection("users").doc(view.userID).get();
+        _users.add(UserModel.fromJson(userDoc.data()!));
         final DocumentSnapshot<Map<String, dynamic>> productDoc = await FirebaseFirestore.instance.collection("products").doc(view.productID).get();
         _products.add(ProductModel.fromJson(productDoc.data()!));
       }
@@ -221,7 +221,7 @@ class _ViewSpaceState extends State<ViewSpace> {
                                         borderRadius: BorderRadius.circular(3),
                                         gradient: LinearGradient(colors: <Color>[blue.withOpacity(.6), pink.withOpacity(.6)]),
                                       ),
-                                      child: Text("View Product", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                                      child: Text("View Product".tr, style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
                                     ),
                                   ),
                                 ),
@@ -232,19 +232,19 @@ class _ViewSpaceState extends State<ViewSpace> {
                           Row(
                             children: <Widget>[
                               GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Supplier(supplier: _user!))),
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Supplier(supplier: _users[index]))),
                                 child: Container(
                                   height: 40,
                                   width: 40,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    image: _user!.userAvatar.isEmpty
+                                    image: _users[index].userAvatar.isEmpty
                                         ? DecorationImage(
-                                            image: AssetImage("assets/images/${_user!.gender == 'M' ? 'n' : 'f'}obody.png"),
+                                            image: AssetImage("assets/images/${_users[index].gender == 'M' ? 'n' : 'f'}obody.png"),
                                             fit: BoxFit.contain,
                                           )
                                         : DecorationImage(
-                                            image: CachedNetworkImageProvider(_user!.userAvatar),
+                                            image: CachedNetworkImageProvider(_users[index].userAvatar),
                                             fit: BoxFit.contain,
                                           ),
                                   ),
@@ -256,14 +256,14 @@ class _ViewSpaceState extends State<ViewSpace> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
-                                    Text(_user!.username, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
+                                    Text(_users[index].username, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
                                     const SizedBox(height: 5),
-                                    Text("${_user!.followers} ${'Followers'.tr}", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                                    Text("${_users[index].followers} ${'Followers'.tr}", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
                                   ],
                                 ),
                               ),
                               const SizedBox(width: 10),
-                              if (_user!.userID != FirebaseAuth.instance.currentUser!.uid)
+                              if (FirebaseAuth.instance.currentUser == null || _users[index].userID != FirebaseAuth.instance.currentUser!.uid)
                                 GestureDetector(
                                   onTap: () async {},
                                   child: Container(

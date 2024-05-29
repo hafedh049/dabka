@@ -27,11 +27,9 @@ class _SelectLanguageState extends State<SelectLanguage> {
     ];
     return Column(
       children: <Widget>[
-        Text("Choose you language".tr, style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-        const SizedBox(height: 20),
         Text(
           "Please pick you favorite language".tr,
-          style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500),
+          style: GoogleFonts.abel(fontSize: 22, color: dark, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 20),
