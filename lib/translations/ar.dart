@@ -134,6 +134,7 @@ final Map<String, String> ar = <String, String>{
   "OFFER TYPE": "نوع العرض",
   "OFFER DATE": "تاريخ العرض",
   "No Offers Yet!": "ما فمّاش عروض",
+  "EXCLUSIVE": "حصري",
   "How can I contact the support?": "كيفاش نتصل بالدعم؟",
   "Use of your information": "استعمال معلوماتك",
   "Your E-mail address": "بريدك الإلكتروني",

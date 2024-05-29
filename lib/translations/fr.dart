@@ -242,6 +242,7 @@ final Map<String, String> fr = <String, String>{
   "رحلات": "Voyages",
   "Choose you language": "Choisissez votre langue",
   "Money": "Argent",
+  "EXCLUSIVE": "EXCLUSIVE",
   'Tap to open': 'Cliquer pour ouvrir',
   "IN PROGRESS": "EN PROGRESS",
   "CONFIRMED": "CONFIRME",

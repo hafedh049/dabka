@@ -243,6 +243,7 @@ Map<String, String> en = <String, String>{
   "رحلات": "Trips",
   "Money": "Money",
   'Tap to open': 'Tap to open',
+  "EXCLUSIVE": "EXCLUSIVE",
   "IN PROGRESS": "IN PROGRESS",
   "CONFIRMED": "CONFIRMED",
 };
