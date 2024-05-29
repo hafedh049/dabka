@@ -75,6 +75,8 @@ final Map<String, String> ar = <String, String>{
   "Privacy Policy": "سياسة الخصوصية",
   "Terms & Conditions": "الشروط والأحكام",
   "Facebook": "فيسبوك",
+  "IN PROGRESS": "مزال",
+  "CONFIRMED": "ريزرفاسون تعدت",
   "Instagram": "انستغرام",
   "About Us": "معلومات عنا",
   "Review or comment is empty": "التقييم أو التعليق فارغ",

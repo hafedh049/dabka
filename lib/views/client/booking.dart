@@ -227,7 +227,7 @@ class _BookingListState extends State<BookingList> {
                                     color: _orders[index].state.toUpperCase() == "IN PROGRESS" ? green : blue,
                                   ),
                                   child: Text(
-                                    _orders[index].state.toUpperCase(),
+                                    _orders[index].state.toUpperCase().tr,
                                     style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500),
                                   ),
                                 ),

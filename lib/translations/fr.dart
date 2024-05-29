@@ -243,4 +243,6 @@ final Map<String, String> fr = <String, String>{
   "Choose you language": "Choisissez votre langue",
   "Money": "Argent",
   'Tap to open': 'Cliquer pour ouvrir',
+  "IN PROGRESS": "EN PROGRESS",
+  "CONFIRMED": "CONFIRME",
 };

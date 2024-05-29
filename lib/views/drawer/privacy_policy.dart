@@ -14,39 +14,38 @@ class PrivacyPolicy extends StatefulWidget {
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
-  final List<Map<String, dynamic>> _list = <Map<String, dynamic>>[
-    <String, dynamic>{
-      "tile": "How can I contact the support?".tr,
-      "page": const ContactSupport(),
-    },
-    <String, dynamic>{
-      "tile": "Use of your information".tr,
-      "page": null,
-    },
-    <String, dynamic>{
-      "tile": "Your E-mail address".tr,
-      "page": null,
-    },
-    <String, dynamic>{
-      "tile": "Payment information".tr,
-      "page": null,
-    },
-    <String, dynamic>{
-      "tile": "Security",
-      "page": null,
-    },
-    <String, dynamic>{
-      "tile": "Contact Us",
-      "page": null,
-    },
-    <String, dynamic>{
-      "tile": "Privacy policy for the users of the app",
-      "page": null,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> list = <Map<String, dynamic>>[
+      <String, dynamic>{
+        "tile": "How can I contact the support?".tr,
+        "page": const ContactSupport(),
+      },
+      <String, dynamic>{
+        "tile": "Use of your information".tr,
+        "page": null,
+      },
+      <String, dynamic>{
+        "tile": "Your E-mail address".tr,
+        "page": null,
+      },
+      <String, dynamic>{
+        "tile": "Payment information".tr,
+        "page": null,
+      },
+      <String, dynamic>{
+        "tile": "Security".tr,
+        "page": null,
+      },
+      <String, dynamic>{
+        "tile": "Contact Us".tr,
+        "page": null,
+      },
+      <String, dynamic>{
+        "tile": "Privacy policy for the users of the app".tr,
+        "page": null,
+      },
+    ];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -60,7 +59,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[
-            for (final Map<String, dynamic> item in _list) ...<Widget>[
+            for (final Map<String, dynamic> item in list) ...<Widget>[
               InkWell(
                 hoverColor: transparent,
                 splashColor: transparent,
