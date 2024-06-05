@@ -8,7 +8,6 @@ class ProductModel with CustomDropdownListFilter {
   final String productName;
   final String productDescription;
   final double productBuyPrice;
-  final double productSellPrice;
   final double productRating;
   final List<MediaModel> productImages;
   final List<MediaModel> productShorts;
@@ -23,7 +22,6 @@ class ProductModel with CustomDropdownListFilter {
     required this.productName,
     required this.productDescription,
     required this.productBuyPrice,
-    required this.productSellPrice,
     required this.productRating,
     required this.productImages,
     required this.productShorts,
@@ -31,7 +29,7 @@ class ProductModel with CustomDropdownListFilter {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      productOptions: json['productOptions'],
+      productOptions: json['productOptions'].cast<String>(),
       categoryID: json['categoryID'],
       categoryName: json['categoryName'],
       supplierID: json['supplierID'],
@@ -39,7 +37,6 @@ class ProductModel with CustomDropdownListFilter {
       productName: json['productName'],
       productDescription: json['productDescription'],
       productBuyPrice: json['productBuyPrice'],
-      productSellPrice: json['productSellPrice'],
       productRating: json['productRating'],
       productImages: (json['productImages'] as List<dynamic>).map((dynamic e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
       productShorts: (json['productShorts'] as List<dynamic>).map((dynamic e) => MediaModel.fromJson(e as Map<String, dynamic>)).toList().cast<MediaModel>(),
@@ -56,7 +53,6 @@ class ProductModel with CustomDropdownListFilter {
       'productName': productName,
       'productDescription': productDescription,
       'productBuyPrice': productBuyPrice,
-      'productSellPrice': productSellPrice,
       'productRating': productRating,
       'productImages': [for (final MediaModel e in productImages) e.toJson()],
       'productShorts': [for (final MediaModel e in productShorts) e.toJson()],

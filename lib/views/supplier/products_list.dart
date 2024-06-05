@@ -376,18 +376,6 @@ class _ProductsListState extends State<ProductsList> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: Text("PRODUCT SELLING PRICE".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(child: Text("${_products[index].productSellPrice.toStringAsFixed(2)} TND", style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500))),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
                                       child: Text("PRODUCT RATING".tr, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.w500)),
                                     ),
                                     const SizedBox(width: 10),
@@ -403,6 +391,50 @@ class _ProductsListState extends State<ProductsList> {
                                     ),
                                   ],
                                 ),
+                                if (_products[index].productOptions.isNotEmpty) ...<Widget>[
+                                  const SizedBox(height: 20),
+                                  Card(
+                                    shadowColor: dark,
+                                    color: white,
+                                    elevation: 6,
+                                    borderOnForeground: true,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      child: StatefulBuilder(
+                                        builder: (BuildContext context, void Function(void Function()) _) {
+                                          return Wrap(
+                                            alignment: WrapAlignment.center,
+                                            crossAxisAlignment: WrapCrossAlignment.center,
+                                            runAlignment: WrapAlignment.center,
+                                            runSpacing: 20,
+                                            spacing: 20,
+                                            children: <Widget>[
+                                              for (final String choice in _products[index].productOptions)
+                                                Card(
+                                                  shadowColor: dark,
+                                                  color: white,
+                                                  elevation: 6,
+                                                  borderOnForeground: true,
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                                  child: AnimatedContainer(
+                                                    duration: 300.milliseconds,
+                                                    padding: const EdgeInsets.all(8),
+                                                    color: pink,
+                                                    child: AnimatedDefaultTextStyle(
+                                                      style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold),
+                                                      duration: 300.milliseconds,
+                                                      child: Text(choice.tr),
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ],
                             ),
                           ),

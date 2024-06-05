@@ -46,7 +46,6 @@ class _EditProductState extends State<EditProduct> {
 
   final TextEditingController _productNameController = TextEditingController();
   final TextEditingController _productBuyPriceController = TextEditingController(text: "0.0");
-  final TextEditingController _productSellPriceController = TextEditingController(text: "0.0");
   final TextEditingController _productDescriptionController = TextEditingController();
 
   @override
@@ -95,7 +94,6 @@ class _EditProductState extends State<EditProduct> {
   void dispose() {
     _productNameController.dispose();
     _productBuyPriceController.dispose();
-    _productSellPriceController.dispose();
     _productDescriptionController.dispose();
 
     _imageController.dispose();
@@ -123,7 +121,7 @@ class _EditProductState extends State<EditProduct> {
         "Acheter".tr,
       ],
       "20240525-1319-8900-a128-354555faf0a7": <String>[
-        "Couverte".tr,
+        "Ouverte".tr,
         "Fermée".tr,
         "Louer".tr,
       ],
@@ -380,7 +378,7 @@ class _EditProductState extends State<EditProduct> {
                                             child: AnimatedDefaultTextStyle(
                                               style: GoogleFonts.abel(fontSize: 12, color: _selectedChoices.contains(choice) ? white : dark, fontWeight: _selectedChoices.contains(choice) ? FontWeight.bold : FontWeight.w500),
                                               duration: 300.milliseconds,
-                                              child: Text(choice),
+                                              child: Text(choice.tr),
                                             ),
                                           ),
                                         ),
@@ -454,31 +452,6 @@ class _EditProductState extends State<EditProduct> {
                                 ),
                               ),
                               const SizedBox(height: 10),
-                              Text("Product Selling Price".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height: 40,
-                                child: TextField(
-                                  controller: _productSellPriceController..text = widget.product.productSellPrice.toStringAsFixed(2),
-                                  style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.all(6),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
-                                    hintText: "Sell Price".tr,
-                                    hintStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    labelText: "How does it cost to sell".tr,
-                                    labelStyle: GoogleFonts.abel(color: grey, fontSize: 14, fontWeight: FontWeight.w500),
-                                    prefixIcon: const IconButton(onPressed: null, icon: Icon(FontAwesome.dollar_sign_solid, color: grey, size: 15)),
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'[\d\.]'))],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
                               Text("Product Description".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
                               const SizedBox(height: 10),
                               SizedBox(
@@ -520,8 +493,6 @@ class _EditProductState extends State<EditProduct> {
                                             showToast(context, "Product name is required".tr, color: red);
                                           } else if (_productBuyPriceController.text.isEmpty || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.startsWith('.') || _productBuyPriceController.text.split('').where((String element) => element == ".").length > 1) {
                                             showToast(context, "Enter a correct buying price".tr, color: red);
-                                          } else if (_productSellPriceController.text.isEmpty || _productSellPriceController.text.startsWith('.') || _productSellPriceController.text.startsWith('.') || _productSellPriceController.text.split('').where((String element) => element == ".").length > 1) {
-                                            showToast(context, "Enter a correct selling price".tr, color: red);
                                           } else if (_productDescriptionController.text.trim().isEmpty) {
                                             showToast(context, "Product description is mandatory".tr, color: red);
                                           } else {
@@ -588,7 +559,6 @@ class _EditProductState extends State<EditProduct> {
                                                       productName: _productNameController.text.trim(),
                                                       productDescription: _productDescriptionController.text.trim(),
                                                       productBuyPrice: double.parse(_productBuyPriceController.text),
-                                                      productSellPrice: double.parse(_productSellPriceController.text),
                                                       productRating: 0,
                                                       productImages: imagePaths,
                                                       productShorts: videoPaths,
@@ -597,7 +567,6 @@ class _EditProductState extends State<EditProduct> {
 
                                               _productNameController.clear();
                                               _productBuyPriceController.clear();
-                                              _productSellPriceController.clear();
                                               _productDescriptionController.clear();
 
                                               _videosKey.currentState!.setState(() {});

@@ -43,12 +43,19 @@ class _HomeState extends State<Home> {
       final QuerySnapshot<Map<String, dynamic>> categoryQuery = await FirebaseFirestore.instance.collection("categories").get();
 
       _products = <CategoryModel, List<ProductModel>>{for (final QueryDocumentSnapshot<Map<String, dynamic>> item in categoryQuery.docs) CategoryModel.fromJson(item.data()): <ProductModel>[]};
-
       final QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance.collection("products").get();
 
       for (final CategoryModel categoryModel in _products.keys) {
         _products[categoryModel]!.clear();
-        _products[categoryModel] = query.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get('categoryID') == categoryModel.categoryID).toList().map((QueryDocumentSnapshot<Map<String, dynamic>> e) => ProductModel.fromJson(e.data())).toList();
+        _products[categoryModel] = query.docs
+            .where(
+              (QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get('categoryID') == categoryModel.categoryID,
+            )
+            .toList()
+            .map(
+              (QueryDocumentSnapshot<Map<String, dynamic>> e) => ProductModel.fromJson(e.data()),
+            )
+            .toList();
       }
 
       final QuerySnapshot<Map<String, dynamic>> offersQuery = await FirebaseFirestore.instance.collection("offers").get();
