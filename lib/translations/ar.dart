@@ -21,6 +21,8 @@ final Map<String, String> ar = <String, String>{
   "Please provide your name": "عطينا اسمك",
   "Write your review": "اكتب تقييمك",
   "Review submitted": "التقييم تبعث",
+  "Product Updated Successfully": "تم التحديث بنجاح",
+  'Edit Product': "تحديث المنتج",
   "Submit": "بعث",
   "Cancel": "إلغاء",
   "Write review": "اكتب تقييم",

@@ -20,6 +20,7 @@ import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
 import '../../utils/shared.dart';
+import 'edit_product.dart';
 
 class ProductsList extends StatefulWidget {
   const ProductsList({super.key});
@@ -150,6 +151,7 @@ class _ProductsListState extends State<ProductsList> {
                     };
                     return ListView.separated(
                       itemBuilder: (BuildContext context, int index) => GestureDetector(
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => EditProduct(product: _products[index]))),
                         onLongPress: () {
                           showBottomSheet(
                             context: context,
@@ -167,7 +169,17 @@ class _ProductsListState extends State<ProductsList> {
                                       const Spacer(),
                                       TextButton(
                                         onPressed: () async {
-                                          await FirebaseFirestore.instance.collection("products").doc(snapshot.data!.docs[index].id).delete();
+                                          await Future.wait(
+                                            <Future>[
+                                              FirebaseFirestore.instance.collection("products").doc(snapshot.data!.docs[index].id).delete(),
+                                              FirebaseFirestore.instance.collection("true_views").where("productID", isEqualTo: _products[index].productID).get().then(
+                                                    (QuerySnapshot<Map<String, dynamic>> value) async => await Future.wait(
+                                                      <Future>[for (final QueryDocumentSnapshot<Map<String, dynamic>> doc in value.docs) doc.reference.delete()],
+                                                    ),
+                                                  ),
+                                            ],
+                                          );
+
                                           showToast(context, "Product deleted successfully".tr);
                                           Navigator.pop(context);
                                         },

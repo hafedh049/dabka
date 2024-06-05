@@ -15,6 +15,7 @@ import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
 import '../../utils/shared.dart';
@@ -61,8 +62,8 @@ class _ViewsListState extends State<ViewsList> {
             stream: FirebaseFirestore.instance.collection("true_views").where("userID", isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                _views = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => TrueViewModel.fromJson(e.data())).toList(); // _splitTrueViews(snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => TrueViewModel.fromJson(e.data())).toList());
-                _videosControllers = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => VideoPlayerController.networkUrl(Uri.parse(e.get("reelUrl")["path"]))..initialize()).toList(); //_splitVideoControllers(snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => VideoPlayerController.networkUrl(Uri.parse(e.get("reelUrl")["path"]))..initialize()).toList());
+                _views = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => TrueViewModel.fromJson(e.data())).toList();
+                _videosControllers = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => VideoPlayerController.networkUrl(Uri.parse(e.get("reelUrl")["path"]))..initialize()).toList();
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -75,6 +76,43 @@ class _ViewsListState extends State<ViewsList> {
                     hoverColor: transparent,
                     splashColor: transparent,
                     highlightColor: transparent,
+                    onLongPress: () {
+                      showBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) => Container(
+                          color: white,
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text("Are you sure ?".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: <Widget>[
+                                  const Spacer(),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await FirebaseFirestore.instance.collection("true_views").doc(_views[index].reelID).delete();
+                                      showToast(context, "True View deleted successfully".tr);
+                                      Navigator.pop(context);
+                                    },
+                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                    child: Text("OK".tr, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
+                                    child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(

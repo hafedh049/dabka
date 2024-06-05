@@ -31,7 +31,6 @@ class HomePart extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
                 child: SizedBox(
                   height: 300,
-                  width: 200,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) => GestureDetector(

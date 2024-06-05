@@ -246,4 +246,6 @@ Map<String, String> en = <String, String>{
   "EXCLUSIVE": "EXCLUSIVE",
   "IN PROGRESS": "IN PROGRESS",
   "CONFIRMED": "CONFIRMED",
+  'Edit Product': 'Edit Product',
+  "Product Updated Successfully": "Product Updated Successfully",
 };

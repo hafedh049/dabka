@@ -118,18 +118,21 @@ class _ProductState extends State<Product> {
                             ),
                           ),
                         ),
-                        Card(
-                          color: white,
-                          shadowColor: dark,
-                          elevation: 6,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Icon(FontAwesome.circle_play_solid, size: 15, color: widget.product.productShorts.isEmpty ? dark.withOpacity(.4) : dark),
-                                Text("Video".tr, style: GoogleFonts.abel(color: widget.product.productShorts.isEmpty ? dark.withOpacity(.4) : dark, fontSize: 10, fontWeight: FontWeight.w500)),
-                              ],
+                        GestureDetector(
+                          onTap: () {},
+                          child: Card(
+                            color: white,
+                            shadowColor: dark,
+                            elevation: 6,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(FontAwesome.circle_play_solid, size: 15, color: widget.product.productShorts.isEmpty ? dark.withOpacity(.4) : dark),
+                                  Text("Video".tr, style: GoogleFonts.abel(color: widget.product.productShorts.isEmpty ? dark.withOpacity(.4) : dark, fontSize: 10, fontWeight: FontWeight.w500)),
+                                ],
+                              ),
                             ),
                           ),
                         ),

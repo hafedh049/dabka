@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/models/user_model.dart';
@@ -23,38 +24,21 @@ import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
 
-class AddProduct extends StatefulWidget {
-  const AddProduct({super.key});
+class EditProduct extends StatefulWidget {
+  const EditProduct({super.key, required this.product});
+  final ProductModel product;
   @override
-  State<AddProduct> createState() => _AddProductState();
+  State<EditProduct> createState() => _EditProductState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _EditProductState extends State<EditProduct> {
   bool _ignoreStupidity = false;
   final List<String> _videoExtensions = const <String>["mp4", "avi", "mkv", "mov", "flv", "wmv", "webm", "mpg", "mpeg", "m4v", "3gp", "3g2", "f4v", "swf", "vob", "ogv"];
 
   final GlobalKey<State<StatefulWidget>> _imagesKey = GlobalKey<State<StatefulWidget>>();
   final GlobalKey<State<StatefulWidget>> _videosKey = GlobalKey<State<StatefulWidget>>();
 
-  final MultiImagePickerController _imageController = MultiImagePickerController(
-    maxImages: 10,
-    picker: (bool allowMultiple) async {
-      final List<XFile> pickedImages = await ImagePicker().pickMultiImage(
-        requestFullMetadata: false,
-        limit: 3,
-      );
-      return pickedImages
-          .map(
-            (XFile e) => ImageFile(
-              const Uuid().v8(),
-              name: e.name,
-              extension: e.name.split('.').last,
-              path: e.path,
-            ),
-          )
-          .toList();
-    },
-  );
+  late final MultiImagePickerController _imageController;
 
   late final MultiImagePickerController _videoController;
 
@@ -67,13 +51,28 @@ class _AddProductState extends State<AddProduct> {
 
   @override
   void initState() {
+    _imageController = MultiImagePickerController(
+      maxImages: 10,
+      images: widget.product.productImages.map((MediaModel e) => ImageFile(const Uuid().v8(), name: e.name, extension: e.ext, path: e.path)),
+      picker: (bool allowMultiple) async {
+        final List<XFile> pickedImages = await ImagePicker().pickMultiImage(requestFullMetadata: false, limit: 3);
+        return pickedImages
+            .map(
+              (XFile e) => ImageFile(
+                const Uuid().v8(),
+                name: e.name,
+                extension: e.name.split('.').last,
+                path: e.path,
+              ),
+            )
+            .toList();
+      },
+    );
     _videoController = MultiImagePickerController(
+      images: widget.product.productShorts.map((MediaModel e) => ImageFile(const Uuid().v8(), name: e.name, extension: e.ext, path: e.path)),
       maxImages: 3,
       picker: (bool allowMultiple) async {
-        List<XFile> pickedVideos = await ImagePicker().pickMultipleMedia(
-          limit: 3,
-          requestFullMetadata: false,
-        );
+        final List<XFile> pickedVideos = await ImagePicker().pickMultipleMedia(limit: 3, requestFullMetadata: false);
         return pickedVideos
             .where((XFile element) => _videoExtensions.contains(element.name.split('.').last))
             .map(
@@ -88,6 +87,7 @@ class _AddProductState extends State<AddProduct> {
             .toList();
       },
     );
+    _selectedChoices = widget.product.productOptions;
     super.initState();
   }
 
@@ -107,7 +107,7 @@ class _AddProductState extends State<AddProduct> {
     super.dispose();
   }
 
-  final List<String> _selectedChoices = <String>[];
+  late final List<String> _selectedChoices;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +148,7 @@ class _AddProductState extends State<AddProduct> {
         backgroundColor: white,
         appBar: AppBar(
           leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 15, color: dark)),
-          title: Text('Add Product'.tr, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: dark)),
+          title: Text('Edit Product'.tr, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: dark)),
           backgroundColor: white,
           elevation: 6,
           shadowColor: dark,
@@ -200,7 +200,11 @@ class _AddProductState extends State<AddProduct> {
                                       const SizedBox(height: 10),
                                       if (!_imageController.hasNoImages)
                                         FlutterImageStack.providers(
-                                          providers: _imageController.images.map((ImageFile e) => FileImage(File(e.path!))).toList(),
+                                          providers: _imageController.images
+                                              .map(
+                                                (ImageFile e) => e.path!.startsWith("http") ? CachedNetworkImageProvider(e.path!) as ImageProvider : FileImage(File(e.path!)) as ImageProvider,
+                                              )
+                                              .toList(),
                                           totalCount: _imageController.images.length,
                                           itemBorderColor: purple,
                                           itemCount: 3,
@@ -227,8 +231,13 @@ class _AddProductState extends State<AddProduct> {
                               onTap: () async {
                                 _videoPlayerControllers.clear();
                                 for (final ImageFile video in _videoController.images) {
-                                  _videoPlayerControllers[video] = await VideoPlayerController.file(File(video.path!))
-                                    ..initialize();
+                                  if (video.path!.startsWith("http")) {
+                                    _videoPlayerControllers[video] = await VideoPlayerController.networkUrl(Uri.parse(video.path!))
+                                      ..initialize();
+                                  } else {
+                                    _videoPlayerControllers[video] = await VideoPlayerController.file(File(video.path!))
+                                      ..initialize();
+                                  }
                                 }
                                 await showModalBottomSheet(
                                   context: context,
@@ -327,7 +336,7 @@ class _AddProductState extends State<AddProduct> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      if (choices.containsKey(user.categoryID)) ...<Widget>[
+                      if (choices.containsKey(widget.product.categoryID)) ...<Widget>[
                         Card(
                           shadowColor: dark,
                           color: white,
@@ -345,7 +354,7 @@ class _AddProductState extends State<AddProduct> {
                                   runSpacing: 20,
                                   spacing: 20,
                                   children: <Widget>[
-                                    for (final String choice in choices[user.categoryID]!)
+                                    for (final String choice in choices[widget.product.categoryID]!)
                                       InkWell(
                                         highlightColor: transparent,
                                         hoverColor: transparent,
@@ -401,7 +410,7 @@ class _AddProductState extends State<AddProduct> {
                               SizedBox(
                                 height: 40,
                                 child: TextField(
-                                  controller: _productNameController,
+                                  controller: _productNameController..text = widget.product.productName,
                                   style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.all(6),
@@ -425,7 +434,7 @@ class _AddProductState extends State<AddProduct> {
                               SizedBox(
                                 height: 40,
                                 child: TextField(
-                                  controller: _productBuyPriceController,
+                                  controller: _productBuyPriceController..text = widget.product.productBuyPrice.toStringAsFixed(2),
                                   style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.all(6),
@@ -450,7 +459,7 @@ class _AddProductState extends State<AddProduct> {
                               SizedBox(
                                 height: 40,
                                 child: TextField(
-                                  controller: _productSellPriceController,
+                                  controller: _productSellPriceController..text = widget.product.productSellPrice.toStringAsFixed(2),
                                   style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.all(6),
@@ -475,7 +484,7 @@ class _AddProductState extends State<AddProduct> {
                               SizedBox(
                                 // height: 40,
                                 child: TextField(
-                                  controller: _productDescriptionController,
+                                  controller: _productDescriptionController..text = widget.product.productDescription,
                                   maxLines: 5,
                                   minLines: 5,
                                   style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
@@ -523,10 +532,9 @@ class _AddProductState extends State<AddProduct> {
                                               final List<MediaModel> imagePaths = <MediaModel>[];
                                               final List<MediaModel> videoPaths = <MediaModel>[];
 
-                                              final String productID = const Uuid().v8();
                                               showToast(context, "Uploading Images...".tr);
 
-                                              for (final ImageFile image in _imageController.images) {
+                                              for (final ImageFile image in _imageController.images.where((ImageFile element) => !widget.product.productImages.map((MediaModel e) => e.path).toList().contains(element.path))) {
                                                 await FirebaseStorage.instance.ref().child("/images/${const Uuid().v8()}${image.name}").putFile(File(image.path!)).then(
                                                   (TaskSnapshot task) async {
                                                     showToast(context, "${'Uploading Image N °'.tr}${imagePaths.length + 1}");
@@ -549,7 +557,7 @@ class _AddProductState extends State<AddProduct> {
                                                 showToast(context, "Uploading Videos...".tr);
                                               }
 
-                                              for (final ImageFile video in _videoController.images) {
+                                              for (final ImageFile video in _videoController.images.where((ImageFile element) => !widget.product.productShorts.map((MediaModel e) => e.path).toList().contains(element.path))) {
                                                 await FirebaseStorage.instance.ref().child("/videos/${const Uuid().v8()}${video.name}").putFile(File(video.path!)).then(
                                                   (TaskSnapshot task) async {
                                                     showToast(context, "${'Uploading Video N °'.tr}${videoPaths.length + 1}");
@@ -570,13 +578,13 @@ class _AddProductState extends State<AddProduct> {
                                                 showToast(context, "Videos Uploaded".tr);
                                               }
 
-                                              await FirebaseFirestore.instance.collection("products").doc(productID).set(
+                                              await FirebaseFirestore.instance.collection("products").doc(widget.product.productID).set(
                                                     ProductModel(
                                                       productOptions: _selectedChoices,
                                                       categoryName: user.categoryName,
                                                       categoryID: user.categoryID,
                                                       supplierID: user.userID,
-                                                      productID: productID,
+                                                      productID: widget.product.productID,
                                                       productName: _productNameController.text.trim(),
                                                       productDescription: _productDescriptionController.text.trim(),
                                                       productBuyPrice: double.parse(_productBuyPriceController.text),
@@ -597,7 +605,7 @@ class _AddProductState extends State<AddProduct> {
                                               _imagesKey.currentState!.setState(() {});
                                               _imageController.clearImages();
 
-                                              showToast(context, "Product Created Successfully".tr);
+                                              showToast(context, "Product Updated Successfully".tr);
                                               _(() => _ignoreStupidity = false);
                                             } catch (e) {
                                               debugPrint(e.toString());
@@ -609,7 +617,7 @@ class _AddProductState extends State<AddProduct> {
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 48),
                                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: purple),
-                                          child: Text("Create Product".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
+                                          child: Text("Edit Product".tr, style: GoogleFonts.abel(color: white, fontSize: 14, fontWeight: FontWeight.bold)),
                                         ),
                                       ),
                                     );
