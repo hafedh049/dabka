@@ -97,7 +97,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                     child: _categories.length == 1
                                         ? Text(_category!.categoryName, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: dark.withOpacity(.6)))
                                         : CustomDropdown<CategoryModel>.search(
-                                            headerBuilder: (BuildContext context, CategoryModel selectedItem) => Text(
+                                            headerBuilder: (BuildContext context, CategoryModel selectedItem, bool state) => Text(
                                               selectedItem.categoryName,
                                               style: GoogleFonts.abel(color: dark, fontSize: 12, fontWeight: FontWeight.w500),
                                             ),
@@ -106,7 +106,7 @@ class _BecomeSellerState extends State<BecomeSeller> {
                                             items: _categories,
                                             excludeSelected: false,
                                             initialItem: _categories[_categories.indexOf(_category!)],
-                                            onChanged: (CategoryModel value) => _category = value,
+                                            onChanged: (CategoryModel? value) => _category = value,
                                           ),
                                   ),
                                 ),

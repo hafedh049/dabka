@@ -279,7 +279,7 @@ class _AddTrueViewState extends State<AddTrueView> {
                                                             items: _products,
                                                             excludeSelected: false,
                                                             initialItem: _products[_products.indexOf(_selectedProduct!)],
-                                                            onChanged: (ProductModel value) => _selectedProduct = value,
+                                                            onChanged: (ProductModel? value) => _selectedProduct = value,
                                                           ),
                                                         ),
                                                       ],

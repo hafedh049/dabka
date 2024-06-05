@@ -41,8 +41,8 @@ class _SelectLanguageState extends State<SelectLanguage> {
             items: list,
             excludeSelected: false,
             initialItem: list[_locales.indexOf(settingsBox!.get("language"))],
-            onChanged: (Language value) async {
-              await settingsBox!.put("language", _locales[list.indexOf(value)]);
+            onChanged: (Language? value) async {
+              await settingsBox!.put("language", _locales[list.indexOf(value!)]);
               await Get.updateLocale(Locale(_locales[list.indexOf(value)]));
             },
           ),
