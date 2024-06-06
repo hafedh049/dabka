@@ -2,6 +2,7 @@
 
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:dabka/utils/callbacks.dart';
+import 'package:dabka/views/auth/sign_in.dart';
 import 'package:dabka/views/client/holder.dart';
 import 'package:dabka/views/drawer/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -185,6 +186,48 @@ class _SettingsState extends State<Settings> {
                       ),
                       const SizedBox(width: 10),
                       Text("Sign Out".tr, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
+                      const Spacer(),
+                      Card(
+                        shadowColor: dark,
+                        elevation: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                          width: 50,
+                          height: 50,
+                          child: const Icon(FontAwesome.chevron_right_solid, size: 25, color: dark),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (FirebaseAuth.instance.currentUser == null) ...<Widget>[
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () async => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const SignIn(passed: true))),
+              child: Card(
+                shadowColor: dark,
+                elevation: 6,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: <Widget>[
+                      Card(
+                        shadowColor: dark,
+                        elevation: 4,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(15), color: white),
+                          width: 50,
+                          height: 50,
+                          child: const Icon(FontAwesome.door_open_solid, size: 25, color: purple),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text("Sign-In".tr, style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       Card(
                         shadowColor: dark,
