@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, await_only_futures
 
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/views/supplier/add_product.dart';
@@ -36,8 +34,8 @@ class _ProductsListState extends State<ProductsList> {
 
   List<ProductModel> _products = <ProductModel>[];
 
-  Map<ProductModel, MultiImagePickerController> _images = {};
-  Map<ProductModel, MultiImagePickerController> _videos = {};
+  Map<ProductModel, MultiImagePickerController> _images = <ProductModel, MultiImagePickerController>{};
+  Map<ProductModel, MultiImagePickerController> _videos = <ProductModel, MultiImagePickerController>{};
 
   final Map<ImageFile, VideoPlayerController> _videoPlayerControllers = <ImageFile, VideoPlayerController>{};
 
@@ -48,6 +46,10 @@ class _ProductsListState extends State<ProductsList> {
     }
     for (final MultiImagePickerController video in _videos.values) {
       video.dispose();
+    }
+
+    for (final VideoPlayerController videoController in _videoPlayerControllers.values) {
+      videoController.dispose();
     }
     _searchController.dispose();
     super.dispose();
@@ -120,6 +122,15 @@ class _ProductsListState extends State<ProductsList> {
                     _images = <ProductModel, MultiImagePickerController>{
                       for (final ProductModel product in _products)
                         product: MultiImagePickerController(
+                          images: <ImageFile>[
+                            for (final MediaModel image in product.productImages)
+                              ImageFile(
+                                const Uuid().v8(),
+                                name: image.name,
+                                extension: image.ext,
+                                path: image.path,
+                              ),
+                          ],
                           picker: (bool allowMultiple) async {
                             return <ImageFile>[
                               for (final MediaModel image in product.productImages)
@@ -136,6 +147,15 @@ class _ProductsListState extends State<ProductsList> {
                     _videos = <ProductModel, MultiImagePickerController>{
                       for (final ProductModel product in _products)
                         product: MultiImagePickerController(
+                          images: <ImageFile>[
+                            for (final MediaModel video in product.productShorts)
+                              ImageFile(
+                                const Uuid().v8(),
+                                name: video.name,
+                                extension: video.ext,
+                                path: video.path,
+                              ),
+                          ],
                           picker: (bool allowMultiple) async {
                             return <ImageFile>[
                               for (final MediaModel video in product.productShorts)
@@ -256,7 +276,7 @@ class _ProductsListState extends State<ProductsList> {
                                         ? null
                                         : () async {
                                             for (final ImageFile video in _videos[_products[index]]!.images) {
-                                              _videoPlayerControllers[video] = await VideoPlayerController.file(File(video.path!))
+                                              _videoPlayerControllers[video] = await VideoPlayerController.networkUrl(Uri.parse(video.path!))
                                                 ..initialize();
                                             }
                                             await showModalBottomSheet(

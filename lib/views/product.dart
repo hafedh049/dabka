@@ -12,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:uuid/uuid.dart';
+import 'package:video_player/video_player.dart';
 
 import '../utils/helpers/product_description.dart';
 import '../utils/helpers/product_review.dart';
@@ -28,7 +30,23 @@ class Product extends StatefulWidget {
 
 class _ProductState extends State<Product> {
   int _selectedPicture = 0;
+  late final MultiImagePickerController _videos = MultiImagePickerController(
+    images: widget.product.productShorts.map(
+      (MediaModel e) => ImageFile(e.path, path: e.path, extension: e.ext, name: e.name),
+    ),
+    picker: (bool allowMultiple) async => [],
+  );
   final GlobalKey<State<StatefulWidget>> _imagesKey = GlobalKey<State<StatefulWidget>>();
+  final Map<ImageFile, VideoPlayerController> _videoPlayerControllers = <ImageFile, VideoPlayerController>{};
+  @override
+  void dispose() {
+    _videos.dispose();
+    for (final VideoPlayerController videoController in _videoPlayerControllers.values) {
+      videoController.dispose();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,8 +136,63 @@ class _ProductState extends State<Product> {
                             ),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {},
+                        InkWell(
+                          hoverColor: transparent,
+                          splashColor: transparent,
+                          highlightColor: transparent,
+                          onTap: widget.product.productShorts.isEmpty
+                              ? null
+                              : () async {
+                                  for (final ImageFile video in _videos.images) {
+                                    _videoPlayerControllers[video] = VideoPlayerController.networkUrl(Uri.parse(video.path!))..initialize();
+                                  }
+                                  await showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) => Container(
+                                      padding: const EdgeInsets.all(8),
+                                      child: MultiImagePickerView(
+                                        addMoreButton: const SizedBox(),
+                                        controller: _videos,
+                                        initialWidget: DefaultInitialWidget(centerWidget: Text('Tap to open'.tr, style: GoogleFonts.abel(fontSize: 18, fontWeight: FontWeight.bold, color: purple))),
+                                        builder: (BuildContext context, ImageFile imageFile) => GestureDetector(
+                                          onTap: () async {
+                                            await _videoPlayerControllers[imageFile]!.play();
+                                            showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) => StatefulBuilder(
+                                                builder: (BuildContext context, void Function(void Function()) setS) {
+                                                  return InkWell(
+                                                    splashColor: transparent,
+                                                    hoverColor: transparent,
+                                                    highlightColor: transparent,
+                                                    onTap: () async {
+                                                      if (_videoPlayerControllers[imageFile]!.value.isPlaying) {
+                                                        await _videoPlayerControllers[imageFile]!.pause();
+                                                      } else {
+                                                        await _videoPlayerControllers[imageFile]!.play();
+                                                      }
+                                                      setS(() {});
+                                                    },
+                                                    child: ClipRRect(
+                                                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                                                      child: VideoPlayer(_videoPlayerControllers[imageFile]!),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ).then(
+                                              (void value) async {
+                                                await _videoPlayerControllers[imageFile]!.seekTo(0.seconds);
+                                                await _videoPlayerControllers[imageFile]!.pause();
+                                              },
+                                            );
+                                          },
+                                          child: DefaultDraggableItemWidget(imageFile: imageFile),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
                           child: Card(
                             color: white,
                             shadowColor: dark,

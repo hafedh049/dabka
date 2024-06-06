@@ -258,7 +258,7 @@ class _EditProductState extends State<EditProduct> {
                                           ],
                                         ),
                                       ),
-                                      builder: (context, imageFile) => GestureDetector(
+                                      builder: (BuildContext context, ImageFile imageFile) => GestureDetector(
                                         onTap: () async {
                                           await _videoPlayerControllers[imageFile]!.play();
                                           showModalBottomSheet(

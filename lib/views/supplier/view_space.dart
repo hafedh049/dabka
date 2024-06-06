@@ -308,6 +308,7 @@ class _ViewSpaceState extends State<ViewSpace> {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Wait();
           } else {
+            debugPrint(snapshot.error.toString());
             return ErrorScreen(error: snapshot.error.toString());
           }
         },
