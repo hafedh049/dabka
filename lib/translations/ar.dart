@@ -260,4 +260,5 @@ final Map<String, String> ar = <String, String>{
   "Mixte": "مخلطة",
   "En Tunisie": "في تونس",
   "A L'étranger": "الخارج",
+  "CATEGORY NAME": "اسم الفئة",
 };

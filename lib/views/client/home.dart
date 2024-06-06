@@ -46,7 +46,6 @@ class _HomeState extends State<Home> {
       final QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance.collection("products").get();
 
       for (final CategoryModel categoryModel in _products.keys) {
-        _products[categoryModel]!.clear();
         _products[categoryModel] = query.docs
             .where(
               (QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get('categoryID') == categoryModel.categoryID,
@@ -129,7 +128,7 @@ class _HomeState extends State<Home> {
                       CategoriesList(categories: _products.keys.where((CategoryModel element) => element.categoryName.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
                       ExclusiveOffers(exclusiveOffers: _exclusiveOffers.where((OfferModel element) => element.offerName.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
                       for (final MapEntry<CategoryModel, List<ProductModel>> item in _products.entries) HomePart(categoryModel: item.key, products: item.value.where((ProductModel element) => element.productName.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
-                      HomeSellers(sellers: _sellers.where((UserModel element) => (FirebaseAuth.instance.currentUser == null ? true : element.userID != element.userID) && element.username.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
+                      HomeSellers(sellers: _sellers.where((UserModel element) => (FirebaseAuth.instance.currentUser == null ? true : element.userID != FirebaseAuth.instance.currentUser!.uid) && element.username.toLowerCase().startsWith(_searchController.text.trim().toLowerCase())).toList()),
                     ];
                     return ListView.separated(
                       itemBuilder: (BuildContext context, int index) => _components[index],

@@ -259,4 +259,5 @@ final Map<String, String> fr = <String, String>{
   "Mixte": "Mixte",
   "En Tunisie": "En Tunisie",
   "A L'étranger": "A L'étranger",
+  "CATEGORY NAME": "NOM DU CATEGORIE",
 };

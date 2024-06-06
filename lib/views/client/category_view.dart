@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/category_model.dart';
 import 'package:dabka/models/user_model.dart';
 import 'package:dabka/utils/helpers/home_part.dart';
+import 'package:dabka/utils/helpers/wait.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -24,7 +25,7 @@ class CategoryView extends StatefulWidget {
 class _CategoryViewState extends State<CategoryView> {
   List<UserModel> _sellers = <UserModel>[];
   List<Widget> _components = <Widget>[];
-  Map<CategoryModel, List<ProductModel>> _products = <CategoryModel, List<ProductModel>>{};
+  final Map<CategoryModel, List<ProductModel>> _products = <CategoryModel, List<ProductModel>>{};
 
   final GlobalKey<State<StatefulWidget>> _filterKey = GlobalKey<State<StatefulWidget>>();
 
@@ -43,14 +44,15 @@ class _CategoryViewState extends State<CategoryView> {
 
   Future<bool> _load() async {
     try {
-      _products = <CategoryModel, List<ProductModel>>{widget.category: <ProductModel>[]};
+      final QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance
+          .collection("products")
+          .where(
+            'categoryID',
+            isEqualTo: widget.category.categoryID,
+          )
+          .get();
 
-      final QuerySnapshot<Map<String, dynamic>> query = await FirebaseFirestore.instance.collection("products").where('categoryID', isEqualTo: widget.category.categoryID).get();
-
-      for (final CategoryModel categoryModel in _products.keys) {
-        _products[categoryModel]!.clear();
-        _products[categoryModel] = query.docs.where((QueryDocumentSnapshot<Map<String, dynamic>> element) => element.get('categoryID') == categoryModel.categoryID).toList().map((QueryDocumentSnapshot<Map<String, dynamic>> e) => ProductModel.fromJson(e.data())).toList();
-      }
+      _products[widget.category] = query.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => ProductModel.fromJson(e.data())).toList();
 
       final QuerySnapshot<Map<String, dynamic>> sellersQuery = await FirebaseFirestore.instance.collection("users").where('categoryID', isEqualTo: widget.category.categoryID).get();
 
@@ -220,65 +222,70 @@ class _CategoryViewState extends State<CategoryView> {
         body: FutureBuilder(
           future: _load(),
           builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            return ListView(
-              padding: const EdgeInsets.all(8),
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Card(
-                    shadowColor: dark,
-                    color: white,
-                    elevation: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Card(
-                              elevation: 6,
-                              shadowColor: dark,
-                              child: SizedBox(
-                                height: 40,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(5)),
-                                        child: TextField(
-                                          onChanged: (String e) => _filterKey.currentState!.setState(() {}),
-                                          controller: _searchController,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "Search for products".tr,
-                                            contentPadding: const EdgeInsets.all(16),
-                                            hintStyle: GoogleFonts.itim(color: grey, fontSize: 16, fontWeight: FontWeight.w500),
+            if (snapshot.hasData) {
+              return ListView(
+                padding: const EdgeInsets.all(8),
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Card(
+                      shadowColor: dark,
+                      color: white,
+                      elevation: 8,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Card(
+                                elevation: 6,
+                                shadowColor: dark,
+                                child: SizedBox(
+                                  height: 40,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(color: white, borderRadius: BorderRadius.circular(5)),
+                                          child: TextField(
+                                            onChanged: (String e) => _filterKey.currentState!.setState(() {}),
+                                            controller: _searchController,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "Search for products".tr,
+                                              contentPadding: const EdgeInsets.all(16),
+                                              hintStyle: GoogleFonts.itim(color: grey, fontSize: 16, fontWeight: FontWeight.w500),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
-                                      child: const Icon(FontAwesome.searchengin_brand, color: white, size: 15),
-                                    ),
-                                  ],
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(color: purple, borderRadius: BorderRadius.circular(5)),
+                                        child: const Icon(FontAwesome.searchengin_brand, color: white, size: 15),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          ..._components,
-                        ],
+                            const SizedBox(height: 20),
+                            ..._components,
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Wait();
+            }
+            return Text(snapshot.error.toString(), style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500));
           },
         ),
       ),
