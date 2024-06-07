@@ -115,11 +115,17 @@ class _RequestReservationState extends State<RequestReservation> {
                                 elevation: 6,
                                 borderOnForeground: true,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                child: Container(
+                                child: AnimatedContainer(
+                                  duration: 300.ms,
+                                  decoration: BoxDecoration(color: widget.selectedChoices.contains(choice) ? purple : white),
                                   padding: const EdgeInsets.all(8),
                                   color: pink,
                                   child: AnimatedDefaultTextStyle(
-                                    style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold),
+                                    style: GoogleFonts.abel(
+                                      fontSize: 12,
+                                      color: widget.selectedChoices.contains(choice) ? white : dark,
+                                      fontWeight: widget.selectedChoices.contains(choice) ? FontWeight.bold : FontWeight.w500,
+                                    ),
                                     duration: 300.ms,
                                     child: Text(choice.tr),
                                   ),
