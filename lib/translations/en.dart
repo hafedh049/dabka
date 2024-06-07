@@ -260,4 +260,9 @@ Map<String, String> en = <String, String>{
   "En Tunisie": "In Tunisia",
   "A L'étranger": "Outside of Tunisia",
   "CATEGORY NAME": "CATEGORY NAME",
+  "UPDATE": "UPDATE",
+  'Already in the list': 'Already in the list',
+  "Options": "Options",
+  'CLEAR': 'CLEAR',
+  "Add Options": "Add Options",
 };

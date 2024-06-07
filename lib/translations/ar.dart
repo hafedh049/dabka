@@ -261,4 +261,9 @@ final Map<String, String> ar = <String, String>{
   "En Tunisie": "في تونس",
   "A L'étranger": "الخارج",
   "CATEGORY NAME": "اسم الفئة",
+  "UPDATE": "بدل",
+  'Already in the list': 'ديجا فالليستا',
+  "Options": "منوعات",
+  'CLEAR': 'فسخ',
+  "Add Options": "زيد انواع",
 };

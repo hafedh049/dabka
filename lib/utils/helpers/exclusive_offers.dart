@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dabka/models/offer_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
-import 'package:shadow_overlay/shadow_overlay.dart';
+//import 'package:lottie/lottie.dart';
+//import 'package:shadow_overlay/shadow_overlay.dart';
 
 import '../shared.dart';
 
@@ -22,7 +22,7 @@ class ExclusiveOffers extends StatelessWidget {
         Text("Exclusive Offers".tr, style: GoogleFonts.abel(color: dark, fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         ClipRRect(borderRadius: BorderRadius.circular(10), child: Image.asset("assets/images/thumbnail1.png", fit: BoxFit.cover, height: 100, width: double.infinity)),
-        const SizedBox(height: 10),
+        /*const SizedBox(height: 10),
         exclusiveOffers.isEmpty
             ? Center(child: LottieBuilder.asset("assets/lotties/empty.json", reverse: true, width: 100, height: 100))
             : SizedBox(
@@ -88,7 +88,7 @@ class ExclusiveOffers extends StatelessWidget {
                   separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 20),
                   itemCount: exclusiveOffers.length,
                 ),
-              ),
+              ),*/
       ],
     );
   }

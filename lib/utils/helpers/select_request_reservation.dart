@@ -7,8 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../shared.dart';
 
 class RequestReservation extends StatefulWidget {
-  const RequestReservation({super.key, required this.product});
+  const RequestReservation({super.key, required this.product, required this.selectedChoices});
   final ProductModel product;
+  final List<String> selectedChoices;
   @override
   State<RequestReservation> createState() => _RequestReservationState();
 }
@@ -96,19 +97,32 @@ class _RequestReservationState extends State<RequestReservation> {
                         spacing: 20,
                         children: <Widget>[
                           for (final String choice in widget.product.productOptions)
-                            Card(
-                              shadowColor: dark,
-                              color: white,
-                              elevation: 6,
-                              borderOnForeground: true,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                color: pink,
-                                child: AnimatedDefaultTextStyle(
-                                  style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold),
-                                  duration: 300.ms,
-                                  child: Text(choice.tr),
+                            InkWell(
+                              highlightColor: transparent,
+                              hoverColor: transparent,
+                              splashColor: transparent,
+                              onTap: () {
+                                if (widget.selectedChoices.contains(choice)) {
+                                  widget.selectedChoices.remove(choice);
+                                } else {
+                                  widget.selectedChoices.add(choice);
+                                }
+                                _(() {});
+                              },
+                              child: Card(
+                                shadowColor: dark,
+                                color: white,
+                                elevation: 6,
+                                borderOnForeground: true,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  color: pink,
+                                  child: AnimatedDefaultTextStyle(
+                                    style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold),
+                                    duration: 300.ms,
+                                    child: Text(choice.tr),
+                                  ),
                                 ),
                               ),
                             ),

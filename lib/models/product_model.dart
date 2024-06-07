@@ -11,7 +11,7 @@ class ProductModel with CustomDropdownListFilter {
   final double productRating;
   final List<MediaModel> productImages;
   final List<MediaModel> productShorts;
-  final List<String> productOptions;
+  List<String> productOptions;
 
   ProductModel({
     required this.categoryName,
@@ -54,8 +54,8 @@ class ProductModel with CustomDropdownListFilter {
       'productDescription': productDescription,
       'productBuyPrice': productBuyPrice,
       'productRating': productRating,
-      'productImages': [for (final MediaModel e in productImages) e.toJson()],
-      'productShorts': [for (final MediaModel e in productShorts) e.toJson()],
+      'productImages': <Map<String, dynamic>>[for (final MediaModel e in productImages) e.toJson()],
+      'productShorts': <Map<String, dynamic>>[for (final MediaModel e in productShorts) e.toJson()],
     };
   }
 

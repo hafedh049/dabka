@@ -257,6 +257,31 @@ class _BookingListState extends State<BookingList> {
                                           Text(product.value.productName, style: GoogleFonts.abel(fontSize: 18, color: dark, fontWeight: FontWeight.bold)),
                                           const SizedBox(height: 5),
                                           Flexible(child: Text(product.value.categoryName, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500))),
+                                          const SizedBox(height: 5),
+                                          Flexible(
+                                            child: Wrap(
+                                              crossAxisAlignment: WrapCrossAlignment.start,
+                                              alignment: WrapAlignment.start,
+                                              runAlignment: WrapAlignment.start,
+                                              runSpacing: 10,
+                                              spacing: 10,
+                                              children: <Widget>[
+                                                for (final String choice in product.value.productOptions)
+                                                  Card(
+                                                    shadowColor: dark,
+                                                    color: white,
+                                                    elevation: 6,
+                                                    borderOnForeground: true,
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(8),
+                                                      color: pink,
+                                                      child: Text(choice.tr, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),

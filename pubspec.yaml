@@ -45,6 +45,7 @@ dependencies:
   another_xlider: ^3.0.2
   animated_toggle_switch: ^0.8.2
   pie_chart: ^5.4.0
+  textfield_tags: ^3.0.1
 
 dev_dependencies:
   flutter_test:

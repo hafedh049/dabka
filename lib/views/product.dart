@@ -38,6 +38,7 @@ class _ProductState extends State<Product> {
   );
   final GlobalKey<State<StatefulWidget>> _imagesKey = GlobalKey<State<StatefulWidget>>();
   final Map<ImageFile, VideoPlayerController> _videoPlayerControllers = <ImageFile, VideoPlayerController>{};
+  final List<String> _selectedChoices = <String>[];
   @override
   void dispose() {
     _videos.dispose();
@@ -278,7 +279,7 @@ class _ProductState extends State<Product> {
           ),
           SliverList.list(
             children: <Widget>[
-              RequestReservation(product: widget.product),
+              RequestReservation(product: widget.product, selectedChoices: _selectedChoices),
               AvailablePaymentMethod(product: widget.product),
               ProductDescription(product: widget.product),
               ProductReview(product: widget.product),
@@ -333,18 +334,17 @@ class _ProductState extends State<Product> {
                               TextButton(
                                 onPressed: () async {
                                   final String orderID = const Uuid().v8();
-                                  String username = '';
 
                                   final DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
 
-                                  username = userDoc.get('userName');
+                                  final String username = userDoc.get('userName');
                                   await FirebaseFirestore.instance.collection('orders').doc(orderID).set(
                                         OrderModel(
                                           orderID: orderID,
                                           ownerID: FirebaseAuth.instance.currentUser!.uid,
                                           timestamp: Timestamp.now().toDate(),
                                           ownerName: username,
-                                          products: <ProductModel>[widget.product],
+                                          products: <ProductModel>[widget.product..productOptions = _selectedChoices],
                                         ).toJson(),
                                       );
                                   showToast(context, 'Product Requested Successfully'.tr);

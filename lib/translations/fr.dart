@@ -260,4 +260,9 @@ final Map<String, String> fr = <String, String>{
   "En Tunisie": "En Tunisie",
   "A L'étranger": "A L'étranger",
   "CATEGORY NAME": "NOM DU CATEGORIE",
+  "UPDATE": "MISE A JOUR",
+  'Already in the list': 'Déja dans la liste',
+  "Options": "Options",
+  "Add Options": "Ajouter Des Options",
+  'CLEAR': 'EFFACER',
 };

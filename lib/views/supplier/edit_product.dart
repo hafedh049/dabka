@@ -1,12 +1,14 @@
 // ignore_for_file: use_build_context_synchronously, await_only_futures
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/product_model.dart';
 import 'package:dabka/models/user_model.dart';
 import 'package:dabka/utils/shared.dart';
+import 'package:dabka/views/supplier/add_product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
@@ -86,7 +89,6 @@ class _EditProductState extends State<EditProduct> {
             .toList();
       },
     );
-    _selectedChoices = widget.product.productOptions;
     super.initState();
   }
 
@@ -101,45 +103,23 @@ class _EditProductState extends State<EditProduct> {
     for (final VideoPlayerController controller in _videoPlayerControllers.values) {
       controller.dispose();
     }
+    _dynamicTagController.dispose();
     _videoPlayerControllers.clear();
     super.dispose();
   }
 
-  late final List<String> _selectedChoices;
+  final TextfieldTagsController<DynamicTagData<ButtonData>> _dynamicTagController = TextfieldTagsController<DynamicTagData<ButtonData>>();
+  final Random random = Random();
+  double _distanceToField = 10;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _distanceToField = MediaQuery.of(context).size.width;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, List<String>> choices = <String, List<String>>{
-      "20240525-1317-8525-8839-c5944ca24374": <String>[
-        "Pause Vernis".tr,
-        "Brushing".tr,
-        "Make Up".tr,
-        "Acheter".tr,
-      ],
-      "20240525-1318-8315-8856-e633e68c7eff": <String>[
-        "Louer".tr,
-        "Acheter".tr,
-      ],
-      "20240525-1319-8900-a128-354555faf0a7": <String>[
-        "Ouverte".tr,
-        "Fermée".tr,
-        "Louer".tr,
-      ],
-      "20240525-1320-8302-a906-953deeaaf71d": <String>[
-        "Videos".tr,
-        "Images".tr,
-        "Mixte".tr,
-      ],
-      "20240525-1320-8a54-b547-4a4c93ac7b3f": <String>[
-        "En Tunisie".tr,
-        "A L'étranger".tr,
-        "Louer".tr,
-      ],
-      "20240525-1320-8b30-8203-ca85e45b3e5a": <String>[
-        "Acheter".tr,
-        "Louer".tr,
-      ],
-    };
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -334,63 +314,130 @@ class _EditProductState extends State<EditProduct> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      if (choices.containsKey(widget.product.categoryID)) ...<Widget>[
-                        Card(
-                          shadowColor: dark,
-                          color: white,
-                          elevation: 6,
-                          borderOnForeground: true,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            child: StatefulBuilder(
-                              builder: (BuildContext context, void Function(void Function()) _) {
-                                return Wrap(
-                                  alignment: WrapAlignment.center,
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  runAlignment: WrapAlignment.center,
-                                  runSpacing: 20,
-                                  spacing: 20,
-                                  children: <Widget>[
-                                    for (final String choice in choices[widget.product.categoryID]!)
-                                      InkWell(
-                                        highlightColor: transparent,
-                                        hoverColor: transparent,
-                                        splashColor: transparent,
-                                        onTap: () {
-                                          if (_selectedChoices.contains(choice)) {
-                                            _selectedChoices.remove(choice);
-                                          } else {
-                                            _selectedChoices.add(choice);
-                                          }
-                                          _(() {});
-                                        },
-                                        child: Card(
-                                          shadowColor: dark,
-                                          color: white,
-                                          elevation: 6,
-                                          borderOnForeground: true,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                          child: AnimatedContainer(
-                                            duration: 300.milliseconds,
-                                            padding: const EdgeInsets.all(8),
-                                            color: _selectedChoices.contains(choice) ? pink : white,
-                                            child: AnimatedDefaultTextStyle(
-                                              style: GoogleFonts.abel(fontSize: 12, color: _selectedChoices.contains(choice) ? white : dark, fontWeight: _selectedChoices.contains(choice) ? FontWeight.bold : FontWeight.w500),
-                                              duration: 300.milliseconds,
-                                              child: Text(choice.tr),
-                                            ),
-                                          ),
+                      Card(
+                        shadowColor: dark,
+                        color: white,
+                        elevation: 6,
+                        borderOnForeground: true,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text("Options".tr, style: GoogleFonts.abel(fontSize: 16, color: dark, fontWeight: FontWeight.w500)),
+                              const SizedBox(height: 10),
+                              StatefulBuilder(
+                                builder: (BuildContext context, void Function(void Function()) _) {
+                                  return TextFieldTags<DynamicTagData<ButtonData>>(
+                                    initialTags: <DynamicTagData<ButtonData>>[
+                                      for (final String option in widget.product.productOptions)
+                                        DynamicTagData<ButtonData>(
+                                          option,
+                                          ButtonData(Colors.primaries[random.nextInt(Colors.primaries.length)], emojies[random.nextInt(emojies.length)]),
                                         ),
-                                      ),
-                                  ],
-                                );
-                              },
-                            ),
+                                    ],
+                                    textfieldTagsController: _dynamicTagController,
+                                    validator: (DynamicTagData<ButtonData> tag) {
+                                      if (_dynamicTagController.getTags!.any((DynamicTagData<ButtonData> element) => element.tag == tag.tag)) {
+                                        return 'Already in the list'.tr;
+                                      }
+                                      return null;
+                                    },
+                                    inputFieldBuilder: (BuildContext context, InputFieldValues<DynamicTagData<ButtonData>> inputFieldValues) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: TextField(
+                                          controller: inputFieldValues.textEditingController,
+                                          focusNode: inputFieldValues.focusNode,
+                                          decoration: InputDecoration(
+                                            isDense: true,
+                                            contentPadding: const EdgeInsets.all(8),
+                                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                            disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                            focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: const BorderSide(color: grey, width: .3)),
+                                            helperText: "Add Options".tr,
+                                            helperStyle: const TextStyle(color: purple),
+                                            hintText: inputFieldValues.tags.isNotEmpty ? '' : "Add Options".tr,
+                                            errorText: inputFieldValues.error,
+                                            prefixIconConstraints: BoxConstraints(maxWidth: _distanceToField * 0.75),
+                                            prefixIcon: inputFieldValues.tags.isNotEmpty
+                                                ? Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: SingleChildScrollView(
+                                                      controller: inputFieldValues.tagScrollController,
+                                                      child: Wrap(
+                                                        alignment: WrapAlignment.start,
+                                                        crossAxisAlignment: WrapCrossAlignment.start,
+                                                        runAlignment: WrapAlignment.start,
+                                                        runSpacing: 5,
+                                                        spacing: 5,
+                                                        children: inputFieldValues.tags.map<Widget>(
+                                                          (DynamicTagData<ButtonData> tag) {
+                                                            return Container(
+                                                              decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(20.0)), color: tag.data.buttonColor),
+                                                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                                                              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                                                              child: Row(
+                                                                mainAxisSize: MainAxisSize.min,
+                                                                children: <Widget>[
+                                                                  InkWell(
+                                                                    onTap: () {},
+                                                                    child: Text('${tag.data.emoji} ${tag.tag}', style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                                                                  ),
+                                                                  const SizedBox(width: 4.0),
+                                                                  InkWell(
+                                                                    child: const Icon(Icons.cancel, size: 15, color: dark),
+                                                                    onTap: () => inputFieldValues.onTagRemoved(tag),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            );
+                                                          },
+                                                        ).toList(),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : null,
+                                          ),
+                                          onChanged: (String value) {
+                                            if (value.startsWith(RegExp('[a-zA-Z]+')) && value.endsWith(",") || value.endsWith("  ")) {
+                                              final button = ButtonData(Colors.primaries[random.nextInt(Colors.primaries.length)], emojies[random.nextInt(emojies.length)]);
+                                              final DynamicTagData<ButtonData> tagData = DynamicTagData<ButtonData>(value.replaceAll("  ", "").replaceAll(",", "").capitalize!, button);
+                                              inputFieldValues.onTagSubmitted(tagData);
+                                              _(() {});
+                                            }
+                                          },
+                                          onSubmitted: (String value) {
+                                            if (value.startsWith(RegExp('[a-zA-Z]+')) && value.endsWith(",") || value.endsWith("  ")) {
+                                              final button = ButtonData(Colors.primaries[random.nextInt(Colors.primaries.length)], emojies[random.nextInt(emojies.length)]);
+                                              final DynamicTagData<ButtonData> tagData = DynamicTagData<ButtonData>(value.replaceAll("  ", "").replaceAll(",", "").capitalize!, button);
+                                              inputFieldValues.onTagSubmitted(tagData);
+                                              _(() {});
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              Center(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(purple)),
+                                  onPressed: () => _dynamicTagController.clearTags(),
+                                  child: Text('CLEAR'.tr, style: GoogleFonts.abel(color: white, fontSize: 12, fontWeight: FontWeight.w500)),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 20),
-                      ],
+                      ),
+                      const SizedBox(height: 20),
                       Card(
                         shadowColor: dark,
                         color: white,
@@ -551,7 +598,7 @@ class _EditProductState extends State<EditProduct> {
 
                                               await FirebaseFirestore.instance.collection("products").doc(widget.product.productID).set(
                                                     ProductModel(
-                                                      productOptions: _selectedChoices,
+                                                      productOptions: _dynamicTagController.getTags == null ? <String>[] : _dynamicTagController.getTags!.map((DynamicTagData<ButtonData> e) => e.tag).toSet().toList(),
                                                       categoryName: user.categoryName,
                                                       categoryID: user.categoryID,
                                                       supplierID: user.userID,
