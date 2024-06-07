@@ -119,7 +119,6 @@ class _RequestReservationState extends State<RequestReservation> {
                                   duration: 300.ms,
                                   decoration: BoxDecoration(color: widget.selectedChoices.contains(choice) ? purple : white),
                                   padding: const EdgeInsets.all(8),
-                                  color: pink,
                                   child: AnimatedDefaultTextStyle(
                                     style: GoogleFonts.abel(
                                       fontSize: 12,

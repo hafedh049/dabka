@@ -19,12 +19,6 @@ class Supplier extends StatefulWidget {
 }
 
 class _SupplierState extends State<Supplier> {
-  final List<Map<String, dynamic>> _methods = <Map<String, dynamic>>[
-    <String, dynamic>{"icon": "assets/images/wallet.png", "method": "Wallet".tr},
-    <String, dynamic>{"icon": "assets/images/card.png", "method": "Credit".tr},
-    <String, dynamic>{"icon": "assets/images/ticket.png", "method": "Money".tr},
-  ];
-
   CategoryModel? _category;
 
   List<ProductModel> _products = <ProductModel>[];
@@ -43,6 +37,11 @@ class _SupplierState extends State<Supplier> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> methods = <Map<String, dynamic>>[
+      <String, dynamic>{"icon": "assets/images/wallet.png", "method": "Wallet".tr},
+      <String, dynamic>{"icon": "assets/images/card.png", "method": "Credit".tr},
+      <String, dynamic>{"icon": "assets/images/card.png", "method": "Money".tr},
+    ];
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 240, 240),
       appBar: AppBar(
@@ -144,14 +143,14 @@ class _SupplierState extends State<Supplier> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset(_methods[index]["icon"], fit: BoxFit.cover, width: 25, height: 25, color: blue),
+                    Image.asset(methods[index]["icon"], fit: BoxFit.cover, width: 25, height: 25, color: blue),
                     const SizedBox(height: 2),
-                    Text(_methods[index]["method"], style: GoogleFonts.abel(color: dark, fontSize: 9, fontWeight: FontWeight.w500)),
+                    Text(methods[index]["method"], style: GoogleFonts.abel(color: dark, fontSize: 9, fontWeight: FontWeight.w500)),
                   ],
                 ),
               ),
               separatorBuilder: (BuildContext context, int index) => const SizedBox(width: 10),
-              itemCount: _methods.length,
+              itemCount: methods.length,
             ),
           ),
           const SizedBox(height: 10),

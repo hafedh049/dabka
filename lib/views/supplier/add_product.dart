@@ -602,6 +602,7 @@ class _AddProductState extends State<AddProduct> {
                                               _videoController.clearImages();
                                               _imagesKey.currentState!.setState(() {});
                                               _imageController.clearImages();
+                                              _dynamicTagController.clearTags();
 
                                               showToast(context, "Product Created Successfully".tr);
                                               _(() => _ignoreStupidity = false);
