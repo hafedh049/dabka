@@ -385,17 +385,17 @@ class _AddProductState extends State<AddProduct> {
                                                 : null,
                                           ),
                                           onChanged: (String value) {
-                                            if (value.startsWith(RegExp('[a-zA-Z]+')) && value.endsWith(",") || value.endsWith("  ")) {
+                                            if (value.startsWith(RegExp('[a-zA-Zا-ي]+')) && (value.endsWith(". ") || value.endsWith(",") || value.endsWith("،") || value.endsWith("  "))) {
                                               final button = ButtonData(Colors.primaries[random.nextInt(Colors.primaries.length)], emojies[random.nextInt(emojies.length)]);
-                                              final DynamicTagData<ButtonData> tagData = DynamicTagData<ButtonData>(value.replaceAll("  ", "").replaceAll(",", "").capitalize!, button);
+                                              final DynamicTagData<ButtonData> tagData = DynamicTagData<ButtonData>(value.replaceAll("  ", "").replaceAll(". ", "").replaceAll("،", "").replaceAll(",", "").capitalize!, button);
                                               inputFieldValues.onTagSubmitted(tagData);
                                               _(() {});
                                             }
                                           },
                                           onSubmitted: (String value) {
-                                            if (value.startsWith(RegExp('[a-zA-Z]+')) && value.endsWith(",") || value.endsWith("  ")) {
+                                            if (value.startsWith(RegExp('[a-zA-Zا-ي]]+')) && (value.endsWith(". ") || value.endsWith(",") || value.endsWith("،") || value.endsWith("  "))) {
                                               final button = ButtonData(Colors.primaries[random.nextInt(Colors.primaries.length)], emojies[random.nextInt(emojies.length)]);
-                                              final DynamicTagData<ButtonData> tagData = DynamicTagData<ButtonData>(value.replaceAll("  ", "").replaceAll(",", "").capitalize!, button);
+                                              final DynamicTagData<ButtonData> tagData = DynamicTagData<ButtonData>(value.replaceAll("  ", "").replaceAll(". ", "").replaceAll("،", "").replaceAll(",", "").capitalize!, button);
                                               inputFieldValues.onTagSubmitted(tagData);
                                               _(() {});
                                             }
