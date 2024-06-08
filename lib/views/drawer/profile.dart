@@ -2,9 +2,12 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabka/models/user_model.dart';
 import 'package:dabka/utils/callbacks.dart';
+import 'package:dabka/utils/helpers/error.dart';
+import 'package:dabka/utils/helpers/wait.dart';
 import 'package:dabka/utils/shared.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -58,7 +61,6 @@ class _ProfileState extends State<Profile> {
     _passwordController.text = userModel!.password;
     _phoneController.text = userModel!.phoneNumber;
     _gender = userModel!.gender;
-    _avatar = userModel!.userAvatar.isEmpty ? null : File.fromUri(Uri.parse(userModel!.userAvatar));
     return true;
   }
 
@@ -78,11 +80,12 @@ class _ProfileState extends State<Profile> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: FutureBuilder<bool>(
-                future: _updateProfile(),
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  return Column(
+          child: FutureBuilder<bool>(
+            future: _updateProfile(),
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.hasData) {
+                return SingleChildScrollView(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 20),
@@ -154,7 +157,18 @@ class _ProfileState extends State<Profile> {
                                   padding: const EdgeInsets.all(8),
                                   child: fis.FlutterImageStack.providers(
                                     providers: <ImageProvider>[
-                                      if (_avatar != null) FileImage(_avatar!) else AssetImage("assets/images/${_gender == 'M' ? 'n' : 'f'}obody.png"),
+                                      if (userModel!.userAvatar.isNotEmpty && _avatar == null)
+                                        CachedNetworkImageProvider(
+                                          userModel!.userAvatar,
+                                        )
+                                      else if (_avatar != null)
+                                        FileImage(
+                                          _avatar!,
+                                        )
+                                      else
+                                        AssetImage(
+                                          "assets/images/${_gender == 'M' ? 'n' : 'f'}obody.png",
+                                        ),
                                     ],
                                     totalCount: 2,
                                     itemBorderColor: purple,
@@ -438,8 +452,13 @@ class _ProfileState extends State<Profile> {
                         }),
                       ),
                     ],
-                  );
-                }),
+                  ),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Wait();
+              }
+              return ErrorScreen(error: snapshot.error.toString());
+            },
           ),
         ),
       ),
