@@ -52,13 +52,13 @@ class _ProfileState extends State<Profile> {
 
   Future<bool> _updateProfile() async {
     final DocumentSnapshot<Map<String, dynamic>> userCredential = await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get();
-    final UserModel user = UserModel.fromJson(userCredential.data()!);
-    _usernameController.text = user.username;
-    _emailController.text = user.email;
-    _passwordController.text = user.password;
-    _phoneController.text = user.phoneNumber;
-    _gender = user.gender;
-    _avatar = user.userAvatar.isEmpty ? null : File.fromUri(Uri.parse(user.userAvatar));
+    userModel = UserModel.fromJson(userCredential.data()!);
+    _usernameController.text = userModel!.username;
+    _emailController.text = userModel!.email;
+    _passwordController.text = userModel!.password;
+    _phoneController.text = userModel!.phoneNumber;
+    _gender = userModel!.gender;
+    _avatar = userModel!.userAvatar.isEmpty ? null : File.fromUri(Uri.parse(userModel!.userAvatar));
     return true;
   }
 
@@ -257,6 +257,7 @@ class _ProfileState extends State<Profile> {
                         child: StatefulBuilder(
                           builder: (BuildContext context, void Function(void Function()) _) {
                             return TextField(
+                              readOnly: true,
                               controller: _emailController,
                               style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
@@ -284,6 +285,7 @@ class _ProfileState extends State<Profile> {
                             return TextField(
                               controller: _passwordController,
                               obscureText: _obscureText,
+                              readOnly: true,
                               style: GoogleFonts.abel(color: dark, fontSize: 14, fontWeight: FontWeight.w500),
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(6),
@@ -390,7 +392,7 @@ class _ProfileState extends State<Profile> {
                                   showToast(context, "Username is required".tr, color: red);
                                 } else {
                                   try {
-                                    String imageUrl = _avatar == null ? '' : userModel!.userAvatar;
+                                    String imageUrl = userModel!.userAvatar;
 
                                     _(() => _ignoreStupidity = true);
 
@@ -408,7 +410,7 @@ class _ProfileState extends State<Profile> {
 
                                     await FirebaseFirestore.instance.collection("users").doc(userModel!.userID).update(
                                       <String, dynamic>{
-                                        'username': _usernameController.text.trim(),
+                                        'userName': _usernameController.text.trim(),
                                         'userAvatar': imageUrl,
                                         'gender': _gender,
                                       },
