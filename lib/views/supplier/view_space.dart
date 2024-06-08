@@ -11,6 +11,7 @@ import 'package:dabka/views/product.dart';
 import 'package:dabka/views/supplier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,6 +36,12 @@ class _ViewSpaceState extends State<ViewSpace> {
   final List<GlobalKey<State<StatefulWidget>>> _videoKeys = <GlobalKey<State<StatefulWidget>>>[];
 
   late final PageController _trueViewController;
+
+  @override
+  void initState() {
+    _trueViewController = PageController();
+    super.initState();
+  }
 
   String _formatDuration(int durationInSeconds) {
     final int minutes = durationInSeconds ~/ 60;
@@ -101,7 +108,7 @@ class _ViewSpaceState extends State<ViewSpace> {
       }
       return true;
     } catch (e) {
-      debugPrint(e.toString());
+      Clipboard.setData(ClipboardData(text: e.toString()));
       return Future.error(e);
     }
   }
