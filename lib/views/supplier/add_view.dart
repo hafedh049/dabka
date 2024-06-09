@@ -286,6 +286,7 @@ class _AddTrueViewState extends State<AddTrueView> {
                                                     );
                                 },
                               ),
+                              const SizedBox(height: 20),
                               Center(
                                 child: StatefulBuilder(
                                   builder: (BuildContext context, void Function(void Function()) _) {
