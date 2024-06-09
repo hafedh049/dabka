@@ -35,13 +35,7 @@ class _ViewSpaceState extends State<ViewSpace> {
   final List<VideoPlayerController> _videoPlayers = <VideoPlayerController>[];
   final List<GlobalKey<State<StatefulWidget>>> _videoKeys = <GlobalKey<State<StatefulWidget>>>[];
 
-  late final PageController _trueViewController;
-
-  @override
-  void initState() {
-    _trueViewController = PageController();
-    super.initState();
-  }
+  PageController _trueViewController = PageController();
 
   String _formatDuration(int durationInSeconds) {
     final int minutes = durationInSeconds ~/ 60;
