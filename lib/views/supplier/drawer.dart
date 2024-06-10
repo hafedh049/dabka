@@ -1,5 +1,6 @@
 import 'package:dabka/utils/shared.dart';
-import 'package:dabka/views/client/holder.dart';
+import 'package:dabka/views/client/holder.dart' as c;
+import 'package:dabka/views/supplier/holder.dart' as s;
 import 'package:dabka/views/drawer/about_us.dart';
 import 'package:dabka/views/drawer/settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,12 +31,17 @@ class _DDrawerState extends State<DDrawer> {
         <String, dynamic>{
           "icon": FontAwesome.shop_solid,
           "tile": "Return as a normal client".tr,
-          "page": () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false),
+          "page": () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const c.Holder()), (Route route) => false),
         },
       <String, dynamic>{
         "icon": Bootstrap.hexagon_half,
         "tile": "About Us".tr,
         "page": const AboutUs(),
+      },
+      <String, dynamic>{
+        "icon": Bootstrap.r_square,
+        "tile": "Hot Restart".tr,
+        "page": () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const s.Holder()), (Route route) => false),
       },
     ];
     return Drawer(

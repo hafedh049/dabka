@@ -266,4 +266,5 @@ final Map<String, String> ar = <String, String>{
   "Options": "منوعات",
   'CLEAR': 'فسخ',
   "Add Options": "زيد انواع",
+  "Hot Restart": "ريفراش",
 };

@@ -1,4 +1,5 @@
 import 'package:dabka/utils/shared.dart';
+import 'package:dabka/views/client/holder.dart';
 import 'package:dabka/views/client/home.dart';
 import 'package:dabka/views/drawer/about_us.dart';
 import 'package:dabka/views/client/become_seller.dart';
@@ -60,6 +61,11 @@ class _DDrawerState extends State<DDrawer> {
         "tile": "About Us".tr,
         "page": const AboutUs(),
       },
+      <String, dynamic>{
+        "icon": Bootstrap.r_square,
+        "tile": "Hot Restart".tr,
+        "page": () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context) => const Holder()), (Route route) => false),
+      },
     ];
     return Drawer(
       width: 273,
@@ -86,7 +92,7 @@ class _DDrawerState extends State<DDrawer> {
                         splashColor: transparent,
                         highlightColor: transparent,
                         hoverColor: transparent,
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => tile["page"])),
+                        onTap: tile["page"] is VoidCallback ? tile["page"] : () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => tile["page"])),
                         child: Row(
                           children: <Widget>[
                             Icon(tile["icon"], size: 20, color: dark.withOpacity(.5)),

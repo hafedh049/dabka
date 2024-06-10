@@ -41,3 +41,25 @@ void showToast(BuildContext context, String message, {Color color = purple}) {
     autoCloseDuration: 2.seconds,
   );
 }
+
+String formatDuration(int durationInSeconds) {
+  final int minutes = durationInSeconds ~/ 60;
+  final int seconds = durationInSeconds % 60;
+
+  final String minutesStr = minutes.toString().padLeft(2, '0');
+  final String secondsStr = seconds.toString().padLeft(2, '0');
+
+  return '$minutesStr:$secondsStr';
+}
+
+String formatNumber(int number) {
+  if (number >= 1000000000) {
+    return '${(number / 1000000000).toStringAsFixed(0)}B';
+  } else if (number >= 1000000) {
+    return '${(number / 1000000).toStringAsFixed(0)}M';
+  } else if (number >= 1000) {
+    return '${(number / 1000).toStringAsFixed(0)}K';
+  } else {
+    return number.toString();
+  }
+}

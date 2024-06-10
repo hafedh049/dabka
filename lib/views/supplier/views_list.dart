@@ -15,7 +15,6 @@ import 'package:lottie/lottie.dart';
 import 'package:shadow_overlay/shadow_overlay.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
 import '../../utils/shared.dart';
@@ -28,20 +27,9 @@ class ViewsList extends StatefulWidget {
 }
 
 class _ViewsListState extends State<ViewsList> {
-  List<TrueViewModel> _views = <TrueViewModel>[];
-  List<VideoPlayerController> _videosControllers = <VideoPlayerController>[];
-
-  @override
-  void dispose() {
-    for (final VideoPlayerController controller in _videosControllers) {
-      controller.dispose();
-    }
-    _videosControllers.clear();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    List<TrueViewModel> views = <TrueViewModel>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -62,8 +50,7 @@ class _ViewsListState extends State<ViewsList> {
             stream: FirebaseFirestore.instance.collection("true_views").where("userID", isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
               if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                _views = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => TrueViewModel.fromJson(e.data())).toList();
-                _videosControllers = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => VideoPlayerController.networkUrl(Uri.parse(e.get("reelUrl")["path"]))..initialize()).toList();
+                views = snapshot.data!.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => TrueViewModel.fromJson(e.data())).toList();
                 return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -71,108 +58,70 @@ class _ViewsListState extends State<ViewsList> {
                     mainAxisSpacing: 20,
                     childAspectRatio: .6,
                   ),
-                  itemCount: _views.length,
+                  itemCount: views.length,
                   itemBuilder: (BuildContext context, index) => InkWell(
                     hoverColor: transparent,
                     splashColor: transparent,
                     highlightColor: transparent,
                     onLongPress: () {
-                      showBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) => Container(
-                          color: white,
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Text("Are you sure ?".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
-                              const SizedBox(height: 20),
-                              Row(
-                                children: <Widget>[
-                                  const Spacer(),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await FirebaseFirestore.instance.collection("true_views").doc(_views[index].reelID).delete();
-                                      showToast(context, "True View deleted successfully".tr);
-                                      Navigator.pop(context);
-                                    },
-                                    style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
-                                    child: Text("OK".tr, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => Scaffold(
+                            backgroundColor: white,
+                            appBar: AppBar(
+                              centerTitle: true,
+                              backgroundColor: white,
+                              title: Text("Are you sure ?".tr, style: GoogleFonts.abel(fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
+                              leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(FontAwesome.chevron_left_solid, size: 20, color: purple)),
+                            ),
+                            body: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Card(
+                                  shadowColor: dark,
+                                  elevation: 8,
+                                  color: white,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text("Are you sure ?".tr, style: GoogleFonts.abel(fontSize: 14, color: dark, fontWeight: FontWeight.w500)),
+                                        const SizedBox(height: 20),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            TextButton(
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                                await FirebaseFirestore.instance.collection("true_views").doc(views[index].reelID).delete();
+                                                //showToast(context, "True View deleted successfully".tr);
+                                              },
+                                              style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(purple)),
+                                              child: Text("OK".tr, style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.w500)),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
+                                              child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(width: 10),
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll<Color>(grey.withOpacity(.3))),
-                                    child: Text("CANCEL".tr, style: GoogleFonts.abel(fontSize: 12, color: dark, fontWeight: FontWeight.w500)),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       );
                     },
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ViewSpace(
-                          views: <TrueViewModel>[for (final TrueViewModel trueView in _views) trueView],
-                          currentIndex: index,
-                        ),
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: Stack(
-                        children: <Widget>[
-                          VideoPlayer(_videosControllers[index]),
-                          ShadowOverlay(
-                            shadowHeight: 150,
-                            shadowWidth: 200,
-                            shadowColor: pink.withOpacity(.6),
-                            child: Container(
-                              width: 200,
-                              height: 350,
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    const Spacer(),
-                                    Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: pink.withOpacity(.8),
-                                        borderRadius: BorderRadius.circular(3),
-                                      ),
-                                      child: Text(_views[index].category, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Text("EXCLUSIVE PACKAGE", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 10),
-                                Text("${(Random().nextDouble() * Random().nextInt(1000)).toStringAsFixed(2).replaceAll(".", ",")} DT", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: <Widget>[
-                                    const CircleAvatar(radius: 10, backgroundImage: AssetImage('assets/images/logo.png')),
-                                    const SizedBox(width: 10),
-                                    Text(_views[index].userName, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ViewSpace(views: views, currentIndex: index))),
+                    child: TrueViewVideo(trueView: views[index]),
                   ),
                 );
               } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
@@ -195,6 +144,93 @@ class _ViewsListState extends State<ViewsList> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class TrueViewVideo extends StatefulWidget {
+  const TrueViewVideo({super.key, required this.trueView});
+  final TrueViewModel trueView;
+  @override
+  State<TrueViewVideo> createState() => _TrueViewVideoState();
+}
+
+class _TrueViewVideoState extends State<TrueViewVideo> {
+  late final VideoPlayerController _controller;
+  @override
+  void initState() {
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.trueView.reelUrl.path));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: Stack(
+        children: <Widget>[
+          FutureBuilder<void>(
+            future: _controller.initialize(),
+            builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return VideoPlayer(_controller);
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Wait(switcher: true);
+              }
+              return ErrorScreen(error: snapshot.error.toString());
+            },
+          ),
+          ShadowOverlay(
+            shadowHeight: 150,
+            shadowWidth: 200,
+            shadowColor: pink.withOpacity(.6),
+            child: Container(
+              width: 200,
+              height: 350,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: pink.withOpacity(.8),
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: Text(widget.trueView.category, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Text("EXCLUSIVE PACKAGE", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                Text("${(Random().nextDouble() * Random().nextInt(1000)).toStringAsFixed(2).replaceAll(".", ",")} DT", style: GoogleFonts.abel(fontSize: 12, color: white, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    const CircleAvatar(radius: 10, backgroundImage: AssetImage('assets/images/logo.png')),
+                    const SizedBox(width: 10),
+                    Text(widget.trueView.userName, style: GoogleFonts.abel(fontSize: 14, color: white, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

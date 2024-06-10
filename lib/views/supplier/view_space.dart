@@ -11,8 +11,6 @@ import 'package:dabka/views/product.dart';
 import 'package:dabka/views/supplier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -20,6 +18,7 @@ import 'package:scrolling_text/scrolling_text.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../models/user_model.dart';
+import '../../utils/callbacks.dart';
 import '../../utils/helpers/error.dart';
 import '../../utils/helpers/wait.dart';
 
@@ -32,65 +31,13 @@ class ViewSpace extends StatefulWidget {
 }
 
 class _ViewSpaceState extends State<ViewSpace> {
-  final List<VideoPlayerController> _videoPlayers = <VideoPlayerController>[];
-  final List<GlobalKey<State<StatefulWidget>>> _videoKeys = <GlobalKey<State<StatefulWidget>>>[];
-
   PageController _trueViewController = PageController();
-
-  String _formatDuration(int durationInSeconds) {
-    final int minutes = durationInSeconds ~/ 60;
-    final int seconds = durationInSeconds % 60;
-
-    final String minutesStr = minutes.toString().padLeft(2, '0');
-    final String secondsStr = seconds.toString().padLeft(2, '0');
-
-    return '$minutesStr:$secondsStr';
-  }
-
-  String _formatNumber(int number) {
-    if (number >= 1000000000) {
-      return '${(number / 1000000000).toStringAsFixed(0)}B';
-    } else if (number >= 1000000) {
-      return '${(number / 1000000).toStringAsFixed(0)}M';
-    } else if (number >= 1000) {
-      return '${(number / 1000).toStringAsFixed(0)}K';
-    } else {
-      return number.toString();
-    }
-  }
-
-  @override
-  void dispose() {
-    _trueViewController.dispose();
-
-    for (final VideoPlayerController player in _videoPlayers) {
-      player.removeListener(() {});
-      player.dispose();
-    }
-    _videoPlayers.clear();
-    super.dispose();
-  }
 
   final List<ProductModel> _products = <ProductModel>[];
   final List<UserModel> _users = <UserModel>[];
 
   Future<bool> _load() async {
     try {
-      _videoPlayers.clear();
-      for (int index = 0; index < widget.views.length; index++) {
-        _videoKeys.add(GlobalKey<State<StatefulWidget>>());
-        _videoPlayers.add(VideoPlayerController.networkUrl(Uri.parse(widget.views[index].reelUrl.path)));
-        await _videoPlayers[index].initialize();
-        _videoPlayers[index].addListener(
-          () {
-            if (_videoPlayers[index].value.isPlaying) {
-              _videoKeys[index].currentState!.setState(() {});
-            } else if (_videoPlayers[index].value.isCompleted) {
-              _trueViewController.nextPage(duration: 300.ms, curve: Curves.linear);
-            }
-          },
-        );
-      }
       _trueViewController = PageController(initialPage: widget.currentIndex);
       _users.clear();
       _products.clear();
@@ -102,7 +49,6 @@ class _ViewSpaceState extends State<ViewSpace> {
       }
       return true;
     } catch (e) {
-      Clipboard.setData(ClipboardData(text: e.toString()));
       return Future.error(e);
     }
   }
@@ -115,195 +61,16 @@ class _ViewSpaceState extends State<ViewSpace> {
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
             return PageView.builder(
-              onPageChanged: (int value) {
-                _videoPlayers[value - 1].pause();
-                _videoPlayers[value].play();
-              },
               scrollDirection: Axis.vertical,
               controller: _trueViewController,
-              itemBuilder: (BuildContext context, int index) => SizedBox(
-                width: MediaQuery.sizeOf(context).width,
-                height: MediaQuery.sizeOf(context).height,
-                child: Stack(
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () async {
-                        if (_videoPlayers[index].value.isPlaying) {
-                          await _videoPlayers[index].pause();
-                        } else {
-                          await _videoPlayers[index].play();
-                        }
-                      },
-                      child: VideoPlayer(_videoPlayers[index]),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              TextButton.icon(
-                                onPressed: () => Navigator.pop(context),
-                                label: const Icon(FontAwesome.chevron_left_solid, size: 25, color: white),
-                                style: ButtonStyle(
-                                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                  backgroundColor: WidgetStateProperty.all<Color>(purple.withOpacity(.4)),
-                                  padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(8)),
-                                ),
-                              ),
-                              const Spacer(),
-                              TextButton.icon(
-                                onPressed: () => Navigator.pop(context),
-                                label: const Icon(FontAwesome.heart, size: 25, color: white),
-                                style: ButtonStyle(
-                                  shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                                  backgroundColor: WidgetStateProperty.all<Color>(purple.withOpacity(.4)),
-                                  padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(8)),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Row(
-                            children: <Widget>[
-                              const Icon(FontAwesome.caret_right_solid, size: 15, color: white),
-                              const SizedBox(width: 5),
-                              Text(_formatDuration(_videoPlayers[index].value.duration.inSeconds), style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
-                              const SizedBox(width: 10),
-                              const Icon(FontAwesome.eye_solid, size: 12, color: white),
-                              const SizedBox(width: 5),
-                              Text(_formatNumber(widget.views[index].reelViews), style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: MediaQuery.sizeOf(context).width * .7,
-                                      height: 20,
-                                      child: ScrollingText(
-                                        text: "EXCLUSIVE PACKAGE FOR THIS PRODUCT ON CATEGORY : ${widget.views[index].category}",
-                                        onFinish: () {},
-                                        textStyle: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text("${'Price'.tr} : ${(Random().nextInt(1000) * Random().nextDouble()).toStringAsFixed(3)} " "TND".tr, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.bold, color: white)),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              GestureDetector(
-                                onTap: () async {
-                                  await _videoPlayers[index].pause();
-                                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Product(product: _products[index])));
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
-                                    gradient: LinearGradient(colors: <Color>[blue.withOpacity(.6), pink.withOpacity(.6)]),
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      gradient: LinearGradient(colors: <Color>[blue.withOpacity(.6), pink.withOpacity(.6)]),
-                                    ),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(6),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(3),
-                                        gradient: LinearGradient(colors: <Color>[blue.withOpacity(.6), pink.withOpacity(.6)]),
-                                      ),
-                                      child: Text("View Product".tr, style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Supplier(supplier: _users[index]))),
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: _users[index].userAvatar.isEmpty
-                                        ? DecorationImage(
-                                            image: AssetImage("assets/images/${_users[index].gender == 'M' ? 'n' : 'f'}obody.png"),
-                                            fit: BoxFit.contain,
-                                          )
-                                        : DecorationImage(
-                                            image: CachedNetworkImageProvider(_users[index].userAvatar),
-                                            fit: BoxFit.contain,
-                                          ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Text(_users[index].username, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
-                                    const SizedBox(height: 5),
-                                    Text("${_users[index].followers} ${'Followers'.tr}", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              if (FirebaseAuth.instance.currentUser == null || _users[index].userID != FirebaseAuth.instance.currentUser!.uid)
-                                GestureDetector(
-                                  onTap: () async {},
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      gradient: LinearGradient(colors: <Color>[white.withOpacity(.8), pink.withOpacity(.8)]),
-                                    ),
-                                    child: Text("Follow".tr, style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          StatefulBuilder(
-                            key: _videoKeys[index],
-                            builder: (BuildContext context, void Function(void Function()) _) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Text(!_videoPlayers[index].value.isInitialized ? "" : _formatDuration(_videoPlayers[index].value.position.inSeconds), style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
-                                  const SizedBox(height: 5),
-                                  AnimatedContainer(
-                                    duration: 100.ms,
-                                    height: 5,
-                                    decoration: BoxDecoration(color: blue.withOpacity(!_videoPlayers[index].value.isInitialized ? 0 : _videoPlayers[index].value.position.inSeconds / _videoPlayers[index].value.duration.inSeconds), borderRadius: BorderRadius.circular(3)),
-                                    width: !_videoPlayers[index].value.isInitialized ? 0 : _videoPlayers[index].value.position.inSeconds * ((MediaQuery.of(context).size.width - 16 * 2) / _videoPlayers[index].value.duration.inSeconds),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              itemBuilder: (BuildContext context, int index) {
+                return VideoTemplate(
+                  callback: () async => await _trueViewController.nextPage(duration: 200.milliseconds, curve: Curves.linear),
+                  trueView: widget.views[index],
+                  product: _products[index],
+                  user: _users[index],
+                );
+              },
               itemCount: widget.views.length,
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -313,6 +80,242 @@ class _ViewSpaceState extends State<ViewSpace> {
             return ErrorScreen(error: snapshot.error.toString());
           }
         },
+      ),
+    );
+  }
+}
+
+class VideoTemplate extends StatefulWidget {
+  const VideoTemplate({super.key, required this.callback, required this.trueView, required this.product, required this.user});
+  final TrueViewModel trueView;
+  final ProductModel product;
+  final UserModel user;
+  final void Function() callback;
+  @override
+  State<VideoTemplate> createState() => _VideoTemplateState();
+}
+
+class _VideoTemplateState extends State<VideoTemplate> {
+  late final VideoPlayerController _playerController;
+  final GlobalKey<State<StatefulWidget>> _durationKey = GlobalKey<State<StatefulWidget>>();
+  @override
+  void initState() {
+    _playerController = VideoPlayerController.networkUrl(Uri.parse(widget.trueView.reelUrl.path));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_playerController.value.isPlaying) {
+      _playerController.pause();
+    }
+    _playerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.sizeOf(context).width,
+      height: MediaQuery.sizeOf(context).height,
+      child: Stack(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () async {
+              if (_playerController.value.isPlaying) {
+                await _playerController.pause();
+              } else {
+                await _playerController.play();
+              }
+            },
+            child: FutureBuilder<void>(
+              future: _playerController.initialize(),
+              builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  _playerController.addListener(
+                    () {
+                      if (_playerController.value.isPlaying) {
+                        _durationKey.currentState!.setState(() {});
+                      } else if (_playerController.value.isCompleted) {
+                        widget.callback();
+                      }
+                    },
+                  );
+                  Future.delayed(1.seconds, () async => await _playerController.play());
+                  return VideoPlayer(_playerController);
+                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Wait(switcher: true);
+                }
+                return ErrorScreen(error: snapshot.error.toString());
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    TextButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      label: const Icon(FontAwesome.chevron_left_solid, size: 25, color: white),
+                      style: ButtonStyle(
+                        shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+                        backgroundColor: WidgetStateProperty.all<Color>(purple.withOpacity(.4)),
+                        padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(8)),
+                      ),
+                    ),
+                    const Spacer(),
+                    TextButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      label: const Icon(FontAwesome.heart, size: 25, color: white),
+                      style: ButtonStyle(
+                        shape: WidgetStatePropertyAll<RoundedRectangleBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+                        backgroundColor: WidgetStateProperty.all<Color>(purple.withOpacity(.4)),
+                        padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(8)),
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Row(
+                  children: <Widget>[
+                    const Icon(FontAwesome.caret_right_solid, size: 15, color: white),
+                    const SizedBox(width: 5),
+                    Text(formatDuration(_playerController.value.duration.inSeconds), style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
+                    const SizedBox(width: 10),
+                    const Icon(FontAwesome.eye_solid, size: 12, color: white),
+                    const SizedBox(width: 5),
+                    Text(formatNumber(widget.trueView.reelViews), style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width * .7,
+                            height: 20,
+                            child: ScrollingText(
+                              text: "EXCLUSIVE PACKAGE FOR THIS PRODUCT ON CATEGORY : ${widget.trueView.category}",
+                              onFinish: () {},
+                              textStyle: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text("${'Price'.tr} : ${(Random().nextInt(1000) * Random().nextDouble()).toStringAsFixed(3)} " "TND".tr, style: GoogleFonts.abel(fontSize: 12, fontWeight: FontWeight.bold, color: white)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () async {
+                        await _playerController.pause();
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Product(product: widget.product)));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          gradient: LinearGradient(colors: <Color>[blue.withOpacity(.6), pink.withOpacity(.6)]),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            gradient: LinearGradient(colors: <Color>[blue.withOpacity(.6), pink.withOpacity(.6)]),
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              gradient: LinearGradient(colors: <Color>[blue.withOpacity(.6), pink.withOpacity(.6)]),
+                            ),
+                            child: Text("View Product".tr, style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Supplier(supplier: widget.user))),
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: widget.user.userAvatar.isEmpty
+                              ? DecorationImage(
+                                  image: AssetImage("assets/images/${widget.user.gender == 'M' ? 'n' : 'f'}obody.png"),
+                                  fit: BoxFit.contain,
+                                )
+                              : DecorationImage(
+                                  image: CachedNetworkImageProvider(widget.user.userAvatar),
+                                  fit: BoxFit.contain,
+                                ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Text(widget.user.username, style: GoogleFonts.abel(fontSize: 16, fontWeight: FontWeight.bold, color: white)),
+                          const SizedBox(height: 5),
+                          Text("${widget.user.followers} ${'Followers'.tr}", style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    if (FirebaseAuth.instance.currentUser == null || widget.user.userID != FirebaseAuth.instance.currentUser!.uid)
+                      GestureDetector(
+                        onTap: () async {},
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            gradient: LinearGradient(colors: <Color>[white.withOpacity(.8), pink.withOpacity(.8)]),
+                          ),
+                          child: Text("Follow".tr, style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                StatefulBuilder(
+                  key: _durationKey,
+                  builder: (BuildContext context, void Function(void Function()) _) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(!_playerController.value.isInitialized ? "" : formatDuration(_playerController.value.position.inSeconds), style: GoogleFonts.abel(fontSize: 14, fontWeight: FontWeight.bold, color: white)),
+                        const SizedBox(height: 5),
+                        AnimatedContainer(
+                          duration: 100.milliseconds,
+                          height: 5,
+                          decoration: BoxDecoration(color: blue.withOpacity(!_playerController.value.isInitialized ? 0 : _playerController.value.position.inSeconds / _playerController.value.duration.inSeconds), borderRadius: BorderRadius.circular(3)),
+                          width: !_playerController.value.isInitialized ? 0 : _playerController.value.position.inSeconds * ((MediaQuery.of(context).size.width - 16 * 2) / _playerController.value.duration.inSeconds),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

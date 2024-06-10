@@ -265,4 +265,5 @@ Map<String, String> en = <String, String>{
   "Options": "Options",
   'CLEAR': 'CLEAR',
   "Add Options": "Add Options",
+  "Hot Restart": "Hot Restart",
 };

@@ -265,4 +265,5 @@ final Map<String, String> fr = <String, String>{
   "Options": "Options",
   "Add Options": "Ajouter Des Options",
   'CLEAR': 'EFFACER',
+  "Hot Restart": "Refrecher",
 };

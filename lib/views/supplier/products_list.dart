@@ -276,8 +276,8 @@ class _ProductsListState extends State<ProductsList> {
                                         ? null
                                         : () async {
                                             for (final ImageFile video in _videos[_products[index]]!.images) {
-                                              _videoPlayerControllers[video] = await VideoPlayerController.networkUrl(Uri.parse(video.path!))
-                                                ..initialize();
+                                              _videoPlayerControllers[video] = await VideoPlayerController.networkUrl(Uri.parse(video.path!));
+                                              await _videoPlayerControllers[video]!.initialize();
                                             }
                                             await showModalBottomSheet(
                                               context: context,

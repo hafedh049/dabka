@@ -210,8 +210,8 @@ class _EditProductState extends State<EditProduct> {
                                 _videoPlayerControllers.clear();
                                 for (final ImageFile video in _videoController.images) {
                                   if (video.path!.startsWith("http")) {
-                                    _videoPlayerControllers[video] = await VideoPlayerController.networkUrl(Uri.parse(video.path!))
-                                      ..initialize();
+                                    _videoPlayerControllers[video] = await VideoPlayerController.networkUrl(Uri.parse(video.path!));
+                                    await _videoPlayerControllers[video]!.initialize();
                                   } else {
                                     _videoPlayerControllers[video] = await VideoPlayerController.file(File(video.path!))
                                       ..initialize();
